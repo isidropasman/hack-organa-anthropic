@@ -34,9 +34,11 @@ export default function BrainMessage({ message, userInitials }: Props) {
     )
   }
 
-  // Split trailing agent attribution line (starts with _Esta información)
+  // Split trailing agent attribution line
   const textLines = message.text.split('\n')
-  const attrLine  = textLines.findLast((l: string) => l.startsWith('_Esta información'))
+  const attrLine  = textLines.findLast((l: string) =>
+    l.startsWith('_Esta información') || l.startsWith('_This information')
+  )
   const mainLines = attrLine
     ? textLines.slice(0, textLines.lastIndexOf(attrLine))
     : textLines

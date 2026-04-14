@@ -43,12 +43,12 @@ export default function BrainUpload({ docs, onAddFiles, onProcess, onDelete }: B
       {processedCount > 0 && (
         <div className="flex items-center gap-3 flex-wrap">
           <span className="text-xs text-slate-500">
-            {processedCount} doc{processedCount !== 1 ? 's' : ''} procesados →
+            {processedCount} doc{processedCount !== 1 ? 's' : ''} processed →
           </span>
-          <Chip value={totalExtracted.tasks}     label="tareas"        color="#4F6BED" />
-          <Chip value={totalExtracted.tools}     label="herramientas"  color="#F59E0B" />
-          <Chip value={totalExtracted.decisions} label="decisiones"    color="#EF4444" />
-          <Chip value={totalExtracted.knowledge} label="conocimientos" color="#8B5CF6" />
+          <Chip value={totalExtracted.tasks}     label="tasks"      color="#4F6BED" />
+          <Chip value={totalExtracted.tools}     label="tools"      color="#F59E0B" />
+          <Chip value={totalExtracted.decisions} label="decisions"  color="#EF4444" />
+          <Chip value={totalExtracted.knowledge} label="knowledge"  color="#8B5CF6" />
         </div>
       )}
 
@@ -60,25 +60,22 @@ export default function BrainUpload({ docs, onAddFiles, onProcess, onDelete }: B
         onClick={() => inputRef.current?.click()}
         className="relative flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed cursor-pointer transition-all py-6 px-4"
         style={{
-          borderColor: dragging ? '#4F6BED' : 'rgba(255,255,255,0.10)',
-          background:  dragging ? 'rgba(79,107,237,0.07)' : 'rgba(255,255,255,0.02)',
+          borderColor: dragging ? '#4F6BED' : '#E2E8F0',
+          background:  dragging ? 'rgba(79,107,237,0.05)' : '#FAFAFA',
         }}
       >
-        <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center"
-          style={{ background: 'rgba(79,107,237,0.12)', border: '1px solid rgba(79,107,237,0.25)' }}
-        >
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-blue-50 border border-blue-200">
           {dragging ? (
-            <FileText size={18} style={{ color: '#4F6BED' }} />
+            <FileText size={18} className="text-organa-accent" />
           ) : (
-            <Upload size={18} style={{ color: '#4F6BED' }} />
+            <Upload size={18} className="text-organa-accent" />
           )}
         </div>
         <div className="text-center">
-          <p className="text-sm font-medium text-slate-300">
-            {dragging ? 'Soltá los archivos aquí' : 'Arrastrá documentos para alimentar el cerebro'}
+          <p className="text-sm font-medium text-slate-700">
+            {dragging ? 'Drop files here' : 'Drag documents to feed the brain'}
           </p>
-          <p className="text-xs text-slate-600 mt-0.5">Acepta .docx, .pdf, .txt</p>
+          <p className="text-xs text-slate-500 mt-0.5">Accepts .docx, .pdf, .txt</p>
         </div>
         <input
           ref={inputRef}

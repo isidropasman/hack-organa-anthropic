@@ -91,9 +91,8 @@ export default function BrainPage() {
   }, [])
 
   const handleProcess = useCallback((id: string) => {
-    // Capture filename synchronously before the async gap
     setDocs(prev => {
-      const filename = prev.find(d => d.id === id)?.filename ?? 'Documento'
+      const filename = prev.find(d => d.id === id)?.filename ?? 'Document'
       const updated  = prev.map(d => d.id === id ? { ...d, status: 'processing' as const } : d)
       saveDocs(updated)
 
@@ -109,12 +108,11 @@ export default function BrainPage() {
           return next
         })
 
-        // Add node to the graph
         const { node, links: newLinks } = buildUploadedDocNode(id, filename, 'ceo')
         setGraphNodes(cur => [...cur, node])
         setGraphLinks(cur => [...cur, ...newLinks])
 
-        showToast(`Documento procesado — ${newLinks.length} nuevas conexiones detectadas`)
+        showToast(`Document processed — ${newLinks.length} new connections detected`)
       }, 2000)
 
       return updated
@@ -122,63 +120,53 @@ export default function BrainPage() {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDelete = useCallback((id: string) => {
-    // Remove from doc list
     setDocs(prev => {
       const updated = prev.filter(d => d.id !== id)
       saveDocs(updated)
       return updated
     })
 
-    // Remove graph node and all its links.
-    // User-uploaded nodes follow the pattern doc-upload-{id}.
     const nodeId = `doc-upload-${id}`
     setGraphNodes(prev => prev.filter(n => n.id !== nodeId))
     setGraphLinks(prev =>
       prev.filter(l => l.source !== nodeId && l.target !== nodeId),
     )
 
-    // Deselect if the deleted node was selected
     setSelectedNode(cur => (cur?.id === nodeId ? null : cur))
 
-    showToast('Documento eliminado — la red se actualizó')
+    showToast('Document deleted — the network was updated')
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ─────────────────────────────────────────────────────────────────────────────
 
   return (
-    <div className="flex flex-col" style={{ background: '#080810', minHeight: '100vh' }}>
+    <div className="flex flex-col bg-slate-50 min-h-screen">
 
       {/* ── Header ──────────────────────────────────────────────────────────── */}
-      <div
-        className="px-8 pt-7 pb-5 flex-shrink-0"
-        style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
-      >
+      <div className="px-8 pt-7 pb-5 flex-shrink-0 bg-white border-b border-slate-200">
         <div className="flex items-start justify-between gap-6 flex-wrap">
           <div>
             <div className="flex items-center gap-3 mb-1.5">
-              <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center"
-                style={{ background: 'rgba(79,107,237,0.15)', border: '1px solid rgba(79,107,237,0.3)' }}
-              >
-                <Network size={16} style={{ color: '#4F6BED' }} />
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-blue-50 border border-blue-200">
+                <Network size={16} className="text-organa-accent" />
               </div>
-              <h1 className="text-white text-xl font-bold tracking-tight">
-                Cerebro Organizacional
+              <h1 className="text-organa-text text-xl font-bold tracking-tight">
+                Organizational Brain
               </h1>
             </div>
-            <p className="text-slate-500 text-sm">
-              Red neuronal de conocimiento de Nova Store
+            <p className="text-organa-text-muted text-sm">
+              Knowledge Neural Network — Nova Agency
             </p>
           </div>
 
           {/* Stats */}
           <div className="flex items-center gap-5 flex-wrap">
-            <Stat value={stats.persons}   label="roles"                color="#4F6BED" />
-            <Stat value={stats.tools}     label="herramientas"         color="#F59E0B" />
-            <Stat value={stats.decisions} label="decisiones clave"     color="#EF4444" />
-            <Stat value={stats.knowledge} label="conocimientos tácitos" color="#8B5CF6" />
-            <Stat value={stats.documents} label="documentos"           color="#06B6D4" />
-            <Stat value={stats.links}     label="conexiones"           color="#94A3B8" />
+            <Stat value={stats.persons}   label="roles"           color="#4F6BED" />
+            <Stat value={stats.tools}     label="tools"           color="#F59E0B" />
+            <Stat value={stats.decisions} label="key decisions"   color="#EF4444" />
+            <Stat value={stats.knowledge} label="tacit knowledge" color="#8B5CF6" />
+            <Stat value={stats.documents} label="documents"       color="#06B6D4" />
+            <Stat value={stats.links}     label="connections"     color="#64748B" />
           </div>
         </div>
 
@@ -187,8 +175,11 @@ export default function BrainPage() {
         </div>
       </div>
 
-      {/* ── Graph area ──────────────────────────────────────────────────────── */}
-      <div className="flex min-h-0 gap-4 p-4" style={{ height: 'calc(100vh - 196px)' }}>
+      {/* ── Graph area — DARK BACKGROUND intentional for node visibility ────── */}
+      <div
+        className="flex min-h-0 gap-4 p-4"
+        style={{ height: 'calc(100vh - 196px)', background: '#0F172A' }}
+      >
         <div className="flex-1 min-h-0 min-w-0 relative">
           <BrainGraph
             nodes={graphNodes}
@@ -214,21 +205,15 @@ export default function BrainPage() {
       </div>
 
       {/* ── Documents section ───────────────────────────────────────────────── */}
-      <div
-        className="px-8 py-6"
-        style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}
-      >
+      <div className="px-8 py-6 bg-white border-t border-slate-200">
         <div className="flex items-center gap-3 mb-5">
-          <div
-            className="w-7 h-7 rounded-lg flex items-center justify-center"
-            style={{ background: 'rgba(79,107,237,0.12)', border: '1px solid rgba(79,107,237,0.25)' }}
-          >
-            <FileStack size={13} style={{ color: '#4F6BED' }} />
+          <div className="w-7 h-7 rounded-lg flex items-center justify-center bg-blue-50 border border-blue-200">
+            <FileStack size={13} className="text-organa-accent" />
           </div>
           <div>
-            <h2 className="text-white text-sm font-semibold">Documentos del cerebro</h2>
-            <p className="text-slate-600 text-xs">
-              Subí manuales, SOPs y guías para enriquecer el conocimiento organizacional
+            <h2 className="text-organa-text text-sm font-semibold">Brain Documents</h2>
+            <p className="text-organa-text-muted text-xs">
+              Upload manuals, SOPs and guides to enrich organizational knowledge
             </p>
           </div>
         </div>

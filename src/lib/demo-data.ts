@@ -382,6 +382,347 @@ const paulaKB: KnowledgeBase = {
   ],
 }
 
+// ─── Nova Agency partial KBs ─────────────────────────────────────────────────
+
+const lucasKB: KnowledgeBase = {
+  agentId: 'lucas-fernandez',
+  completedAt: NOW,
+  summary: 'Lucas manages financial operations: invoicing, cash flow, bank reconciliation, vendor payments.',
+  categories: {
+    tasks: [
+      'Monthly P&L review and reporting to CEO',
+      'Invoice processing through ARCA/AFIP',
+      'Weekly cash flow management in Excel — updated every Friday before noon',
+      'Bank reconciliation — cross-reference Banco Galicia with MercadoPago every Monday',
+      'Vendor payment scheduling based on due dates and cash availability',
+    ],
+    tools: [
+      'ARCA/AFIP — electronic invoicing',
+      'Excel — cash flow model and P&L',
+      'Banco Galicia Home Banking',
+      'MercadoPago — sales reconciliation',
+      'Google Sheets — vendor payment tracker',
+    ],
+    team: [
+      'Reports to Valentina (CEO) — expense approvals over $500',
+      'Weekly 1:1 with CEO on Wednesdays',
+      'Coordinates with Carlos (Operations) on shipping costs',
+    ],
+    comms: [
+      'Email for vendors and accountant',
+      'WhatsApp with CEO for urgent approvals',
+    ],
+    decisions: [
+      'Approves expenses under $500 independently',
+      'Over $500 require CEO approval',
+    ],
+    knowledge: [
+      'Accountant is Estudio García — Laura, tel 11-4567-8900',
+      'ARCA goes down Friday afternoons',
+      'Always invoice before the 10th',
+    ],
+  },
+  rawTranscript: [
+    msg('assistant', "Hi Lucas! I'm ARIA. Let's capture how you handle finance at Nova Agency."),
+    msg('user', 'I handle all invoicing through ARCA/AFIP, manage cash flow weekly, and reconcile Galicia with MercadoPago every Monday.'),
+  ],
+}
+
+const camilaKB: KnowledgeBase = {
+  agentId: 'camila-rios',
+  completedAt: NOW,
+  summary: 'Camila manages key accounts, creates campaign briefs, coordinates between clients and creative.',
+  categories: {
+    tasks: [
+      'Daily client communication via email and WhatsApp',
+      'Weekly status reports for top 5 accounts',
+      'Campaign brief creation and handoff to creative',
+      'Client onboarding — setup meetings, asset collection',
+    ],
+    tools: [
+      'Google Sheets — client tracker',
+      'WhatsApp',
+      'Gmail',
+      'Google Meet',
+    ],
+    team: [
+      'Reports to Martín Ruiz',
+      "Works with Sofía Chen's team",
+      'Coordinates with Diego Morales',
+    ],
+    comms: [
+      'WhatsApp for quick updates',
+      'Email for proposals',
+    ],
+    decisions: [
+      'Approves minor scope changes within budget',
+      'Escalates budget increases over 10%',
+    ],
+    knowledge: [
+      "NDA templates in Drive 'Legal Templates'",
+      'Confirm timelines with Creative before promising client',
+    ],
+  },
+  rawTranscript: [
+    msg('assistant', "Hi Camila! I'm ARIA. Walk me through how you manage your accounts."),
+    msg('user', 'I handle 5 major accounts — daily WhatsApp with clients, weekly status updates, and briefs to creative.'),
+  ],
+}
+
+const diegoMKB: KnowledgeBase = {
+  agentId: 'diego-morales',
+  completedAt: NOW,
+  summary: 'Diego manages accounts focusing on performance reporting and upsell opportunities.',
+  categories: {
+    tasks: [
+      'Client relationship management',
+      'Monthly performance reports',
+      'Upsell identification',
+    ],
+    tools: [
+      'Google Sheets',
+      'Gmail',
+      'Google Meet',
+    ],
+    team: [
+      'Reports to Martín Ruiz',
+      'Shares accounts with Camila',
+    ],
+    comms: [
+      'Email formal',
+      'WhatsApp internal',
+    ],
+    decisions: [
+      'Approves deliverable revisions within scope',
+    ],
+    knowledge: [
+      'Top clients: Retail Plus, FashionCo, TechStart',
+    ],
+  },
+  rawTranscript: [
+    msg('assistant', "Hi Diego! I'm ARIA. Let's capture how you work with your accounts."),
+    msg('user', 'I focus on performance — monthly reports for clients and identifying upsell opportunities.'),
+  ],
+}
+
+const anaGKB: KnowledgeBase = {
+  agentId: 'ana-gutierrez',
+  completedAt: NOW,
+  summary: 'Junior AM supporting seniors with admin and coordination.',
+  categories: {
+    tasks: [
+      'Support senior AMs with admin tasks',
+      'Meeting scheduling and notes',
+    ],
+    tools: [
+      'Google Calendar',
+      'Gmail',
+    ],
+    team: [
+      'Reports to Martín Ruiz',
+      'Assists Camila and Diego',
+    ],
+    comms: [
+      'Email and calendar',
+    ],
+    decisions: [],
+    knowledge: [
+      'New to the role — still learning',
+    ],
+  },
+  rawTranscript: [
+    msg('assistant', "Hi Ana! I'm ARIA. What does your typical day look like?"),
+    msg('user', 'I help Camila and Diego with admin — scheduling meetings, taking notes, and handling coordination tasks.'),
+  ],
+}
+
+const pabloKB: KnowledgeBase = {
+  agentId: 'pablo-solis',
+  completedAt: NOW,
+  summary: 'Handles follow-ups and presentations. Early onboarding.',
+  categories: {
+    tasks: [
+      'Client follow-ups',
+      'Presentation decks for client reviews',
+    ],
+    tools: [
+      'Google Slides',
+      'Gmail',
+    ],
+    team: [
+      'Reports to Martín Ruiz',
+    ],
+    comms: [
+      'Email',
+    ],
+    decisions: [],
+    knowledge: [],
+  },
+  rawTranscript: [
+    msg('assistant', "Hi Pablo! I'm ARIA. Walk me through what you work on."),
+    msg('user', 'I do client follow-ups and build presentation decks for account reviews.'),
+  ],
+}
+
+const luciaKB: KnowledgeBase = {
+  agentId: 'lucia-mendez',
+  completedAt: NOW,
+  summary: 'Coordinates client meetings and invoicing follow-ups.',
+  categories: {
+    tasks: [
+      'Client meeting coordination',
+      'Invoice follow-ups with finance',
+    ],
+    tools: [
+      'Gmail',
+      'Google Calendar',
+    ],
+    team: [
+      'Reports to Martín Ruiz',
+    ],
+    comms: [
+      'Email',
+    ],
+    decisions: [],
+    knowledge: [],
+  },
+  rawTranscript: [
+    msg('assistant', "Hi Lucía! I'm ARIA. What are your main responsibilities?"),
+    msg('user', 'I coordinate client meetings and follow up on invoices with the finance team.'),
+  ],
+}
+
+const joseKB: KnowledgeBase = {
+  agentId: 'jose-vera',
+  completedAt: NOW,
+  summary: 'Senior designer handling brand identity and social assets in Figma and Photoshop.',
+  categories: {
+    tasks: [
+      'Brand identity design',
+      'Social media assets — Instagram posts, stories, carousels',
+      'Design review for juniors',
+      'Client presentation mockups',
+    ],
+    tools: [
+      'Figma',
+      'Adobe Photoshop',
+      'Canva',
+      'Google Drive',
+    ],
+    team: [
+      'Reports to Sofía Chen',
+      'Works with Natalia López',
+      'Receives briefs from AMs',
+    ],
+    comms: [
+      'Slack for creative feedback',
+      'Drive for deliverables',
+    ],
+    decisions: [
+      'Design direction within brand guidelines',
+      'Escalates new concepts to Sofía',
+    ],
+    knowledge: [
+      "Brand guidelines in Drive 'Client Brands'",
+      'Instagram: 1080x1080, stories 1080x1920',
+      'Export PNG for social, PDF for print',
+    ],
+  },
+  rawTranscript: [
+    msg('assistant', "Hi José! I'm ARIA. Walk me through your creative process."),
+    msg('user', 'I lead brand identity and social assets — Figma for design, Photoshop for production. I also review junior work before it goes to Sofía.'),
+  ],
+}
+
+const nataliaKB: KnowledgeBase = {
+  agentId: 'natalia-lopez',
+  completedAt: NOW,
+  summary: 'Handles campaign visuals and motion graphics.',
+  categories: {
+    tasks: [
+      'Campaign visual design',
+      'Video thumbnails and motion graphics',
+      'Design QA before delivery',
+    ],
+    tools: [
+      'Figma',
+      'Adobe After Effects',
+      'Google Drive',
+    ],
+    team: [
+      'Reports to Sofía Chen',
+      'Collaborates with José Vera',
+    ],
+    comms: [
+      'Slack',
+      'Email for client deliverables',
+    ],
+    decisions: [
+      'Approves final visual quality',
+    ],
+    knowledge: [
+      'Video specs: 1920x1080 YouTube, 1080x1080 Instagram, 9:16 stories/reels',
+    ],
+  },
+  rawTranscript: [
+    msg('assistant', "Hi Natalia! I'm ARIA. What does your creative work look like day to day?"),
+    msg('user', 'Campaign visuals and motion — After Effects for animation, Figma for static. I do final QA before anything goes out.'),
+  ],
+}
+
+const tomasKB: KnowledgeBase = {
+  agentId: 'tomás-white',
+  completedAt: NOW,
+  summary: 'Copywriter supporting campaign messaging and content creation.',
+  categories: {
+    tasks: [
+      'Campaign copy for social and email',
+      'Brand voice guidelines',
+    ],
+    tools: [
+      'Google Docs',
+    ],
+    team: [
+      'Reports to Sofía Chen',
+    ],
+    comms: [
+      'Slack for feedback',
+    ],
+    decisions: [],
+    knowledge: [],
+  },
+  rawTranscript: [
+    msg('assistant', "Hi Tomás! I'm ARIA. What do you write for Nova Agency?"),
+    msg('user', 'Social copy and campaign messaging mostly. Still getting up to speed with brand voice.'),
+  ],
+}
+
+const emiliaKB: KnowledgeBase = {
+  agentId: 'emilia-suarez',
+  completedAt: NOW,
+  summary: 'Video editor handling post-production for campaign content.',
+  categories: {
+    tasks: [
+      'Video editing for campaign deliverables',
+    ],
+    tools: [
+      'Adobe Premiere Pro',
+    ],
+    team: [
+      'Reports to Sofía Chen',
+    ],
+    comms: [
+      'Frame.io for video review',
+    ],
+    decisions: [],
+    knowledge: [],
+  },
+  rawTranscript: [
+    msg('assistant', "Hi Emilia! I'm ARIA. Walk me through your editing workflow."),
+    msg('user', 'I edit all campaign videos in Premiere and share reviews through Frame.io.'),
+  ],
+}
+
 // ─── Exported demo companies ─────────────────────────────────────────────────
 
 export const NOVA_AGENCY_DEMO: DemoCompany = {
@@ -392,16 +733,16 @@ export const NOVA_AGENCY_DEMO: DemoCompany = {
     { id: 'martin-ruiz', name: 'Martín Ruiz', role: 'Head of Accounts', department: 'Accounts', reportsTo: 'valentina-torres', readinessScore: 100, onboardingComplete: true, knowledgeBase: martinKB, onboardingMessages: martinKB.rawTranscript },
     { id: 'sofia-chen', name: 'Sofía Chen', role: 'Head of Creative', department: 'Creative', reportsTo: 'valentina-torres', readinessScore: 100, onboardingComplete: true, knowledgeBase: sofiaKB, onboardingMessages: sofiaKB.rawTranscript },
     { id: 'carlos-operations', name: 'Carlos Méndez', role: 'Operations Manager', department: 'Operations', reportsTo: 'valentina-torres', readinessScore: 100, onboardingComplete: true, knowledgeBase: carlosKB, onboardingMessages: carlosKB.rawTranscript },
-    shell('lucas-fernandez', 'Lucas Fernández', 'CFO', 'Finance', 'valentina-torres'),
-    shell('camila-rios', 'Camila Ríos', 'Senior Account Manager', 'Accounts', 'martin-ruiz'),
-    shell('diego-morales', 'Diego Morales', 'Senior Account Manager', 'Accounts', 'martin-ruiz'),
-    shell('ana-gutierrez', 'Ana Gutiérrez', 'Account Manager', 'Accounts', 'martin-ruiz'),
-    shell('pablo-solis', 'Pablo Solís', 'Account Manager', 'Accounts', 'martin-ruiz'),
-    shell('lucia-mendez', 'Lucía Méndez', 'Account Manager', 'Accounts', 'martin-ruiz'),
-    shell('jose-vera', 'José Vera', 'Senior Designer', 'Creative', 'sofia-chen'),
-    shell('natalia-lopez', 'Natalia López', 'Senior Designer', 'Creative', 'sofia-chen'),
-    shell('tomás-white', 'Tomás White', 'Copywriter', 'Creative', 'sofia-chen'),
-    shell('emilia-suarez', 'Emilia Suárez', 'Video Editor', 'Creative', 'sofia-chen'),
+    { id: 'lucas-fernandez', name: 'Lucas Fernández', role: 'CFO', department: 'Finance', reportsTo: 'valentina-torres', readinessScore: 78, onboardingComplete: true, knowledgeBase: lucasKB, onboardingMessages: lucasKB.rawTranscript },
+    { id: 'camila-rios', name: 'Camila Ríos', role: 'Senior Account Manager', department: 'Accounts', reportsTo: 'martin-ruiz', readinessScore: 72, onboardingComplete: true, knowledgeBase: camilaKB, onboardingMessages: camilaKB.rawTranscript },
+    { id: 'diego-morales', name: 'Diego Morales', role: 'Senior Account Manager', department: 'Accounts', reportsTo: 'martin-ruiz', readinessScore: 65, onboardingComplete: true, knowledgeBase: diegoMKB, onboardingMessages: diegoMKB.rawTranscript },
+    { id: 'ana-gutierrez', name: 'Ana Gutiérrez', role: 'Account Manager', department: 'Accounts', reportsTo: 'martin-ruiz', readinessScore: 55, onboardingComplete: true, knowledgeBase: anaGKB, onboardingMessages: anaGKB.rawTranscript },
+    { id: 'pablo-solis', name: 'Pablo Solís', role: 'Account Manager', department: 'Accounts', reportsTo: 'martin-ruiz', readinessScore: 48, onboardingComplete: true, knowledgeBase: pabloKB, onboardingMessages: pabloKB.rawTranscript },
+    { id: 'lucia-mendez', name: 'Lucía Méndez', role: 'Account Manager', department: 'Accounts', reportsTo: 'martin-ruiz', readinessScore: 42, onboardingComplete: true, knowledgeBase: luciaKB, onboardingMessages: luciaKB.rawTranscript },
+    { id: 'jose-vera', name: 'José Vera', role: 'Senior Designer', department: 'Creative', reportsTo: 'sofia-chen', readinessScore: 70, onboardingComplete: true, knowledgeBase: joseKB, onboardingMessages: joseKB.rawTranscript },
+    { id: 'natalia-lopez', name: 'Natalia López', role: 'Senior Designer', department: 'Creative', reportsTo: 'sofia-chen', readinessScore: 62, onboardingComplete: true, knowledgeBase: nataliaKB, onboardingMessages: nataliaKB.rawTranscript },
+    { id: 'tomás-white', name: 'Tomás White', role: 'Copywriter', department: 'Creative', reportsTo: 'sofia-chen', readinessScore: 35, onboardingComplete: true, knowledgeBase: tomasKB, onboardingMessages: tomasKB.rawTranscript },
+    { id: 'emilia-suarez', name: 'Emilia Suárez', role: 'Video Editor', department: 'Creative', reportsTo: 'sofia-chen', readinessScore: 30, onboardingComplete: true, knowledgeBase: emiliaKB, onboardingMessages: emiliaKB.rawTranscript },
   ],
 }
 

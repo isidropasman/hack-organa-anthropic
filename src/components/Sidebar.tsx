@@ -41,8 +41,8 @@ export default function Sidebar() {
           title={collapsed ? label : undefined}
           className={`flex items-center gap-3 px-2.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
             isActive
-              ? 'bg-organa-accent/20 text-organa-accent border border-organa-accent/30'
-              : 'text-organa-text-muted hover:text-organa-text hover:bg-organa-border/60'
+              ? 'bg-blue-50 text-blue-700 border border-blue-200'
+              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
           } ${collapsed ? 'justify-center' : ''}`}
         >
           <Icon size={15} className="flex-shrink-0" />
@@ -91,7 +91,7 @@ export default function Sidebar() {
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.92 }}
           title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          className="w-7 h-7 rounded-lg flex items-center justify-center text-organa-text-muted hover:text-organa-text hover:bg-organa-border/60 transition-colors flex-shrink-0"
+          className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors flex-shrink-0"
         >
           {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
         </motion.button>
@@ -139,7 +139,7 @@ export default function Sidebar() {
           </ul>
         ) : (
           <ul className="space-y-0.5">
-            {navLink(myTwinHref, 'Mi Twin', Sparkles)}
+            {navLink(myTwinHref, 'My Twin', Sparkles)}
           </ul>
         )}
       </nav>

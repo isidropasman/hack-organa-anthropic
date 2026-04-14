@@ -9,7 +9,7 @@ interface Props {
   doc:       BrainDoc
   onProcess: (id: string) => void
   onDelete?: (id: string) => void
-  canDelete?: boolean  // false for pre-seeded docs
+  canDelete?: boolean
 }
 
 const EXT_COLOR: Record<string, string> = {
@@ -23,7 +23,7 @@ function getExt(filename: string): string {
 }
 
 function formatDate(iso: string): string {
-  return new Date(iso).toLocaleString('es-AR', {
+  return new Date(iso).toLocaleString('en-US', {
     day:    '2-digit',
     month:  '2-digit',
     year:   'numeric',
@@ -51,14 +51,13 @@ export default function DocCard({ doc, onProcess, onDelete, canDelete = true }: 
 
   return (
     <div
-      className="rounded-xl border px-4 py-3 transition-all relative"
+      className="rounded-xl border px-4 py-3 transition-all relative bg-white"
       style={{
-        background:  '#12121E',
         borderColor: confirming
           ? 'rgba(239,68,68,0.30)'
           : doc.status === 'processed'
             ? `${color}30`
-            : 'rgba(255,255,255,0.07)',
+            : '#E2E8F0',
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -73,22 +72,22 @@ export default function DocCard({ doc, onProcess, onDelete, canDelete = true }: 
           <FileText size={15} style={{ color }} />
         </div>
 
-        {/* Content — extra right padding so text doesn't overlap the trash button */}
+        {/* Content */}
         <div className="flex-1 min-w-0" style={{ paddingRight: '28px' }}>
-          <p className="text-white text-sm font-medium truncate leading-tight">
+          <p className="text-slate-800 text-sm font-medium truncate leading-tight">
             {doc.filename}
           </p>
           <div className="flex items-center gap-3 mt-1 flex-wrap">
             <span className="text-slate-500 text-xs">{doc.size}</span>
-            <span className="text-slate-600 text-xs">{formatDate(doc.uploadedAt)}</span>
+            <span className="text-slate-400 text-xs">{formatDate(doc.uploadedAt)}</span>
           </div>
 
           {doc.status === 'processed' && doc.extractedItems && (
             <div className="flex items-center gap-2 mt-2 flex-wrap">
-              <ExChip value={doc.extractedItems.tasks}     label="tareas"        color="#4F6BED" />
-              <ExChip value={doc.extractedItems.tools}     label="herramientas"  color="#F59E0B" />
-              <ExChip value={doc.extractedItems.decisions} label="decisiones"    color="#EF4444" />
-              <ExChip value={doc.extractedItems.knowledge} label="conocimientos" color="#8B5CF6" />
+              <ExChip value={doc.extractedItems.tasks}     label="tasks"      color="#4F6BED" />
+              <ExChip value={doc.extractedItems.tools}     label="tools"      color="#F59E0B" />
+              <ExChip value={doc.extractedItems.decisions} label="decisions"  color="#EF4444" />
+              <ExChip value={doc.extractedItems.knowledge} label="knowledge"  color="#8B5CF6" />
             </div>
           )}
         </div>
@@ -97,14 +96,14 @@ export default function DocCard({ doc, onProcess, onDelete, canDelete = true }: 
         <div className="flex-shrink-0 flex items-center">
           {doc.status === 'processed' && (
             <div className="flex items-center gap-1.5">
-              <CheckCircle size={14} style={{ color: '#22C55E' }} />
-              <span className="text-xs font-medium" style={{ color: '#22C55E' }}>Procesado</span>
+              <CheckCircle size={14} className="text-green-600" />
+              <span className="text-xs font-medium text-green-700">Processed</span>
             </div>
           )}
           {doc.status === 'processing' && (
             <div className="flex items-center gap-1.5">
               <Loader2 size={14} className="animate-spin text-slate-400" />
-              <span className="text-xs text-slate-400">Procesando...</span>
+              <span className="text-xs text-slate-500">Processing...</span>
             </div>
           )}
           {doc.status === 'pending' && (
@@ -112,35 +111,35 @@ export default function DocCard({ doc, onProcess, onDelete, canDelete = true }: 
               onClick={() => onProcess(doc.id)}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:opacity-90 active:scale-95"
               style={{
-                background: 'rgba(79,107,237,0.15)',
-                border:     '1px solid rgba(79,107,237,0.35)',
+                background: 'rgba(79,107,237,0.08)',
+                border:     '1px solid rgba(79,107,237,0.25)',
                 color:      '#4F6BED',
               }}
             >
               <Zap size={11} />
-              Procesar
+              Process
             </button>
           )}
         </div>
       </div>
 
-      {/* Trash button — absolute top-right, fades in on hover */}
+      {/* Trash button */}
       <button
         onClick={handleTrashClick}
         title={
           canDelete
-            ? 'Eliminar documento'
-            : 'Documento del sistema — no se puede eliminar'
+            ? 'Delete document'
+            : 'System document — cannot be deleted'
         }
         className="absolute top-3 right-3 p-1 rounded transition-opacity"
         style={{
           opacity:    hovered && !confirming ? 1 : 0,
-          color:      canDelete ? '#EF4444' : '#475569',
+          color:      canDelete ? '#EF4444' : '#94A3B8',
           cursor:     canDelete ? 'pointer' : 'not-allowed',
-          background: hovered && canDelete ? 'rgba(239,68,68,0.08)' : 'transparent',
+          background: hovered && canDelete ? 'rgba(239,68,68,0.06)' : 'transparent',
           pointerEvents: confirming ? 'none' : 'auto',
         }}
-        aria-label="Eliminar documento"
+        aria-label="Delete document"
       >
         <Trash2 size={13} />
       </button>

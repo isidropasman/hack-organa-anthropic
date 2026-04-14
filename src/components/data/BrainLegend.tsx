@@ -3,11 +3,11 @@
 import { NODE_COLOR, type NodeType } from '@/lib/brain-graph'
 
 const ITEMS: { type: NodeType; label: string; square?: boolean }[] = [
-  { type: 'person',    label: 'Personas' },
-  { type: 'tool',      label: 'Herramientas' },
-  { type: 'decision',  label: 'Decisiones clave' },
-  { type: 'knowledge', label: 'Conocimiento tácito' },
-  { type: 'document',  label: 'Documentos', square: true },
+  { type: 'person',    label: 'People' },
+  { type: 'tool',      label: 'Tools' },
+  { type: 'decision',  label: 'Key Decisions' },
+  { type: 'knowledge', label: 'Tacit Knowledge' },
+  { type: 'document',  label: 'Documents', square: true },
 ]
 
 export default function BrainLegend() {
@@ -25,7 +25,7 @@ export default function BrainLegend() {
               borderRadius: square ? '2px' : '50%',
             }}
           />
-          <span className="text-xs text-slate-400 font-medium">{label}</span>
+          <span className="text-xs text-slate-600 font-medium">{label}</span>
         </div>
       ))}
     </div>

@@ -9,11 +9,11 @@ import {
 } from '@/lib/brain-graph'
 
 const TYPE_LABEL: Record<GraphNode['type'], string> = {
-  person:    'Persona',
-  tool:      'Herramienta',
-  decision:  'Decisión',
-  knowledge: 'Conocimiento tácito',
-  document:  'Documento',
+  person:    'Person',
+  tool:      'Tool',
+  decision:  'Decision',
+  knowledge: 'Tacit Knowledge',
+  document:  'Document',
 }
 
 interface Props {
@@ -105,46 +105,46 @@ export default function BrainNodeDetail({ node, nodes, links, onClose }: Props) 
             className="inline-block w-2 h-2 rounded-full"
             style={{ background: color }}
           />
-          <span>{node.connections} conexiones</span>
+          <span>{node.connections} connections</span>
         </div>
 
         {node.type === 'person' && (
           <div className="space-y-4">
-            <Section title="Herramientas" items={tools} />
-            <Section title="Decisiones clave" items={decisions} />
-            <Section title="Conocimiento tácito" items={knowledge} />
-            <Section title="Documentos" items={documents} />
-            <Section title="Trabaja con" items={persons} />
+            <Section title="Tools" items={tools} />
+            <Section title="Key Decisions" items={decisions} />
+            <Section title="Tacit Knowledge" items={knowledge} />
+            <Section title="Documents" items={documents} />
+            <Section title="Works with" items={persons} />
           </div>
         )}
 
         {node.type === 'tool' && (
           <div className="space-y-4">
-            <Section title="Usado por" items={persons} />
-            <Section title="Documentado en" items={documents} />
+            <Section title="Used by" items={persons} />
+            <Section title="Documented in" items={documents} />
           </div>
         )}
 
         {node.type === 'decision' && (
           <div className="space-y-4">
-            <Section title="Involucra" items={persons} />
-            <Section title="Documentado en" items={documents} />
+            <Section title="Involves" items={persons} />
+            <Section title="Documented in" items={documents} />
           </div>
         )}
 
         {node.type === 'knowledge' && (
           <div className="space-y-4">
-            <Section title="Conocido por" items={persons} />
-            <Section title="Documentado en" items={documents} />
+            <Section title="Known by" items={persons} />
+            <Section title="Documented in" items={documents} />
           </div>
         )}
 
         {node.type === 'document' && (
           <div className="space-y-4">
-            <Section title="Propietario" items={persons} />
-            <Section title="Herramientas" items={tools} />
-            <Section title="Decisiones" items={decisions} />
-            <Section title="Conocimiento" items={knowledge} />
+            <Section title="Owner" items={persons} />
+            <Section title="Tools" items={tools} />
+            <Section title="Decisions" items={decisions} />
+            <Section title="Knowledge" items={knowledge} />
           </div>
         )}
       </div>

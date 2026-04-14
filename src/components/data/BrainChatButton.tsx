@@ -16,7 +16,7 @@ export default function BrainChatButton({ onClick }: Props) {
       }}
     >
       <span className="text-base leading-none">🧠</span>
-      <span>Preguntale al cerebro</span>
+      <span>Ask the Brain</span>
     </button>
   )
 }

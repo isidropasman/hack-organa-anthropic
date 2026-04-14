@@ -20,19 +20,20 @@ interface Props {
 
 const tooltipStyle = {
   contentStyle: {
-    background: '#12121A',
-    border: '1px solid #1E1E2E',
+    background: '#FFFFFF',
+    border: '1px solid #E2E8F0',
     borderRadius: '6px',
     fontSize: '11px',
     padding: '6px 10px',
+    color: '#1E293B',
   },
-  labelStyle: { color: '#7A7A9A' },
+  labelStyle: { color: '#64748B' },
 }
 
 const axisProps = {
   axisLine: false as const,
   tickLine: false as const,
-  tick: { fill: '#7A7A9A', fontSize: 10 },
+  tick: { fill: '#64748B', fontSize: 10 },
 }
 
 export default function TrendCharts({ trend }: Props) {

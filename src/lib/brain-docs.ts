@@ -82,7 +82,6 @@ export const PRELOADED_DOCS: BrainDoc[] = [
 export const PRELOADED_DOC_IDS = new Set(PRELOADED_DOCS.map(d => d.id))
 
 // ─── Mock extraction results ─────────────────────────────────────────────────
-// Shown when a user "processes" a newly-uploaded file.
 
 export function getMockExtractedItems(): BrainDoc['extractedItems'] {
   return {
@@ -117,61 +116,61 @@ export function saveDocs(docs: BrainDoc[]): void {
 
 export const BRAIN_RESPONSES: Record<string, string> = {
   proveedor:
-    'El proveedor principal de Nova Store es **Textil SRL**. El contacto es Roberto (cel 11-3456-7890). Las condiciones actuales son 60 días de pago, con reuniones quincenales para revisar catálogo y precios. Para proveedores nuevos, la política es negociar siempre 60 días de pago como mínimo.\n\n_Esta información viene del conocimiento de Martín (CEO) y Carlos (Operaciones)._',
+    "Nova Store's main supplier is **Textil SRL**. The contact is Roberto (mobile 11-3456-7890). Current terms are 60-day payment with biweekly meetings to review catalog and pricing. For new suppliers, policy is to always negotiate a minimum of 60-day payment terms.\n\n_This information comes from Martín (CEO) and Carlos (Operations)'s knowledge._",
 
   envio:
-    'Nova Store trabaja con 3 operadores logísticos:\n• **OCA** para CABA/GBA (1-3 días, descuento 12% con código ECOM2026)\n• **Correo Argentino** para interior (3-7 días, Tierra del Fuego mínimo 10 días)\n• **Andreani** para envíos de volumen\n\nRegla crítica: NUNCA despachar después de las 16h. MercadoLibre penaliza si no se despacha en 24h.\n\n_Esta información viene del conocimiento de Carlos (Operaciones)._',
+    'Nova Store works with 3 logistics operators:\n• **OCA** for CABA/GBA (1-3 days, 12% discount with code ECOM2026)\n• **Correo Argentino** for the interior (3-7 days, Tierra del Fuego minimum 10 days)\n• **Andreani** for bulk shipments\n\nCritical rule: NEVER dispatch after 4pm. MercadoLibre penalizes if not shipped within 24h.\n\n_This information comes from Carlos (Operations)\'s knowledge._',
 
   logistica:
-    'Nova Store trabaja con 3 operadores logísticos:\n• **OCA** para CABA/GBA (1-3 días, descuento 12% con código ECOM2026)\n• **Correo Argentino** para interior (3-7 días, Tierra del Fuego mínimo 10 días)\n• **Andreani** para envíos de volumen\n\nRegla crítica: NUNCA despachar después de las 16h. MercadoLibre penaliza si no se despacha en 24h.\n\n_Esta información viene del conocimiento de Carlos (Operaciones)._',
+    'Nova Store works with 3 logistics operators:\n• **OCA** for CABA/GBA (1-3 days, 12% discount with code ECOM2026)\n• **Correo Argentino** for the interior (3-7 days, Tierra del Fuego minimum 10 days)\n• **Andreani** for bulk shipments\n\nCritical rule: NEVER dispatch after 4pm. MercadoLibre penalizes if not shipped within 24h.\n\n_This information comes from Carlos (Operations)\'s knowledge._',
 
   factura:
-    'La facturación se hace en ARCA/AFIP. **Factura A** para empresas (CUIT), **Factura B** para consumidor final. Regla: facturar siempre antes del 10 de cada mes. Cuidado: ARCA se cae frecuentemente los viernes a la tarde.\n\nEl contador externo es Estudio García — contacto Laura, tel 11-4567-8900.\n\n_Esta información viene del conocimiento de Ana (Finanzas)._',
+    'Invoicing is done through ARCA/AFIP. **Invoice A** for companies (CUIT), **Invoice B** for end consumers. Rule: always invoice before the 10th of each month. Note: ARCA frequently goes down on Friday afternoons.\n\nExternal accountant is Estudio García — contact Laura, tel 11-4567-8900.\n\n_This information comes from Ana (Finance)\'s knowledge._',
 
   afip:
-    'La facturación se hace en ARCA/AFIP. **Factura A** para empresas (CUIT), **Factura B** para consumidor final. Regla: facturar siempre antes del 10 de cada mes. Cuidado: ARCA se cae frecuentemente los viernes a la tarde.\n\nEl contador externo es Estudio García — contacto Laura, tel 11-4567-8900.\n\n_Esta información viene del conocimiento de Ana (Finanzas)._',
+    'Invoicing is done through ARCA/AFIP. **Invoice A** for companies (CUIT), **Invoice B** for end consumers. Rule: always invoice before the 10th of each month. Note: ARCA frequently goes down on Friday afternoons.\n\nExternal accountant is Estudio García — contact Laura, tel 11-4567-8900.\n\n_This information comes from Ana (Finance)\'s knowledge._',
 
   descuento:
-    'Los descuentos hasta **15%** los puede aprobar Marketing directamente. Cualquier descuento superior al 15% requiere aprobación del CEO (Martín) por WhatsApp.\n\nEl margen mínimo en cualquier producto es **35%** — esta regla no tiene excepciones.\n\n_Esta información viene del conocimiento de Martín (CEO) y Lucía (Marketing)._',
+    'Discounts up to **15%** can be approved by Marketing directly. Any discount above 15% requires CEO (Martín) approval via WhatsApp.\n\nThe minimum margin on any product is **35%** — this rule has no exceptions.\n\n_This information comes from Martín (CEO) and Lucía (Marketing)\'s knowledge._',
 
   precio:
-    'El margen mínimo en cualquier producto es **35%** — sin excepciones. Los descuentos hasta 15% los aprueba Marketing; más del 15% requiere OK del CEO por WhatsApp.\n\n_Esta información viene del conocimiento de Martín (CEO) y Ana (Finanzas)._',
+    'The minimum margin on any product is **35%** — no exceptions. Discounts up to 15% are approved by Marketing; above 15% requires CEO approval via WhatsApp.\n\n_This information comes from Martín (CEO) and Ana (Finance)\'s knowledge._',
 
   margen:
-    'El margen mínimo en cualquier producto es **35%** — sin excepciones. Los descuentos hasta 15% los aprueba Marketing; más del 15% requiere OK del CEO por WhatsApp.\n\n_Esta información viene del conocimiento de Martín (CEO) y Ana (Finanzas)._',
+    'The minimum margin on any product is **35%** — no exceptions. Discounts up to 15% are approved by Marketing; above 15% requires CEO approval via WhatsApp.\n\n_This information comes from Martín (CEO) and Ana (Finance)\'s knowledge._',
 
   reclamo:
-    'Proceso de reclamos:\n1. Diego (Soporte) recibe el reclamo por WhatsApp o MercadoLibre\n2. Clasifica: defecto, demora, error, arrepentimiento\n3. Si es defecto → escala al CEO con fotos\n4. Si es demora → contacta al operador logístico\n5. Si paquete perdido >10 días → reenvío sin costo\n\nSLA: responder en menos de **2 horas** siempre.\n\n_Esta información viene del conocimiento de Diego (Soporte) y Carlos (Operaciones)._',
+    'Claims process:\n1. Diego (Support) receives the claim via WhatsApp or MercadoLibre\n2. Classifies: defect, delay, error, change of mind\n3. If defect → escalates to CEO with photos\n4. If delay → contacts the logistics operator\n5. If package lost >10 days → resend at no cost\n\nSLA: always respond within **2 hours**.\n\n_This information comes from Diego (Support) and Carlos (Operations)\'s knowledge._',
 
   soporte:
-    'Proceso de reclamos:\n1. Diego (Soporte) recibe el reclamo por WhatsApp o MercadoLibre\n2. Clasifica: defecto, demora, error, arrepentimiento\n3. Si es defecto → escala al CEO con fotos\n4. Si es demora → contacta al operador logístico\n5. Si paquete perdido >10 días → reenvío sin costo\n\nSLA: responder en menos de **2 horas** siempre.\n\n_Esta información viene del conocimiento de Diego (Soporte) y Carlos (Operaciones)._',
+    'Claims process:\n1. Diego (Support) receives the claim via WhatsApp or MercadoLibre\n2. Classifies: defect, delay, error, change of mind\n3. If defect → escalates to CEO with photos\n4. If delay → contacts the logistics operator\n5. If package lost >10 days → resend at no cost\n\nSLA: always respond within **2 hours**.\n\n_This information comes from Diego (Support) and Carlos (Operations)\'s knowledge._',
 
   marketing:
-    'Estrategia de marketing digital de Nova Store:\n• **Instagram**: 3 posts/semana + stories diarios. Mejor horario: martes 18h.\n• **Email**: newsletter semanal los jueves por Mailchimp (límite 500 mails)\n• **Pauta**: Meta Ads, hasta $200/día sin aprobación, más requiere OK del CEO\n• Público: mujeres 25-40 años, zona AMBA\n• Agencia externa: Studio Pixel, contacto Carla (carla@studiopixel.com)\n\n_Esta información viene del conocimiento de Lucía (Marketing)._',
+    'Nova Store digital marketing strategy:\n• **Instagram**: 3 posts/week + daily stories. Best time: Tuesday 6pm.\n• **Email**: weekly newsletter on Thursdays via Mailchimp (500 email limit)\n• **Paid ads**: Meta Ads, up to $200/day without approval, more requires CEO approval\n• Audience: women 25-40 years old, AMBA area\n• External agency: Studio Pixel, contact Carla (carla@studiopixel.com)\n\n_This information comes from Lucía (Marketing)\'s knowledge._',
 
   instagram:
-    '• **Instagram**: 3 posts/semana + stories diarios. Mejor horario: martes 18h.\n• Contenido: catálogo, testimonios y behind-the-scenes.\n• Diseño: Canva + Studio Pixel (agencia externa).\n• Pauta de Meta Ads: hasta $200/día sin aprobación del CEO.\n\n_Esta información viene del conocimiento de Lucía (Marketing)._',
+    '• **Instagram**: 3 posts/week + daily stories. Best time: Tuesday 6pm.\n• Content: catalog, testimonials and behind-the-scenes.\n• Design: Canva + Studio Pixel (external agency).\n• Meta Ads spend: up to $200/day without CEO approval.\n\n_This information comes from Lucía (Marketing)\'s knowledge._',
 
   stock:
-    'El stock se gestiona en **Google Sheets**, pestaña "Stock Actual". Cuando un producto baja de 5 unidades, se genera alerta. Si es un producto estrella (top 5 ventas), Carlos escala al CEO inmediatamente.\n\nReposición <$500: Operaciones la gestiona directo. >$500: requiere aprobación del CEO.\n\nEl packaging estándar es caja 30×20×15.\n\n_Esta información viene del conocimiento de Carlos (Operaciones)._',
+    'Stock is managed in **Google Sheets**, tab "Current Stock". When a product drops below 5 units, an alert is triggered. If it\'s a star product (top 5 sales), Carlos escalates to CEO immediately.\n\nRestock <$500: Operations handles it directly. >$500: requires CEO approval.\n\nStandard packaging is a 30×20×15 box.\n\n_This information comes from Carlos (Operations)\'s knowledge._',
 
   inventario:
-    'El stock se gestiona en **Google Sheets**, pestaña "Stock Actual". Cuando un producto baja de 5 unidades, se genera alerta. Si es un producto estrella (top 5 ventas), Carlos escala al CEO inmediatamente.\n\nReposición <$500: Operaciones la gestiona directo. >$500: requiere aprobación del CEO.\n\n_Esta información viene del conocimiento de Carlos (Operaciones)._',
+    'Stock is managed in **Google Sheets**, tab "Current Stock". When a product drops below 5 units, an alert is triggered. If it\'s a star product (top 5 sales), Carlos escalates to CEO immediately.\n\nRestock <$500: Operations handles it directly. >$500: requires CEO approval.\n\n_This information comes from Carlos (Operations)\'s knowledge._',
 
   equipo:
-    'Nova Store tiene 5 personas:\n• **Martín García** — CEO, dirección estratégica y decisiones de negocio\n• **Carlos Méndez** — Operaciones, gestión de stock, envíos y logística\n• **Ana Ruiz** — Finanzas, facturación, flujo de caja y administración\n• **Lucía Fernández** — Marketing, redes sociales, pauta y email marketing\n• **Diego López** — Soporte, atención al cliente por WhatsApp y MercadoLibre\n\nReunión semanal: lunes 10am por Google Meet.\n\n_Esta información viene del conocimiento de todos los agentes._',
+    'Nova Store has 5 people:\n• **Martín García** — CEO, strategic direction and business decisions\n• **Carlos Méndez** — Operations, stock management, shipping and logistics\n• **Ana Ruiz** — Finance, invoicing, cash flow and administration\n• **Lucía Fernández** — Marketing, social media, paid ads and email marketing\n• **Diego López** — Support, customer service via WhatsApp and MercadoLibre\n\nWeekly meeting: Mondays 10am on Google Meet.\n\n_This information comes from all agents\'s knowledge._',
 
   costo:
-    'Estructura de costos clave:\n• Margen mínimo: **35%** (sin excepciones)\n• Logística OCA: descuento 12% con código ECOM2026\n• Pauta marketing: hasta $200/día sin aprobación\n• Gastos <$500: cada área aprueba sola. >$500: CEO aprueba.\n• MercadoPago liquida a 48h hábiles\n• Contador: honorarios mensuales a Estudio García\n\n_Esta información viene del conocimiento de Ana (Finanzas) y Martín (CEO)._',
+    'Key cost structure:\n• Minimum margin: **35%** (no exceptions)\n• OCA logistics: 12% discount with code ECOM2026\n• Marketing spend: up to $200/day without approval\n• Expenses <$500: each department approves independently. >$500: CEO approves.\n• MercadoPago settles within 48 business hours\n• Accountant: monthly fees to Estudio García\n\n_This information comes from Ana (Finance) and Martín (CEO)\'s knowledge._',
 
   presupuesto:
-    'Estructura de costos clave:\n• Margen mínimo: **35%** (sin excepciones)\n• Logística OCA: descuento 12% con código ECOM2026\n• Pauta marketing: hasta $200/día sin aprobación\n• Gastos <$500: cada área aprueba sola. >$500: CEO aprueba.\n• MercadoPago liquida a 48h hábiles\n\n_Esta información viene del conocimiento de Ana (Finanzas) y Martín (CEO)._',
+    'Key cost structure:\n• Minimum margin: **35%** (no exceptions)\n• OCA logistics: 12% discount with code ECOM2026\n• Marketing spend: up to $200/day without approval\n• Expenses <$500: each department approves independently. >$500: CEO approves.\n• MercadoPago settles within 48 business hours\n\n_This information comes from Ana (Finance) and Martín (CEO)\'s knowledge._',
 
   mercadolibre:
-    'MercadoLibre es el canal de ventas principal de Nova Store. Reglas clave:\n• Responder preguntas en menos de **2 horas** (afecta reputación)\n• Despachar en menos de **24h** de confirmado el pago\n• NUNCA despachar después de las 16h\n• Reclamos se procesan vía Diego (Soporte)\n\n_Esta información viene del conocimiento de Carlos (Operaciones) y Diego (Soporte)._',
+    'MercadoLibre is the main sales channel for Nova Store. Key rules:\n• Answer questions within **2 hours** (affects reputation)\n• Ship within **24h** of confirmed payment\n• NEVER dispatch after 4pm\n• Claims are handled by Diego (Support)\n\n_This information comes from Carlos (Operations) and Diego (Support)\'s knowledge._',
 
   default:
-    'Basándome en el conocimiento organizacional de Nova Store, puedo responder sobre: **proveedores**, **envíos y logística**, **facturación**, **descuentos y pricing**, **reclamos**, **marketing digital**, **stock e inventario**, **el equipo**, y **costos**.\n\n¿Sobre qué área te gustaría saber más?',
+    "Based on Nova Store's organizational knowledge, I can answer about: **suppliers**, **shipping and logistics**, **invoicing**, **discounts and pricing**, **claims**, **digital marketing**, **stock and inventory**, **the team**, and **costs**.\n\nWhat area would you like to know more about?",
 }
 
 export function getBrainResponse(message: string): string {

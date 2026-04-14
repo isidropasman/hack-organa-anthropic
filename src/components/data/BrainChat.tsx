@@ -12,7 +12,7 @@ interface Props {
 const WELCOME: Message = {
   id: 'welcome',
   role: 'bot',
-  text: '¡Hola! Soy el **Cerebro de Nova Store**. Tengo acceso a todo el conocimiento organizacional: proveedores, logística, finanzas, marketing, soporte y más.\n\n¿Qué querés saber?',
+  text: "Hi! I'm Nova Agency's **Organizational Brain**. I have access to all organizational knowledge: suppliers, logistics, finance, marketing, support, and more.\n\nWhat would you like to know?",
   ts: Date.now(),
 }
 
@@ -23,12 +23,10 @@ export default function BrainChat({ onClose }: Props) {
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef  = useRef<HTMLInputElement>(null)
 
-  // Scroll to bottom on new messages
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, typing])
 
-  // Focus input on mount
   useEffect(() => {
     setTimeout(() => inputRef.current?.focus(), 120)
   }, [])
@@ -42,7 +40,6 @@ export default function BrainChat({ onClose }: Props) {
     setInput('')
     setTyping(true)
 
-    // Delay 1–1.8s to simulate "thinking"
     const delay = 1000 + Math.random() * 800
     setTimeout(() => {
       const response = getBrainResponse(text)
@@ -86,13 +83,13 @@ export default function BrainChat({ onClose }: Props) {
             🧠
           </div>
           <div>
-            <p className="text-white text-sm font-semibold leading-tight">Cerebro de Nova Store</p>
+            <p className="text-white text-sm font-semibold leading-tight">Nova Agency Brain</p>
             <div className="flex items-center gap-1.5 mt-0.5">
               <span
                 className="w-1.5 h-1.5 rounded-full"
                 style={{ background: '#22C55E', boxShadow: '0 0 4px #22C55E' }}
               />
-              <span className="text-[11px]" style={{ color: '#22C55E' }}>En línea · todo el conocimiento org</span>
+              <span className="text-[11px]" style={{ color: '#22C55E' }}>Online · all org knowledge</span>
             </div>
           </div>
         </div>
@@ -107,16 +104,16 @@ export default function BrainChat({ onClose }: Props) {
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 min-h-0">
         {messages.map(msg => (
-          <BrainMessage key={msg.id} message={msg} userInitials="TU" />
+          <BrainMessage key={msg.id} message={msg} userInitials="YOU" />
         ))}
         {typing && <TypingIndicator />}
         <div ref={bottomRef} />
       </div>
 
-      {/* Suggested prompts — only shown if only welcome message */}
+      {/* Suggested prompts */}
       {messages.length === 1 && !typing && (
         <div className="px-4 pb-3 flex-shrink-0">
-          <p className="text-[10px] text-slate-600 mb-2 font-medium uppercase tracking-wider">Preguntas rápidas</p>
+          <p className="text-[10px] text-slate-600 mb-2 font-medium uppercase tracking-wider">Quick questions</p>
           <div className="flex flex-wrap gap-1.5">
             {SUGGESTED.map(q => (
               <button
@@ -146,7 +143,7 @@ export default function BrainChat({ onClose }: Props) {
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={onKeyDown}
-          placeholder="Preguntale algo a Nova Store..."
+          placeholder="Ask Nova Agency anything..."
           disabled={typing}
           className="flex-1 bg-transparent text-sm text-white placeholder-slate-600 outline-none min-w-0"
         />
@@ -171,8 +168,8 @@ export default function BrainChat({ onClose }: Props) {
 }
 
 const SUGGESTED = [
-  '¿Quién es el proveedor principal?',
-  '¿Cómo manejan los envíos?',
-  '¿Cómo se aprueban los descuentos?',
-  '¿Quiénes forman el equipo?',
+  'Who is the main supplier?',
+  'How do you handle shipping?',
+  'How are discounts approved?',
+  'Who is on the team?',
 ]

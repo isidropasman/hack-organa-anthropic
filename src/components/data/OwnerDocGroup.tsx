@@ -33,9 +33,9 @@ export default function OwnerDocGroup({ ownerName, docs }: Props) {
           {initials}
         </div>
         <div className="min-w-0">
-          <span className="text-white text-sm font-semibold">{ownerName}</span>
+          <span className="text-slate-800 text-sm font-semibold">{ownerName}</span>
           <span className="text-slate-500 text-xs ml-2">
-            {role} · {count} doc{count !== 1 ? 's' : ''} pendiente{count !== 1 ? 's' : ''}
+            {role} · {count} doc{count !== 1 ? 's' : ''} pending
           </span>
         </div>
       </div>
