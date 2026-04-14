@@ -16,83 +16,63 @@ export const agentStore = {
   // ─── Company ────────────────────────────────────────────────────────────────
 
   getCompanyName: (): string => {
-    // TODO: Implement
-    // return localStorage.getItem(KEYS.COMPANY_NAME) ?? 'Nova Agency'
-    throw new Error('Not implemented')
+    return localStorage.getItem(KEYS.COMPANY_NAME) ?? 'Nova Agency'
   },
 
   setCompanyName: (name: string): void => {
-    // TODO: Implement
-    // localStorage.setItem(KEYS.COMPANY_NAME, name)
-    throw new Error('Not implemented')
+    localStorage.setItem(KEYS.COMPANY_NAME, name)
   },
 
   // ─── Agents ─────────────────────────────────────────────────────────────────
 
   getAllAgents: (): Agent[] => {
-    // TODO: Implement
-    // const raw = localStorage.getItem(KEYS.AGENTS)
-    // if (!raw) return []
-    // return JSON.parse(raw) as Agent[]
-    throw new Error('Not implemented')
+    const raw = localStorage.getItem(KEYS.AGENTS)
+    if (!raw) return []
+    return JSON.parse(raw) as Agent[]
   },
 
   getAgent: (agentId: string): Agent | null => {
-    // TODO: Implement
-    // return agentStore.getAllAgents().find(a => a.id === agentId) ?? null
-    throw new Error('Not implemented')
+    return agentStore.getAllAgents().find(a => a.id === agentId) ?? null
   },
 
   setAgents: (agents: Agent[]): void => {
-    // TODO: Implement
-    // localStorage.setItem(KEYS.AGENTS, JSON.stringify(agents))
-    throw new Error('Not implemented')
+    localStorage.setItem(KEYS.AGENTS, JSON.stringify(agents))
   },
 
   upsertAgent: (agent: Agent): void => {
-    // TODO: Implement
-    // const agents = agentStore.getAllAgents()
-    // const idx = agents.findIndex(a => a.id === agent.id)
-    // if (idx >= 0) agents[idx] = agent
-    // else agents.push(agent)
-    // agentStore.setAgents(agents)
-    throw new Error('Not implemented')
+    const agents = agentStore.getAllAgents()
+    const idx = agents.findIndex(a => a.id === agent.id)
+    if (idx >= 0) agents[idx] = agent
+    else agents.push(agent)
+    agentStore.setAgents(agents)
   },
 
   // ─── Onboarding ─────────────────────────────────────────────────────────────
 
   addOnboardingMessage: (agentId: string, message: Message): void => {
-    // TODO: Implement
-    // const agent = agentStore.getAgent(agentId)
-    // if (!agent) throw new Error(`Agent ${agentId} not found`)
-    // agent.onboardingMessages.push(message)
-    // agentStore.upsertAgent(agent)
-    throw new Error('Not implemented')
+    const agent = agentStore.getAgent(agentId)
+    if (!agent) throw new Error(`Agent ${agentId} not found`)
+    agent.onboardingMessages.push(message)
+    agentStore.upsertAgent(agent)
   },
 
   completeOnboarding: (agentId: string, knowledgeBase: KnowledgeBase): void => {
-    // TODO: Implement
-    // const agent = agentStore.getAgent(agentId)
-    // if (!agent) throw new Error(`Agent ${agentId} not found`)
-    // agent.knowledgeBase = knowledgeBase
-    // agent.onboardingComplete = true
-    // agent.readinessScore = 100
-    // agentStore.upsertAgent(agent)
-    throw new Error('Not implemented')
+    const agent = agentStore.getAgent(agentId)
+    if (!agent) throw new Error(`Agent ${agentId} not found`)
+    agent.knowledgeBase = knowledgeBase
+    agent.onboardingComplete = true
+    agent.readinessScore = 100
+    agentStore.upsertAgent(agent)
   },
 
   // ─── Demo / Utilities ───────────────────────────────────────────────────────
 
   seedDemoCompany: (company: DemoCompany): void => {
-    // TODO: Implement
-    // agentStore.setCompanyName(company.name)
-    // agentStore.setAgents(company.agents)
-    throw new Error('Not implemented')
+    agentStore.setCompanyName(company.name)
+    agentStore.setAgents(company.agents)
   },
 
   clearAll: (): void => {
-    // TODO: Implement
-    // Object.values(KEYS).forEach(key => localStorage.removeItem(key))
-    throw new Error('Not implemented')
+    Object.values(KEYS).forEach(key => localStorage.removeItem(key))
   },
 }

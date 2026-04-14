@@ -19,19 +19,66 @@ const MODEL = 'claude-opus-4-5-20251101'
  * Called by: POST /api/parse-org
  */
 export async function parseOrgChart(request: OrgChartParseRequest): Promise<Agent[]> {
-  // TODO: Implement
-  // 1. Call client.messages.create with vision:
-  //    model: MODEL, max_tokens: 4096
-  //    system: PROMPTS.ORG_CHART_PARSER
-  //    messages: [{ role: 'user', content: [
-  //      { type: 'image', source: { type: 'base64', media_type: request.mediaType, data: request.imageBase64 } },
-  //      { type: 'text', text: 'Parse this org chart and return the JSON array.' }
-  //    ]}]
-  // 2. Extract text from response.content[0] (type: 'text')
-  // 3. Parse text as JSON → Agent[]
-  // 4. Validate each agent has id, name, role, department, reportsTo
-  // 5. Throw Error('Failed to parse org chart: <reason>') if JSON parse fails or array is empty
-  throw new Error('Not implemented')
+  const response = await client.messages.create({
+    model: MODEL,
+    max_tokens: 4096,
+    system: PROMPTS.ORG_CHART_PARSER,
+    messages: [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'image',
+            source: {
+              type: 'base64',
+              media_type: request.mediaType,
+              data: request.imageBase64,
+            },
+          },
+          {
+            type: 'text',
+            text: 'Parse this org chart and return the JSON array.',
+          },
+        ],
+      },
+    ],
+  })
+
+  const block = response.content[0]
+  if (block.type !== 'text') {
+    throw new Error('Failed to parse org chart: unexpected response type')
+  }
+
+  let text = block.text.trim()
+  // Strip markdown code fences if Claude wrapped it
+  if (text.startsWith('```')) {
+    text = text.replace(/^```[^\n]*\n?/, '').replace(/```$/, '').trim()
+  }
+
+  let agents: Agent[]
+  try {
+    agents = JSON.parse(text) as Agent[]
+  } catch {
+    throw new Error('Failed to parse org chart: response was not valid JSON')
+  }
+
+  if (!Array.isArray(agents) || agents.length === 0) {
+    throw new Error('Failed to parse org chart: no agents found in response')
+  }
+
+  // Ensure required fields exist on every agent
+  for (const agent of agents) {
+    if (!agent.id || !agent.name || !agent.role) {
+      throw new Error('Failed to parse org chart: agent missing required fields')
+    }
+    // Ensure defaults for any fields Claude might have omitted
+    agent.readinessScore = agent.readinessScore ?? 0
+    agent.onboardingComplete = agent.onboardingComplete ?? false
+    agent.knowledgeBase = agent.knowledgeBase ?? null
+    agent.onboardingMessages = agent.onboardingMessages ?? []
+  }
+
+  return agents
 }
 
 /**
@@ -46,17 +93,25 @@ export async function onboardingTurn(
   companyName: string,
   messages: Message[]
 ): Promise<{ reply: string; isComplete: boolean }> {
-  // TODO: Implement
-  // 1. Map messages to Anthropic MessageParam format:
-  //    { role: msg.role, content: msg.content }
-  // 2. Call client.messages.create:
-  //    model: MODEL, max_tokens: 1024
-  //    system: PROMPTS.ONBOARDING_INTERVIEWER(agentName, agentRole, companyName)
-  //    messages: mappedMessages
-  // 3. Extract reply text from response.content[0] (type: 'text')
-  // 4. Check if reply includes 'ONBOARDING_COMPLETE'
-  // 5. Return { reply, isComplete }
-  throw new Error('Not implemented')
+  const response = await client.messages.create({
+    model: MODEL,
+    max_tokens: 1024,
+    system: PROMPTS.ONBOARDING_INTERVIEWER(agentName, agentRole, companyName),
+    messages: messages.map(msg => ({
+      role: msg.role,
+      content: msg.content,
+    })),
+  })
+
+  const block = response.content[0]
+  if (block.type !== 'text') {
+    throw new Error('Unexpected response type from onboarding turn')
+  }
+
+  const reply = block.text
+  const isComplete = reply.includes('ONBOARDING_COMPLETE')
+
+  return { reply, isComplete }
 }
 
 /**
@@ -72,15 +127,22 @@ export async function agentChat(
   knowledgeBase: KnowledgeBase,
   messages: Message[]
 ): Promise<string> {
-  // TODO: Implement
-  // 1. Serialize knowledgeBase: JSON.stringify(knowledgeBase, null, 2)
-  // 2. Map messages to Anthropic MessageParam format:
-  //    { role: msg.role, content: msg.content }
-  // 3. Call client.messages.create:
-  //    model: MODEL, max_tokens: 1024
-  //    system: PROMPTS.TRAINED_AGENT(agentName, agentRole, companyName, serializedKnowledgeBase)
-  //    messages: mappedMessages
-  // 4. Extract reply text from response.content[0] (type: 'text')
-  // 5. Return reply string
-  throw new Error('Not implemented')
+  const serializedKnowledgeBase = JSON.stringify(knowledgeBase, null, 2)
+
+  const response = await client.messages.create({
+    model: MODEL,
+    max_tokens: 1024,
+    system: PROMPTS.TRAINED_AGENT(agentName, agentRole, companyName, serializedKnowledgeBase),
+    messages: messages.map(msg => ({
+      role: msg.role,
+      content: msg.content,
+    })),
+  })
+
+  const block = response.content[0]
+  if (block.type !== 'text') {
+    throw new Error('Unexpected response type from agent chat')
+  }
+
+  return block.text
 }
