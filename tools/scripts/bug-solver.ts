@@ -88,11 +88,11 @@ async function capturePage(browser: Browser, route: string, label: string): Prom
 
   page.on('console', (msg) => {
     if (msg.type() === 'error') consoleErrors.push(msg.text())
-    if (msg.type() === 'warning') consoleWarnings.push(msg.text())
+    if (msg.type() === 'warn') consoleWarnings.push(msg.text())
   })
 
-  page.on('pageerror', (err) => {
-    consoleErrors.push(`PageError: ${err.message}`)
+  page.on('pageerror', (err: unknown) => {
+    consoleErrors.push(`PageError: ${err instanceof Error ? err.message : String(err)}`)
   })
 
   page.on('requestfailed', (req) => {
@@ -102,13 +102,13 @@ async function capturePage(browser: Browser, route: string, label: string): Prom
   const url = `${BASE_URL}${route}`
   try {
     await page.goto(url, { waitUntil: 'networkidle2', timeout: 15000 })
-    await page.waitForTimeout(1500) // let React render
-  } catch (err) {
-    consoleErrors.push(`Navigation failed: ${(err as Error).message}`)
+    await new Promise(r => setTimeout(r, 1500)) // let React render
+  } catch (err: unknown) {
+    consoleErrors.push(`Navigation failed: ${err instanceof Error ? err.message : String(err)}`)
   }
 
-  const screenshotBuffer = await page.screenshot({ fullPage: true, type: 'jpeg', quality: 80 })
-  const screenshotBase64 = screenshotBuffer.toString('base64')
+  const screenshotBuffer = await page.screenshot({ fullPage: true })
+  const screenshotBase64 = Buffer.from(screenshotBuffer).toString('base64')
   const pageTitle = await page.title().catch(() => '(unknown)')
 
   await page.close()

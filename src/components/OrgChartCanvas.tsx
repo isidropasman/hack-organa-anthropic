@@ -10,7 +10,9 @@ import ReactFlow, {
   ReactFlowProvider,
   type Edge,
   type Node,
+  type NodeProps,
   type NodeTypes,
+  type NodeMouseHandler,
 } from 'reactflow'
 import type { Agent } from '@/lib/types'
 
@@ -75,48 +77,50 @@ function deptColor(dept: string) {
 }
 
 function initials(name: string) {
-  return name
-    .split(' ')
-    .slice(0, 2)
-    .map(w => w[0] ?? '')
-    .join('')
-    .toUpperCase()
+  return name.split(' ').slice(0, 2).map(w => w[0] ?? '').join('').toUpperCase()
 }
 
 // ─── Custom node ──────────────────────────────────────────────────────────────
 interface NodeData {
   agent: Agent
   isRoot: boolean
+  isSelected: boolean
+  editable: boolean
 }
 
-function AgentNode({ data }: { data: NodeData }) {
-  const { agent, isRoot } = data
+function AgentNode({ data }: NodeProps<NodeData>) {
+  const { agent, isRoot, isSelected, editable } = data
   const c = deptColor(agent.department)
   const handleStyle = { opacity: 0, pointerEvents: 'none' as const, width: 1, height: 1 }
+
+  const borderColor = isSelected ? '#0071E3' : isRoot ? '#0071E3' : 'rgba(0,0,0,0.08)'
+  const borderWidth = isSelected || isRoot ? 2 : 1.5
+  const boxShadow = isSelected
+    ? '0 0 0 3px rgba(0,113,227,0.18), 0 4px 16px rgba(0,0,0,0.10)'
+    : '0 2px 12px rgba(0,0,0,0.07)'
 
   return (
     <div
       style={{
         width: NODE_W,
-        background: '#fff',
+        background: isSelected ? '#F0F7FF' : '#fff',
         borderRadius: 16,
-        border: isRoot ? '2px solid #0071E3' : '1.5px solid rgba(0,0,0,0.08)',
-        boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
+        border: `${borderWidth}px solid ${borderColor}`,
+        boxShadow,
         padding: '10px 12px',
+        cursor: editable ? 'pointer' : 'default',
+        transition: 'box-shadow 0.15s, border-color 0.15s, background 0.15s',
       }}
     >
       <Handle type="target" position={Position.Top} style={handleStyle} />
 
-      {/* Avatar + name row */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-        <div
-          style={{
-            width: 34, height: 34, borderRadius: 10,
-            background: c.bg, color: c.fg,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 11, fontWeight: 700, flexShrink: 0, letterSpacing: '0.02em',
-          }}
-        >
+        <div style={{
+          width: 34, height: 34, borderRadius: 10,
+          background: c.bg, color: c.fg,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 11, fontWeight: 700, flexShrink: 0, letterSpacing: '0.02em',
+        }}>
           {initials(agent.name)}
         </div>
         <div style={{ minWidth: 0, flex: 1 }}>
@@ -135,7 +139,6 @@ function AgentNode({ data }: { data: NodeData }) {
         </div>
       </div>
 
-      {/* Department badge */}
       <div style={{
         fontSize: 10, background: c.bg, color: c.fg,
         padding: '2px 8px', borderRadius: 6, fontWeight: 500,
@@ -145,6 +148,13 @@ function AgentNode({ data }: { data: NodeData }) {
         {agent.department}
       </div>
 
+      {agent.onboardingComplete && (
+        <div style={{
+          position: 'absolute', top: 8, right: 8,
+          width: 8, height: 8, borderRadius: '50%', background: '#34C759',
+        }} />
+      )}
+
       <Handle type="source" position={Position.Bottom} style={handleStyle} />
     </div>
   )
@@ -153,7 +163,14 @@ function AgentNode({ data }: { data: NodeData }) {
 const nodeTypes: NodeTypes = { agentOrg: AgentNode }
 
 // ─── Inner flow ───────────────────────────────────────────────────────────────
-function OrgFlow({ agents }: { agents: Agent[] }) {
+interface OrgFlowProps {
+  agents: Agent[]
+  editable?: boolean
+  onAgentClick?: (agent: Agent) => void
+  selectedAgentId?: string
+}
+
+function OrgFlow({ agents, editable = false, onAgentClick, selectedAgentId }: OrgFlowProps) {
   const rootId = agents.find(a => a.reportsTo === null)?.id
 
   const { nodes, edges } = useMemo(() => {
@@ -163,8 +180,14 @@ function OrgFlow({ agents }: { agents: Agent[] }) {
       id: agent.id,
       type: 'agentOrg',
       position: positions.get(agent.id) ?? { x: 0, y: 0 },
-      data: { agent, isRoot: agent.id === rootId },
+      data: {
+        agent,
+        isRoot: agent.id === rootId,
+        isSelected: agent.id === selectedAgentId,
+        editable,
+      },
       draggable: false,
+      selectable: editable,
     }))
 
     const edges: Edge[] = agents
@@ -178,7 +201,13 @@ function OrgFlow({ agents }: { agents: Agent[] }) {
       }))
 
     return { nodes, edges }
-  }, [agents, rootId])
+  }, [agents, rootId, selectedAgentId, editable])
+
+  const handleNodeClick: NodeMouseHandler = (_event, node) => {
+    if (editable && onAgentClick) {
+      onAgentClick((node.data as NodeData).agent)
+    }
+  }
 
   return (
     <ReactFlow
@@ -189,8 +218,9 @@ function OrgFlow({ agents }: { agents: Agent[] }) {
       fitViewOptions={{ padding: 0.18, duration: 400 }}
       nodesConnectable={false}
       nodesDraggable={false}
-      elementsSelectable={false}
+      elementsSelectable={editable}
       zoomOnDoubleClick={false}
+      onNodeClick={handleNodeClick}
       proOptions={{ hideAttribution: true }}
     >
       <Background variant={BackgroundVariant.Dots} gap={22} size={1} color="rgba(0,0,0,0.05)" />
@@ -199,12 +229,24 @@ function OrgFlow({ agents }: { agents: Agent[] }) {
   )
 }
 
-// ─── Public export (wrapped in provider) ─────────────────────────────────────
-export default function OrgChartCanvas({ agents }: { agents: Agent[] }) {
+// ─── Public export ────────────────────────────────────────────────────────────
+interface OrgChartCanvasProps {
+  agents: Agent[]
+  editable?: boolean
+  onAgentClick?: (agent: Agent) => void
+  selectedAgentId?: string
+}
+
+export default function OrgChartCanvas({ agents, editable, onAgentClick, selectedAgentId }: OrgChartCanvasProps) {
   return (
     <ReactFlowProvider>
       <div style={{ width: '100%', height: '100%' }}>
-        <OrgFlow agents={agents} />
+        <OrgFlow
+          agents={agents}
+          editable={editable}
+          onAgentClick={onAgentClick}
+          selectedAgentId={selectedAgentId}
+        />
       </div>
     </ReactFlowProvider>
   )
