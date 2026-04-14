@@ -3,14 +3,18 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Home, Brain, BarChart3, Sparkles, ShieldCheck, User } from 'lucide-react'
+import { Home, Brain, BarChart3, Sparkles, ShieldCheck, User, LayoutDashboard, Monitor, Zap, Users, Trophy, Settings } from 'lucide-react'
 import { getCurrentUser, type CurrentUser } from '@/lib/auth'
 import RoleSwitcher from './RoleSwitcher'
 
 const adminNavItems = [
   { href: '/', label: 'Dashboard', icon: Home },
+  { href: '/agents', label: 'Agents', icon: Users },
+  { href: '/admin/automations', label: 'Automations', icon: Zap },
+  { href: '/admin/portal', label: 'Portal', icon: Trophy },
   { href: '/krs', label: 'AI Workforce', icon: Brain },
   { href: '/monitoring', label: 'Monitoring', icon: BarChart3 },
+  { href: '/settings', label: 'Integrations', icon: Settings },
 ]
 
 export default function Sidebar() {
@@ -22,10 +26,10 @@ export default function Sidebar() {
   }, [])
 
   const navLink = (href: string, label: string, Icon: React.ElementType) => {
-    const isActive =
-      href === '/'
-        ? pathname === '/'
-        : pathname.startsWith(href.startsWith('/my-twin') ? '/my-twin' : href)
+    const EXACT = ['/', '/home', '/record', '/automations', '/portal', '/agents', '/admin/automations', '/admin/portal', '/admin/leaderboard', '/leaderboard', '/krs', '/monitoring', '/settings']
+    const isActive = EXACT.includes(href)
+      ? pathname === href
+      : pathname.startsWith(href.startsWith('/my-twin') ? '/my-twin' : href)
     return (
       <li key={href}>
         <Link
@@ -64,6 +68,7 @@ export default function Sidebar() {
           <span className="font-bold text-organa-text text-lg tracking-tight">ORGANA</span>
         </div>
         <p className="text-organa-text-muted text-xs mt-1">Organizational Memory</p>
+
       </div>
 
       {/* User avatar */}
@@ -80,7 +85,7 @@ export default function Sidebar() {
                 : <User size={10} className="text-organa-text-muted opacity-80" />
               }
               <span className={`text-[10px] font-medium ${isAdmin ? 'text-organa-accent' : 'text-organa-text-muted'}`}>
-                {isAdmin ? 'Admin' : 'Empleado'}
+                {isAdmin ? 'Admin' : 'Employee'}
               </span>
             </div>
           </div>
@@ -95,7 +100,11 @@ export default function Sidebar() {
           </ul>
         ) : (
           <ul className="space-y-0.5">
-            {navLink(myTwinHref, 'Mi Twin', Sparkles)}
+            {navLink('/home', 'Home', LayoutDashboard)}
+            {navLink(myTwinHref, 'My Twin', Sparkles)}
+            {navLink('/record', 'Record Task', Monitor)}
+            {navLink('/automations', 'Automations', Zap)}
+            {navLink('/portal', 'Portal', Trophy)}
           </ul>
         )}
       </nav>
@@ -106,6 +115,7 @@ export default function Sidebar() {
         <div>
           <p className="text-organa-text-muted text-xs font-medium px-2">Nova Agency</p>
           <p className="text-organa-text-muted text-xs opacity-50 px-2">Demo workspace</p>
+
         </div>
       </div>
     </aside>
