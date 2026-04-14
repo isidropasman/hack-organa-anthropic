@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic'
 import OrgUpload from '@/components/OrgUpload'
 import AgentCard from '@/components/AgentCard'
 import { agentStore } from '@/lib/agent-store'
+import { loadDemoData } from '@/lib/demo-seed'
 import type { Agent } from '@/lib/types'
 
 const OrgChartCanvas = dynamic(() => import('@/components/OrgChartCanvas'), {
@@ -56,11 +57,24 @@ export default function HomePage() {
     else router.push(`/onboard/${agent.id}`)
   }
 
+  function handleLoadDemo() {
+    const ok = loadDemoData()
+    if (ok) {
+      setAgents(agentStore.getAllAgents())
+      setCompanyName(agentStore.getCompanyName())
+    }
+  }
+
   function handleReset() {
     agentStore.clearAll()
     setAgents([])
     setPreviewAgents(null)
     setCompanyName('Nova Agency')
+  }
+
+  function handleResetDemo() {
+    agentStore.clearAll()
+    window.location.reload()
   }
 
   const trainedCount = agents.filter(a => a.onboardingComplete).length
@@ -153,6 +167,15 @@ export default function HomePage() {
                   onClick={() => handleAgentClick(agent)}
                 />
               ))}
+            </div>
+
+            <div className="flex justify-center mt-12 pb-6">
+              <button
+                onClick={handleResetDemo}
+                className="text-xs text-organa-text-muted hover:text-red-400 transition-colors"
+              >
+                Reset demo
+              </button>
             </div>
           </motion.div>
 
@@ -285,6 +308,27 @@ export default function HomePage() {
               className="w-full max-w-lg bg-white rounded-3xl shadow-modal p-8"
             >
               <OrgUpload onAgentsGenerated={handleAgentsGenerated} isLoading={false} />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col items-center gap-2 mt-5"
+            >
+              <div className="flex items-center gap-3 text-organa-text-muted text-sm">
+                <div className="w-12 h-px bg-organa-border" />
+                <span>o prueba con datos de demo</span>
+                <div className="w-12 h-px bg-organa-border" />
+              </div>
+              <motion.button
+                onClick={handleLoadDemo}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="px-5 py-2.5 text-sm font-medium text-organa-accent border border-organa-accent bg-organa-accent-light rounded-xl hover:bg-organa-accent hover:text-white transition-colors shadow-sm"
+              >
+                Cargar datos de demo
+              </motion.button>
             </motion.div>
           </motion.div>
         )}
