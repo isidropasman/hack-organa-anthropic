@@ -288,7 +288,9 @@ function OrgFlow({ agents, variant, editable = false, onAgentClick, selectedAgen
       edges={edges}
       nodeTypes={nodeTypes}
       fitView
-      fitViewOptions={{ padding: 0.18, duration: 400 }}
+      fitViewOptions={{ padding: 0.12, duration: 500, maxZoom: 1 }}
+      minZoom={0.05}
+      maxZoom={2}
       nodesConnectable={false}
       nodesDraggable={false}
       elementsSelectable={editable}
