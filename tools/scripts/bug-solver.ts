@@ -332,10 +332,12 @@ async function runAgentLoop(
 
     const response = await client.messages.create({
       model: 'claude-opus-4-6',
-      max_tokens: 8192,
+      max_tokens: 16000,
       tools: TOOLS,
       messages: iterationMessages,
-      system: `You are an expert Next.js 14 / TypeScript bug solver. You analyze screenshots and error logs from a running web application and fix issues by reading and rewriting source files. You are methodical, read code before editing it, and only fix things that are actually broken. You use extended analysis before writing any fix.`,
+      system: `You are an expert Next.js 14 / TypeScript bug solver. You analyze screenshots and error logs from a running web application and fix issues by reading and rewriting source files. You are methodical, read code before editing it, and only fix things that are actually broken.
+
+CRITICAL: You MUST finish every session by calling either write_file (for fixes) or finish (when done). Never stop mid-analysis. If you run low on context, prioritize calling finish() with what you found rather than going silent.`,
     })
 
     // Add assistant response to conversation
@@ -389,13 +391,16 @@ async function runAgentLoop(
       }
     }
 
-    // If stop_reason is end_turn with no tool calls, we're done unexpectedly
+    // If stop_reason is end_turn with no tool calls, Claude stopped unexpectedly
     if (response.stop_reason === 'end_turn' && toolResults.length === 0) {
-      return {
-        done: true,
-        summary: 'Claude stopped without calling finish(). Review output above.',
-        filesWritten,
-      }
+      console.log('\n⚠️  Claude stopped without calling finish() — likely hit output limit mid-analysis.')
+      console.log('    Retrying with a nudge...\n')
+      // Nudge Claude to finish rather than silently exiting
+      iterationMessages.push({
+        role: 'user',
+        content: 'Please continue. Call write_file for any fixes you identified, then call finish() with a summary.',
+      })
+      continue
     }
 
     // Add tool results to conversation and continue
