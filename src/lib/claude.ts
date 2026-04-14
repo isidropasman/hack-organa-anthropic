@@ -91,7 +91,9 @@ export async function onboardingTurn(
     model: MODEL,
     max_tokens: 1024,
     system: PROMPTS.ONBOARDING_INTERVIEWER(agentName, agentRole, companyName),
-    messages: messages.map(msg => ({ role: msg.role, content: msg.content })),
+    messages: messages.length === 0
+      ? [{ role: 'user' as const, content: 'Hello, please start the interview.' }]
+      : messages.map(msg => ({ role: msg.role, content: msg.content })),
   })
 
   const block = response.content[0]

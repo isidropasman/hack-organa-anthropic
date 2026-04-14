@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import ChatInterface from '@/components/ChatInterface'
 import { agentStore } from '@/lib/agent-store'
+import { NOVA_AGENCY_DEMO, NOVA_COMMERCE_DEMO } from '@/lib/demo-data'
 import type { Agent, Message, KnowledgeBase } from '@/lib/types'
 
 interface Props {
@@ -23,6 +24,22 @@ function avatarColor(name: string) {
   return AVATAR_COLORS[h % AVATAR_COLORS.length]!
 }
 
+function tryLoadDemoAgent(agentId: string): Agent | null {
+  // Check if the agent exists in any demo dataset and seed if needed
+  const allDemos = [NOVA_AGENCY_DEMO, NOVA_COMMERCE_DEMO]
+  for (const demo of allDemos) {
+    const found = demo.agents.find(a => a.id === agentId)
+    if (found) {
+      // Seed the entire demo company so related agents are also available
+      if (agentStore.getAllAgents().length === 0) {
+        agentStore.seedDemoCompany(demo)
+      }
+      return agentStore.getAgent(agentId) ?? found
+    }
+  }
+  return null
+}
+
 export default function OnboardPage({ params }: Props) {
   const router = useRouter()
   const { agentId } = params
@@ -34,7 +51,10 @@ export default function OnboardPage({ params }: Props) {
   const [startError, setStartError] = useState<string | null>(null)
 
   useEffect(() => {
-    const a = agentStore.getAgent(agentId)
+    let a = agentStore.getAgent(agentId)
+    if (!a) {
+      a = tryLoadDemoAgent(agentId)
+    }
     if (!a) { router.push('/'); return }
     if (a.onboardingComplete) { router.push(`/agent/${agentId}`); return }
     setAgent(a)

@@ -58,6 +58,26 @@ body {
 .stagger-5 { animation-delay: 300ms; }
 .stagger-6 { animation-delay: 360ms; }
 
+/* Form input base style */
+.input-base {
+  width: 100%;
+  background: var(--color-organa-bg, #f5f5f7);
+  border: 1.5px solid rgba(0,0,0,0.10);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #1d1d1f;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+.input-base:focus {
+  border-color: rgba(0,113,227,0.5);
+  box-shadow: 0 0 0 3px rgba(0,113,227,0.12);
+}
+.input-base::placeholder {
+  color: #aeaeb2;
+}
+
 /* Shimmer loading skeleton */
 .skeleton {
   background: linear-gradient(
