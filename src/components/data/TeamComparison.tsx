@@ -19,7 +19,7 @@ export default function TeamComparison({ data }: Props) {
             </h2>
           </div>
           <p className="text-xs text-organa-text-muted">
-            Compared to {data.teamStats.totalTwinsActive} active twins ·
+            Compared with {data.teamStats.totalTwinsActive} active twins ·
             Only your strengths are highlighted
           </p>
         </div>
@@ -42,7 +42,7 @@ export default function TeamComparison({ data }: Props) {
 
       {/* Footer note */}
       <p className="text-xs text-organa-text-muted mt-6 pt-4 border-t border-organa-border">
-        ORGANA never shows negative rankings or other employees' data.
+        ORGANA never shows negative rankings or other employees&apos; data.
       </p>
     </div>
   )

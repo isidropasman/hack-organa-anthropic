@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { agentStore } from '@/lib/agent-store'
-import { NOVA_AGENCY_DEMO, NOVA_COMMERCE_DEMO } from '../../tools/scripts/seed-demo'
+import { NOVA_AGENCY_DEMO, NOVA_COMMERCE_DEMO } from '@/lib/demo-data'
 import type { Agent, OrgChartParseResponse } from '@/lib/types'
 
 interface Props {
@@ -37,7 +37,7 @@ export default function OrgUpload({ onAgentsGenerated, isLoading }: Props) {
 
   const disabled = isLoading || isProcessing
 
-  async function processFile(file: File) {
+  const processFile = useCallback(async function processFile(file: File) {
     const allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
     if (!allowed.includes(file.type)) {
       setError('Please upload a JPEG, PNG, GIF, or WebP image')
@@ -71,19 +71,19 @@ export default function OrgUpload({ onAgentsGenerated, isLoading }: Props) {
     } finally {
       setIsProcessing(false)
     }
-  }
+  }, [onAgentsGenerated])
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault()
     setIsDragOver(false)
     const file = e.dataTransfer.files[0]
-    if (file) processFile(file)
-  }, [])
+    if (file) void processFile(file)
+  }, [processFile])
 
   const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
-    if (file) processFile(file)
-  }, [])
+    if (file) void processFile(file)
+  }, [processFile])
 
   function handleLoadTemplate(key: string, demo: typeof NOVA_AGENCY_DEMO) {
     setLoadingTemplate(key)

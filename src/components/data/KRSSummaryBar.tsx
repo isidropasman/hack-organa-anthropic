@@ -1,9 +1,9 @@
 import { krsAgents } from '@/lib/mock-data'
 
 function krsTextColor(score: number) {
-  if (score >= 80) return 'text-green-400'
-  if (score >= 60) return 'text-amber-400'
-  return 'text-red-400'
+  if (score >= 80) return 'text-green-600'
+  if (score >= 60) return 'text-amber-600'
+  return 'text-red-600'
 }
 
 export default function KRSSummaryBar() {
@@ -20,26 +20,26 @@ export default function KRSSummaryBar() {
       {/* Avg KRS */}
       <div className="text-center flex-shrink-0">
         <div className={`text-5xl font-bold leading-none ${krsTextColor(avgKRS)}`}>{avgKRS}</div>
-        <div className="text-organa-text-muted text-xs mt-1.5">KRS Promedio Org</div>
+        <div className="text-organa-text-muted text-xs mt-1.5">Org Avg KRS</div>
       </div>
 
       <div className="w-px h-14 bg-organa-border flex-shrink-0" />
 
       {/* Distribution */}
       <div className="flex-shrink-0">
-        <div className="text-organa-text-muted text-xs font-medium mb-2">Distribución</div>
+        <div className="text-organa-text-muted text-xs font-medium mb-2">Distribution</div>
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
-            <span className="text-organa-text text-sm">{green} óptimo</span>
+            <span className="text-organa-text text-sm">{green} optimal</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-amber-500 flex-shrink-0" />
-            <span className="text-organa-text text-sm">{yellow} en desarrollo</span>
+            <span className="text-organa-text text-sm">{yellow} developing</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" />
-            <span className="text-organa-text text-sm">{red} crítico</span>
+            <span className="text-organa-text text-sm">{red} critical</span>
           </div>
         </div>
       </div>
@@ -52,7 +52,7 @@ export default function KRSSummaryBar() {
           {readyForAssisted}
           <span className="text-organa-text-muted text-lg font-normal"> / {krsAgents.length}</span>
         </div>
-        <div className="text-organa-text-muted text-xs mt-1">Listos para Assisted Mode</div>
+        <div className="text-organa-text-muted text-xs mt-1">Ready for Assisted Mode</div>
       </div>
 
       <div className="w-px h-14 bg-organa-border flex-shrink-0" />
@@ -60,7 +60,7 @@ export default function KRSSummaryBar() {
       {/* Screen hours */}
       <div className="text-center flex-shrink-0">
         <div className="text-2xl font-bold text-organa-text">{totalHours}h</div>
-        <div className="text-organa-text-muted text-xs mt-1">Horas de Observación</div>
+        <div className="text-organa-text-muted text-xs mt-1">Observation Hours</div>
       </div>
 
       <div className="w-px h-14 bg-organa-border flex-shrink-0" />
@@ -68,7 +68,7 @@ export default function KRSSummaryBar() {
       {/* Total tasks */}
       <div className="text-center flex-shrink-0">
         <div className="text-2xl font-bold text-organa-text">{totalTasks}</div>
-        <div className="text-organa-text-muted text-xs mt-1">Tareas Descubiertas</div>
+        <div className="text-organa-text-muted text-xs mt-1">Tasks Discovered</div>
       </div>
     </div>
   )

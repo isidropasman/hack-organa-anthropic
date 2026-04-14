@@ -10,9 +10,9 @@ interface Props {
 }
 
 function approvalColor(rate: number) {
-  if (rate >= 80) return 'text-green-400'
-  if (rate >= 70) return 'text-amber-400'
-  return 'text-red-400'
+  if (rate >= 80) return 'text-green-600'
+  if (rate >= 70) return 'text-amber-600'
+  return 'text-red-600'
 }
 
 function approvalBarColor(rate: number) {
@@ -22,23 +22,23 @@ function approvalBarColor(rate: number) {
 }
 
 function confidenceColor(conf: number) {
-  if (conf >= 0.7) return 'text-green-400'
-  if (conf >= 0.6) return 'text-amber-400'
-  return 'text-red-400'
+  if (conf >= 0.7) return 'text-green-600'
+  if (conf >= 0.6) return 'text-amber-600'
+  return 'text-red-600'
 }
 
 function errorRateColor(rate: number) {
-  if (rate === 0) return 'text-green-400'
-  if (rate <= 2) return 'text-green-400'
-  if (rate <= 5) return 'text-amber-400'
-  return 'text-red-400'
+  if (rate === 0) return 'text-green-600'
+  if (rate <= 2) return 'text-green-600'
+  if (rate <= 5) return 'text-amber-600'
+  return 'text-red-600'
 }
 
 function modeBadgeClass(mode: MonitoredAgent['mode']) {
   const map = {
-    shadow: 'bg-organa-muted/30 text-organa-text-muted border-organa-border',
-    assisted: 'bg-blue-900/30 text-blue-400 border-blue-800/60',
-    autonomous: 'bg-green-900/30 text-green-400 border-green-800/60',
+    shadow: 'bg-slate-100 text-slate-600 border-slate-200',
+    assisted: 'bg-blue-50 text-blue-700 border-blue-200',
+    autonomous: 'bg-green-50 text-green-700 border-green-200',
   }
   return map[mode]
 }
@@ -131,11 +131,11 @@ export default function AgentTableRow({ agent }: Props) {
         {/* Alerts */}
         <td className="px-4 py-3">
           {agent.alerts.length === 0 ? (
-            <CheckCircle2 size={15} className="text-green-400" />
+            <CheckCircle2 size={15} className="text-green-600" />
           ) : (
             <div
               className={`flex items-center gap-1.5 text-xs font-medium ${
-                hasCritical ? 'text-red-400' : 'text-amber-400'
+                hasCritical ? 'text-red-600' : 'text-amber-600'
               }`}
             >
               <AlertTriangle size={13} />
@@ -152,7 +152,7 @@ export default function AgentTableRow({ agent }: Props) {
 
       {/* Expanded detail row */}
       {expanded && (
-        <tr className="bg-organa-bg/40 border-b border-organa-border">
+        <tr className="bg-slate-50 border-b border-organa-border">
           <td colSpan={9} className="px-4 py-4">
             <div className="grid grid-cols-3 gap-6">
               {/* Sparkline */}
@@ -178,7 +178,7 @@ export default function AgentTableRow({ agent }: Props) {
                 </span>
                 <span className="text-organa-text-muted">Cost/action:</span>
                 <span className="text-organa-text">${agent.metrics.costPerAction.toFixed(2)}</span>
-                <span className="text-organa-text-muted">Resolution:</span>
+                <span className="text-organa-text-muted">Res. time:</span>
                 <span className="text-organa-text">{agent.metrics.timeToResolution}</span>
                 <span className="text-organa-text-muted">KB coverage:</span>
                 <span className="text-organa-text">{agent.metrics.knowledgeCoverage}%</span>
@@ -200,8 +200,8 @@ export default function AgentTableRow({ agent }: Props) {
                         key={i}
                         className={`text-xs px-2 py-1.5 rounded border flex items-start gap-1.5 ${
                           alert.type === 'critical'
-                            ? 'bg-red-950/30 border-red-900/50 text-red-300'
-                            : 'bg-amber-950/20 border-amber-900/40 text-amber-300'
+                            ? 'bg-red-50 border-red-200 text-red-700'
+                            : 'bg-amber-50 border-amber-200 text-amber-700'
                         }`}
                       >
                         <span className="flex-shrink-0">{alert.type === 'critical' ? '🔴' : '🟡'}</span>

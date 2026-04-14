@@ -7,6 +7,7 @@ import ThinkingBlock from '@/components/ThinkingBlock'
 import MarkdownMessage from '@/components/MarkdownMessage'
 import { agentStore } from '@/lib/agent-store'
 import { getCurrentUser } from '@/lib/auth'
+import { NOVA_AGENCY_DEMO, NOVA_COMMERCE_DEMO } from '@/lib/demo-data'
 import type { Agent } from '@/lib/types'
 import type { AgentStreamEvent } from '@/lib/claude'
 
@@ -39,6 +40,22 @@ function getAvatarColor(name: string): string {
   return colors[hash % colors.length]
 }
 
+function tryLoadDemoAgent(agentId: string): Agent | null {
+  // Check if the agent exists in any demo dataset and seed if needed
+  const allDemos = [NOVA_AGENCY_DEMO, NOVA_COMMERCE_DEMO]
+  for (const demo of allDemos) {
+    const found = demo.agents.find(a => a.id === agentId)
+    if (found) {
+      // Seed the entire demo company so related agents are also available
+      if (agentStore.getAllAgents().length === 0) {
+        agentStore.seedDemoCompany(demo)
+      }
+      return agentStore.getAgent(agentId) ?? found
+    }
+  }
+  return null
+}
+
 export default function AgentChatPage({ params }: Props) {
   const router = useRouter()
   const { agentId } = params
@@ -58,7 +75,10 @@ export default function AgentChatPage({ params }: Props) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const a = agentStore.getAgent(agentId)
+    let a = agentStore.getAgent(agentId)
+    if (!a) {
+      a = tryLoadDemoAgent(agentId)
+    }
     if (!a) { router.push('/'); return }
     if (!a.onboardingComplete) { router.push(`/onboard/${agentId}`); return }
     setAgent(a)

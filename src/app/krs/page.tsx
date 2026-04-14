@@ -14,7 +14,7 @@ export default function KRSPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-organa-text">AI Workforce</h1>
         <p className="text-organa-text-muted mt-1 text-sm">
-          Knowledge Readiness Score — knowledge status captured by each agent
+          Knowledge Readiness Score — knowledge capture status per agent
         </p>
       </div>
 
@@ -40,7 +40,7 @@ export default function KRSPage() {
         <h2 className="text-sm font-semibold text-organa-text mb-4">
           Gaps Summary{' '}
           <span className="text-organa-text-muted font-normal">
-            — {totalGaps} gaps detected in total
+            — {totalGaps} total gaps detected
           </span>
         </h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">

@@ -8,7 +8,7 @@ import type { KRSAgent, MonitoredAgent, MonitoringSummary, OrgTrend } from './ty
 export const krsAgents: KRSAgent[] = [
   {
     id: 'ceo-twin',
-    role: 'CEO / General Director',
+    role: 'CEO / General Manager',
     name: 'Martín García',
     avatar: 'MG',
     krs: 87,
@@ -25,7 +25,7 @@ export const krsAgents: KRSAgent[] = [
     tasksBySource: { screenLearning: 8, chat: 4 },
     screenHours: 6.5,
     gaps: [
-      'New supplier evaluation process',
+      'New vendor evaluation process',
       'Discount approval criteria >15%',
     ],
     lastObservation: '2026-04-14T14:22:00',
@@ -57,7 +57,7 @@ export const krsAgents: KRSAgent[] = [
     ],
     lastObservation: '2026-04-14T13:45:00',
     onboardingDuration: '3.2 hrs observation + 12 min chat',
-    overlapWarning: "Overlap with Support on 'social media responses'",
+    overlapWarning: "Overlap with Support on 'social media response'",
   },
   {
     id: 'ops-twin',
@@ -126,13 +126,13 @@ export const krsAgents: KRSAgent[] = [
     screenHours: 1.5,
     gaps: [
       'Claims escalation protocol',
-      'Response SLA by channel',
+      'Response SLA per channel',
       'Returns process',
       'Product knowledge base',
     ],
     lastObservation: '2026-04-14T11:30:00',
     onboardingDuration: '1.5 hrs observation + 8 min chat',
-    overlapWarning: "Overlap with Marketing on 'social media responses'",
+    overlapWarning: "Overlap with Marketing on 'social media response'",
   },
 ]
 
@@ -157,7 +157,7 @@ export const monitoringSummary: MonitoringSummary = {
 export const monitoredAgents: MonitoredAgent[] = [
   {
     id: 'ceo-twin',
-    role: 'CEO / General Director',
+    role: 'CEO / General Manager',
     name: 'Martín García',
     mode: 'assisted',
     metrics: {

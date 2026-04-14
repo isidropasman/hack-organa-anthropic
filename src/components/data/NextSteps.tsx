@@ -10,7 +10,7 @@ export default function NextSteps({ steps }: Props) {
       <div className="mb-5">
         <h2 className="text-base font-semibold text-organa-text">Next steps</h2>
         <p className="text-xs text-organa-text-muted mt-0.5">
-          Actions to keep your twin growing
+          Actions to help your twin keep growing
         </p>
       </div>
 

@@ -29,7 +29,7 @@ export const TWIN_LEVELS: TwinLevel[] = [
   },
   {
     level: 3,
-    name: 'Proficient',
+    name: 'Competent',
     min: 51,
     max: 70,
     motivation: 'Your twin can already help you with several tasks. Great work!',
@@ -39,14 +39,14 @@ export const TWIN_LEVELS: TwinLevel[] = [
     name: 'Expert',
     min: 71,
     max: 85,
-    motivation: 'Impressive — your twin knows almost your entire operation.',
+    motivation: 'Impressive — your twin knows almost all of your operation.',
   },
   {
     level: 5,
     name: 'Master',
     min: 86,
     max: null,
-    motivation: 'Your twin is an expert in your role. Your role knowledge is fully preserved.',
+    motivation: 'Your twin is an expert in your role. Your position\'s knowledge is preserved.',
   },
 ]
 
@@ -72,28 +72,28 @@ const ALL_ACHIEVEMENTS: Achievement[] = [
   {
     id: 'first-hour',
     icon: '🎬',
-    title: 'First Hour',
+    title: 'First hour',
     description: 'Your twin observed you for the first time',
     unlocked: false,
   },
   {
     id: 'five-tasks',
     icon: '📋',
-    title: 'Five Tasks',
+    title: 'Five tasks',
     description: 'Your twin identified 5 tasks from your role',
     unlocked: false,
   },
   {
     id: 'ten-tasks',
     icon: '🎯',
-    title: 'Ten Tasks',
+    title: 'Ten tasks',
     description: '10 tasks documented — great progress!',
     unlocked: false,
   },
   {
     id: 'full-coverage',
     icon: '🏆',
-    title: 'Full Coverage',
+    title: 'Full coverage',
     description: 'All tasks in your role are documented',
     unlocked: false,
   },
@@ -107,7 +107,7 @@ const ALL_ACHIEVEMENTS: Achievement[] = [
   {
     id: 'no-gaps',
     icon: '✨',
-    title: 'No Gaps',
+    title: 'No gaps',
     description: 'No missing knowledge in your role',
     unlocked: false,
   },
@@ -115,14 +115,14 @@ const ALL_ACHIEVEMENTS: Achievement[] = [
     id: 'assisted-mode',
     icon: '⚡',
     title: 'Assisted Mode',
-    description: 'Your twin switched to Assisted Mode — it can now act on its own!',
+    description: 'Your twin moved to Assisted Mode — it can now execute on its own!',
     unlocked: false,
   },
   {
     id: 'marathon',
     icon: '🏃',
     title: 'Marathon',
-    description: '8+ hours of accumulated observation',
+    description: '8+ accumulated observation hours',
     unlocked: false,
   },
   {
@@ -144,7 +144,7 @@ const ALL_ACHIEVEMENTS: Achievement[] = [
 function makeAchievements(unlockedIds: string[]): Achievement[] {
   return ALL_ACHIEVEMENTS.map(a =>
     unlockedIds.includes(a.id)
-      ? { ...a, unlocked: true, unlockedAt: '14 Apr 2026' }
+      ? { ...a, unlocked: true, unlockedAt: 'Apr 14 2026' }
       : a
   )
 }
@@ -239,8 +239,8 @@ const opsTwinData: EmployeeAgentData = {
       time: '14:50',
       type: 'screen',
       icon: '🖥️',
-      message: 'Detected that you check shipment tracking in MercadoLibre Envíos',
-      detail: 'Task: Pending shipment tracking — daily frequency, first check at 9am',
+      message: 'Detected that you check shipment tracking in MercadoLibre Shipping',
+      detail: 'Task: Pending shipment tracking — daily, first check at 9am',
     },
     {
       time: '14:22',
@@ -254,22 +254,22 @@ const opsTwinData: EmployeeAgentData = {
       time: '13:10',
       type: 'screen',
       icon: '🖥️',
-      message: 'Identified your coordination workflow with the logistics operator',
-      detail: 'Task: Send daily OCA shipment list by email — before 12pm, CC to warehouse',
+      message: 'Identified your coordination flow with the logistics operator',
+      detail: 'Task: Send daily list to carrier by email — before 12pm, CC to warehouse',
     },
     {
       time: '11:45',
       type: 'chat',
       icon: '💬',
-      message: 'You explained how you handle returns',
+      message: 'You explained how you manage returns',
       detail:
-        'Task: Returns process — receipt → inspection → restock if OK → discard if damaged → notify customer',
+        'Task: Returns process — receive → inspect → restock if OK → discard if damaged → notify customer',
     },
     {
       time: '10:30',
       type: 'screen',
       icon: '🖥️',
-      message: 'Observed how you generate shipping labels at Correo Argentino',
+      message: 'Observed how you generate shipping labels',
       detail:
         'Task: Shipping label generation — web portal → order data → print → attach to package',
     },
@@ -277,9 +277,9 @@ const opsTwinData: EmployeeAgentData = {
       time: '09:15',
       type: 'chat',
       icon: '💬',
-      message: 'You explained the criteria for choosing a logistics operator',
+      message: 'You explained the criteria for choosing a logistics carrier',
       detail:
-        'Decision: OCA for Buenos Aires city, Correo Argentino for inland, Andreani for volume > 10 packages/day',
+        'Decision: Local carrier for city, national carrier for interior, express for volume > 10 packages/day',
     },
   ],
   teamComparison: {
@@ -337,7 +337,7 @@ const opsTwinData: EmployeeAgentData = {
     {
       action: 'Unlock the last achievement: Autonomous',
       reason:
-        'Your twin is very close to Autonomous Mode. Just keep the approval rate high.',
+        'Your twin is very close to reaching Autonomous Mode. Just keep the approval rate high.',
       impact: '+Level 6 coming soon',
       icon: '🤖',
     },
@@ -361,7 +361,7 @@ const marketingTwinData: EmployeeAgentData = {
       icon: '🖥️',
       message: 'Detected that you check Instagram metrics in Meta Business Suite',
       detail:
-        'Task: Daily reach and engagement analysis — 9am review, focus on engagement rate and new followers',
+        'Task: Daily reach & engagement analysis — 9am review, focus on engagement rate and new followers',
     },
     {
       time: '14:45',
@@ -369,7 +369,7 @@ const marketingTwinData: EmployeeAgentData = {
       icon: '💬',
       message: 'You explained how you plan the content calendar',
       detail:
-        'Task: Monthly planning — Google Sheets → columns by channel (IG, LinkedIn, email) → content categories → publish date',
+        'Task: Monthly planning — Google Sheets → columns per channel (IG, LinkedIn, email) → content categories → publish date',
     },
     {
       time: '13:20',
@@ -411,7 +411,7 @@ const marketingTwinData: EmployeeAgentData = {
         myValue: 72,
         teamAvg: 79,
         unit: '',
-        badge: 'Every session counts — you\'re doing great!',
+        badge: 'Every session adds up — keep going!',
         isAbove: false,
       },
       {
@@ -419,7 +419,7 @@ const marketingTwinData: EmployeeAgentData = {
         myValue: 8,
         teamAvg: 8.8,
         unit: '',
-        badge: 'Almost at average, keep it up!',
+        badge: 'Almost at the average, keep it up!',
         isAbove: false,
       },
       {
@@ -427,7 +427,7 @@ const marketingTwinData: EmployeeAgentData = {
         myValue: 4.5,
         teamAvg: 4.9,
         unit: 'h',
-        badge: 'One more session and you\'ll beat the average 💪',
+        badge: 'One more session and you\'ll beat it 💪',
         isAbove: false,
       },
     ],
@@ -435,13 +435,13 @@ const marketingTwinData: EmployeeAgentData = {
   nextSteps: [
     {
       action: 'Keep working with screen sharing',
-      reason: 'Your twin hasn\'t seen you do the monthly campaign close yet',
+      reason: 'Your twin has not yet seen you do the monthly campaign close',
       impact: '+5 KRS estimated',
       icon: '🖥️',
     },
     {
       action: 'Tell your twin about your content strategy',
-      reason: 'There\'s a gap in \'editorial calendar planning\'',
+      reason: "There is a gap in 'editorial calendar planning'",
       impact: '+4 KRS estimated',
       icon: '💬',
     },

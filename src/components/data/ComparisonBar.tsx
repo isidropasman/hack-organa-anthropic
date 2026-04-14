@@ -36,7 +36,7 @@ export default function ComparisonBar({ highlight }: Props) {
       {/* My bar */}
       <div>
         <div className="flex justify-between text-xs mb-1.5">
-          <span className="text-organa-text-muted">Tu twin</span>
+          <span className="text-organa-text-muted">Your twin</span>
           <span className="font-semibold text-organa-text">{myLabel}</span>
         </div>
         <div className="h-2.5 bg-organa-bg rounded-full overflow-hidden border border-organa-border">
@@ -55,7 +55,7 @@ export default function ComparisonBar({ highlight }: Props) {
       {/* Team average bar */}
       <div>
         <div className="flex justify-between text-xs mb-1.5">
-          <span className="text-organa-text-muted">Promedio del equipo</span>
+          <span className="text-organa-text-muted">Team average</span>
           <span className="text-organa-text-muted">{avgLabel}</span>
         </div>
         <div className="h-2.5 bg-organa-bg rounded-full overflow-hidden border border-organa-border">

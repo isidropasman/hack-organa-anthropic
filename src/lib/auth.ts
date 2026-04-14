@@ -8,7 +8,7 @@ export interface CurrentUser {
 }
 
 const DEMO_ADMIN: CurrentUser = { id: 'admin-1', name: 'Martín García', role: 'admin' }
-const DEMO_EMPLOYEE: CurrentUser = { id: 'emp-1', name: 'Carlos Méndez', role: 'employee', agentId: 'ops-twin' }
+const DEMO_EMPLOYEE: CurrentUser = { id: 'emp-1', name: 'Carlos Méndez', role: 'employee', agentId: 'carlos-operations' }
 
 export { DEMO_ADMIN, DEMO_EMPLOYEE }
 
