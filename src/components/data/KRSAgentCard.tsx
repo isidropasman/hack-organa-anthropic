@@ -64,7 +64,7 @@ export default function KRSAgentCard({ agent }: Props) {
             {/* Task progress bar */}
             <div className="mt-3">
               <div className="flex justify-between text-xs text-organa-text-muted mb-1">
-                <span>{agent.tasksDocumented}/{agent.tasksExpected} tareas documentadas</span>
+                <span>{agent.tasksDocumented}/{agent.tasksExpected} tasks documented</span>
                 <div className="flex items-center gap-2">
                   <span title="Screen learning">🖥 {agent.tasksBySource.screenLearning}</span>
                   <span title="Chat">💬 {agent.tasksBySource.chat}</span>
@@ -80,7 +80,7 @@ export default function KRSAgentCard({ agent }: Props) {
 
             <p className="text-xs text-organa-text-muted mt-2 flex items-center gap-1">
               <Monitor size={11} />
-              {agent.screenHours}h observación
+              {agent.screenHours}h observation
             </p>
           </div>
 
@@ -113,7 +113,7 @@ export default function KRSAgentCard({ agent }: Props) {
             {/* Radar chart */}
             <div>
               <h4 className="text-xs font-medium text-organa-text-muted uppercase tracking-wide mb-2">
-                Dimensiones KRS
+                KRS Dimensions
               </h4>
               <KRSRadarChart dimensions={agent.dimensions} />
             </div>
@@ -122,7 +122,7 @@ export default function KRSAgentCard({ agent }: Props) {
             <div className="space-y-4">
               <div>
                 <h4 className="text-xs font-medium text-organa-text-muted uppercase tracking-wide mb-2">
-                  Gaps detectados ({agent.gaps.length})
+                  Gaps detected ({agent.gaps.length})
                 </h4>
                 <KRSGapsList agent={agent} />
               </div>
@@ -139,7 +139,7 @@ export default function KRSAgentCard({ agent }: Props) {
               disabled
               className="px-4 py-2 text-sm bg-organa-accent/10 text-organa-accent border border-organa-accent/30 rounded-lg cursor-default opacity-60"
             >
-              Iniciar observación adicional
+              Start additional observation
             </button>
           </div>
         </div>

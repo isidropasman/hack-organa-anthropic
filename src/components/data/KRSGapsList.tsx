@@ -9,7 +9,7 @@ export default function KRSGapsList({ agent }: Props) {
     return (
       <div className="flex items-center gap-2 text-green-400 text-sm py-2">
         <span>✓</span>
-        <span>Sin gaps detectados — conocimiento completo</span>
+        <span>No gaps detected — full knowledge coverage</span>
       </div>
     )
   }

@@ -12,16 +12,16 @@ export default function AchievementsGrid({ achievements }: Props) {
     <div className="bg-white border border-organa-border rounded-2xl p-6 shadow-card">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <h2 className="text-base font-semibold text-organa-text">Logros</h2>
+          <h2 className="text-base font-semibold text-organa-text">Achievements</h2>
           <p className="text-xs text-organa-text-muted mt-0.5">
-            Haz click en un logro para ver el detalle
+            Click an achievement to see the details
           </p>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-xl">{unlocked === achievements.length ? '🏆' : '⭐'}</span>
           <span className="text-sm font-semibold text-organa-text">
             {unlocked}
-            <span className="font-normal text-organa-text-muted">/{achievements.length} desbloqueados</span>
+            <span className="font-normal text-organa-text-muted">/{achievements.length} unlocked</span>
           </span>
         </div>
       </div>

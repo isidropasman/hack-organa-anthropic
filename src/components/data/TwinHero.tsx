@@ -9,9 +9,9 @@ interface Props {
 }
 
 const modeConfig = {
-  shadow: { emoji: '🔍', label: 'Observando', cls: 'bg-gray-100 text-gray-500 border-gray-200' },
-  assisted: { emoji: '⚡', label: 'Asistiendo', cls: 'bg-blue-50 text-blue-600 border-blue-200' },
-  autonomous: { emoji: '🤖', label: 'Autónomo', cls: 'bg-green-50 text-green-600 border-green-200' },
+  shadow: { emoji: '🔍', label: 'Observing', cls: 'bg-gray-100 text-gray-500 border-gray-200' },
+  assisted: { emoji: '⚡', label: 'Assisting', cls: 'bg-blue-50 text-blue-600 border-blue-200' },
+  autonomous: { emoji: '🤖', label: 'Autonomous', cls: 'bg-green-50 text-green-600 border-green-200' },
 }
 
 const levelColors = [
@@ -58,7 +58,7 @@ export default function TwinHero({ data }: Props) {
           {/* Name + mode badge */}
           <div className="flex items-center gap-3 flex-wrap mb-1">
             <h1 className="text-2xl font-bold text-organa-text">
-              Twin de {data.employeeName}
+              {data.employeeName}&apos;s Twin
             </h1>
             <span
               className={`text-xs px-2.5 py-1 rounded-full border font-medium ${mode.cls}`}
@@ -75,10 +75,10 @@ export default function TwinHero({ data }: Props) {
           <div className="mb-4">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-semibold text-organa-text">
-                Nivel {level.level} — {level.name}
+                Level {level.level} — {level.name}
               </span>
               <span className="text-sm text-organa-text-muted">
-                {isMax ? 'Nivel Máximo ✨' : `${data.krs} / 100 XP`}
+                {isMax ? 'Max Level ✨' : `${data.krs} / 100 XP`}
               </span>
             </div>
             <div className="h-3 bg-organa-bg rounded-full overflow-hidden border border-organa-border">
@@ -89,7 +89,7 @@ export default function TwinHero({ data }: Props) {
             </div>
             {!isMax && (
               <p className="text-xs text-organa-text-muted mt-1.5">
-                {100 - data.krs} XP hasta el siguiente nivel
+                {100 - data.krs} XP to next level
               </p>
             )}
           </div>
@@ -112,13 +112,13 @@ export default function TwinHero({ data }: Props) {
           <div className="flex gap-4 text-right">
             <div>
               <div className="text-xl font-bold text-organa-text">{unlockedCount}</div>
-              <div className="text-organa-text-muted text-xs">Logros</div>
+              <div className="text-organa-text-muted text-xs">Achievements</div>
             </div>
             <div>
               <div className="text-xl font-bold text-organa-text">
                 {data.achievements.filter(a => a.unlocked).length}/{data.achievements.length}
               </div>
-              <div className="text-organa-text-muted text-xs">Completado</div>
+              <div className="text-organa-text-muted text-xs">Completed</div>
             </div>
           </div>
         </div>

@@ -16,11 +16,11 @@ interface Props {
 
 export default function KRSRadarChart({ dimensions }: Props) {
   const data = [
-    { dimension: 'Completitud', value: dimensions.completitud },
-    { dimension: 'Especificidad', value: dimensions.especificidad },
-    { dimension: 'Consistencia', value: dimensions.consistencia },
-    { dimension: 'Unicidad', value: dimensions.unicidad },
-    { dimension: 'Temporalidad', value: dimensions.temporalidad },
+    { dimension: 'Completeness', value: dimensions.completeness },
+    { dimension: 'Specificity', value: dimensions.specificity },
+    { dimension: 'Consistency', value: dimensions.consistency },
+    { dimension: 'Uniqueness', value: dimensions.uniqueness },
+    { dimension: 'Timeliness', value: dimensions.timeliness },
   ]
 
   return (
