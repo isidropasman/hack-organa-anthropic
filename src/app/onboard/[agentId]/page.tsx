@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import ChatInterface from '@/components/ChatInterface'
 import { agentStore } from '@/lib/agent-store'
+import { getCurrentUser } from '@/lib/auth'
 import type { Agent, Message, KnowledgeBase } from '@/lib/types'
 
 interface Props {
@@ -119,7 +120,10 @@ export default function OnboardPage({ params }: Props) {
         className="glass-header sticky top-0 z-10 px-6 py-4 flex items-center gap-4"
       >
         <motion.button
-          onClick={() => router.push('/')}
+          onClick={() => {
+            const backTo = getCurrentUser().role === 'employee' ? '/home' : '/'
+            router.push(backTo)
+          }}
           whileHover={{ x: -2 }}
           whileTap={{ scale: 0.95 }}
           className="text-organa-text-secondary hover:text-organa-text transition-colors flex items-center gap-1.5 text-sm"

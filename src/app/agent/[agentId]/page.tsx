@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import ThinkingBlock from '@/components/ThinkingBlock'
 import MarkdownMessage from '@/components/MarkdownMessage'
 import { agentStore } from '@/lib/agent-store'
+import { getCurrentUser } from '@/lib/auth'
 import type { Agent } from '@/lib/types'
 import type { AgentStreamEvent } from '@/lib/claude'
 
@@ -159,6 +160,8 @@ export default function AgentChatPage({ params }: Props) {
             setStreamPhase('idle')
             setStreamingThinking('')
             setStreamingText('')
+            // Award points for completed chat message
+            agentStore.addPoints(agentId, 'CHAT_MESSAGE', `Chat con ${agent.name}`)
           } else if (event.type === 'error') {
             const errMsg: ChatMessage = {
               role: 'assistant',
@@ -216,7 +219,10 @@ export default function AgentChatPage({ params }: Props) {
         className="glass-header sticky top-0 z-10 px-6 py-4 flex items-center gap-4"
       >
         <motion.button
-          onClick={() => router.push('/')}
+          onClick={() => {
+            const backTo = getCurrentUser().role === 'employee' ? '/home' : '/'
+            router.push(backTo)
+          }}
           whileHover={{ x: -2 }}
           whileTap={{ scale: 0.95 }}
           className="text-organa-text-secondary hover:text-organa-text transition-colors flex items-center gap-1.5 text-sm"
