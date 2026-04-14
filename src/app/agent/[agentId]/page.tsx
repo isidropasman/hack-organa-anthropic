@@ -4,8 +4,9 @@ import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import ThinkingBlock from '@/components/ThinkingBlock'
+import MarkdownMessage from '@/components/MarkdownMessage'
 import { agentStore } from '@/lib/agent-store'
-import type { Agent, AgentChatResponse } from '@/lib/types'
+import type { Agent } from '@/lib/types'
 import type { AgentStreamEvent } from '@/lib/claude'
 
 interface Props {
@@ -359,15 +360,19 @@ export default function AgentChatPage({ params }: Props) {
 
                 {/* Message bubble */}
                 <div
-                  className={`max-w-[78%] rounded-2xl px-4 py-2.5 text-[14px] leading-relaxed ${
+                  className={`max-w-[78%] rounded-2xl px-4 py-2.5 ${
                     msg.role === 'user'
-                      ? 'bg-organa-accent text-white rounded-br-md'
+                      ? 'bg-organa-accent text-white rounded-br-md text-[14px] leading-relaxed'
                       : 'bg-white shadow-card text-organa-text rounded-bl-md border border-organa-border'
                   }`}
                 >
-                  {msg.content.split('\n').map((line, i, arr) => (
-                    <span key={i}>{line}{i < arr.length - 1 && <br />}</span>
-                  ))}
+                  {msg.role === 'user' ? (
+                    msg.content.split('\n').map((line, i, arr) => (
+                      <span key={i}>{line}{i < arr.length - 1 && <br />}</span>
+                    ))
+                  ) : (
+                    <MarkdownMessage content={msg.content} />
+                  )}
                 </div>
               </motion.div>
             ))}
@@ -389,23 +394,20 @@ export default function AgentChatPage({ params }: Props) {
                 />
               )}
 
-              {/* Streaming response text */}
+              {/* Streaming response text — markdown rendered live */}
               {streamPhase === 'responding' && (
-                <div className="max-w-[78%] rounded-2xl rounded-bl-md px-4 py-2.5 text-[14px] leading-relaxed bg-white shadow-card text-organa-text border border-organa-border">
-                  {streamingText || (
+                <div className="max-w-[78%] rounded-2xl rounded-bl-md px-4 py-2.5 bg-white shadow-card border border-organa-border">
+                  {streamingText ? (
+                    <MarkdownMessage content={streamingText} streaming />
+                  ) : (
                     <motion.span
                       animate={{ opacity: [0.4, 1, 0.4] }}
                       transition={{ duration: 1, repeat: Infinity }}
-                      className="text-organa-text-muted"
+                      className="text-organa-text-muted text-sm"
                     >
                       …
                     </motion.span>
                   )}
-                  <motion.span
-                    animate={{ opacity: [1, 0, 1] }}
-                    transition={{ duration: 0.8, repeat: Infinity }}
-                    className="inline-block w-0.5 h-3.5 bg-organa-accent ml-0.5 align-middle"
-                  />
                 </div>
               )}
             </motion.div>

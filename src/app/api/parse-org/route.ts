@@ -32,6 +32,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<OrgChartP
     return NextResponse.json({ agents })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error'
+    console.error('[parse-org] error:', err)
     return NextResponse.json({ agents: [], error: message }, { status: 500 })
   }
 }
