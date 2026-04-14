@@ -15,12 +15,12 @@ export default function TeamComparison({ data }: Props) {
           <div className="flex items-center gap-2 mb-1">
             <Users size={16} className="text-organa-accent" />
             <h2 className="text-base font-semibold text-organa-text">
-              Tu Twin vs. el Equipo
+              Your Twin vs. the Team
             </h2>
           </div>
           <p className="text-xs text-organa-text-muted">
-            Comparación con {data.teamStats.totalTwinsActive} twins activos ·
-            Solo se destacan tus fortalezas
+            Compared with {data.teamStats.totalTwinsActive} active twins ·
+            Only your strengths are highlighted
           </p>
         </div>
 
@@ -42,7 +42,7 @@ export default function TeamComparison({ data }: Props) {
 
       {/* Footer note */}
       <p className="text-xs text-organa-text-muted mt-6 pt-4 border-t border-organa-border">
-        ORGANA nunca muestra rankings negativos ni datos de otros empleados.
+        ORGANA never shows negative rankings or other employees&apos; data.
       </p>
     </div>
   )

@@ -11,7 +11,7 @@ import Logo from './Logo'
 
 const adminNavItems = [
   { href: '/', label: 'Dashboard', icon: Home },
-  { href: '/org', label: 'Organigrama', icon: GitBranch },
+  { href: '/org', label: 'Org Chart', icon: GitBranch },
   { href: '/krs', label: 'AI Workforce', icon: Brain },
   { href: '/monitoring', label: 'Monitoring', icon: BarChart3 },
 ]
@@ -122,7 +122,7 @@ export default function Sidebar() {
                     : <User size={10} className="text-organa-text-muted opacity-80" />
                   }
                   <span className={`text-[10px] font-medium whitespace-nowrap ${isAdmin ? 'text-organa-accent' : 'text-organa-text-muted'}`}>
-                    {isAdmin ? 'Admin' : 'Empleado'}
+                    {isAdmin ? 'Admin' : 'Employee'}
                   </span>
                 </div>
               </motion.div>

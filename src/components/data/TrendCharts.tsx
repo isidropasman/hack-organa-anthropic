@@ -55,7 +55,7 @@ export default function TrendCharts({ trend }: Props) {
           <LineChart data={data}>
             <XAxis dataKey="label" {...axisProps} />
             <YAxis domain={[70, 90]} {...axisProps} width={28} />
-            <Tooltip {...tooltipStyle} formatter={(v: unknown) => [`${v as number}%`, 'Aprobación']} />
+            <Tooltip {...tooltipStyle} formatter={(v: unknown) => [`${v as number}%`, 'Approval']} />
             <Line
               type="monotone"
               dataKey="approvalRate"
@@ -70,7 +70,7 @@ export default function TrendCharts({ trend }: Props) {
       {/* Chart 2: Costo Acumulado */}
       <div className="bg-organa-surface border border-organa-border rounded-xl p-4">
         <h3 className="text-xs font-medium text-organa-text-muted uppercase tracking-wide mb-3">
-          Costo Acumulado
+          Accumulated Cost
         </h3>
         <ResponsiveContainer width="100%" height={120}>
           <AreaChart data={data}>
@@ -78,7 +78,7 @@ export default function TrendCharts({ trend }: Props) {
             <YAxis {...axisProps} width={32} />
             <Tooltip
               {...tooltipStyle}
-              formatter={(v: unknown) => [`$${(v as number).toFixed(2)}`, 'Costo']}
+              formatter={(v: unknown) => [`$${(v as number).toFixed(2)}`, 'Cost']}
             />
             <Area
               type="monotone"
@@ -101,7 +101,7 @@ export default function TrendCharts({ trend }: Props) {
           <BarChart data={data}>
             <XAxis dataKey="label" {...axisProps} />
             <YAxis domain={[0, 60]} {...axisProps} width={28} />
-            <Tooltip {...tooltipStyle} formatter={(v: unknown) => [`${v as number}%`, 'Automatización']} />
+            <Tooltip {...tooltipStyle} formatter={(v: unknown) => [`${v as number}%`, 'Automation']} />
             <Bar dataKey="automationRate" fill="#22C55E" radius={[3, 3, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
@@ -118,7 +118,7 @@ export default function TrendCharts({ trend }: Props) {
             <YAxis domain={[0, 2.5]} {...axisProps} width={28} />
             <Tooltip
               {...tooltipStyle}
-              formatter={(v: unknown) => [`${v as number} tareas/hr`, 'Screen Rate']}
+              formatter={(v: unknown) => [`${v as number} tasks/hr`, 'Screen Rate']}
             />
             <Line
               type="monotone"

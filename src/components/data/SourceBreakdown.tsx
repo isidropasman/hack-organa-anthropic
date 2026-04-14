@@ -12,7 +12,7 @@ export default function SourceBreakdown({ agent }: Props) {
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between text-xs text-organa-text-muted">
-        <span>Fuente de tareas</span>
+        <span>Task source</span>
         <div className="flex gap-3">
           <span className="flex items-center gap-1">
             <span className="w-2 h-2 rounded-full bg-organa-accent inline-block" />

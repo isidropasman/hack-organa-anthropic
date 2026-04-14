@@ -33,7 +33,7 @@ export default function RoleSwitcher() {
         className="flex items-center gap-1.5 w-full px-2 py-1.5 rounded-md text-organa-text-muted hover:text-organa-text hover:bg-organa-border/60 transition-colors text-xs"
       >
         <RefreshCw size={11} className="opacity-60" />
-        <span className="flex-1 text-left">Cambiar rol</span>
+        <span className="flex-1 text-left">Switch role</span>
         <ChevronDown size={11} className={`opacity-60 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
 
@@ -60,7 +60,7 @@ export default function RoleSwitcher() {
             }`}
           >
             <User size={12} />
-            <span>Empleado</span>
+            <span>Employee</span>
             {role === 'employee' && <span className="ml-auto opacity-60">✓</span>}
           </button>
         </div>

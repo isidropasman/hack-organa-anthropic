@@ -158,31 +158,31 @@ export default function AgentTableRow({ agent }: Props) {
               {/* Sparkline */}
               <div>
                 <div className="text-xs text-organa-text-muted mb-2 font-medium">
-                  Approval Rate — últimas 5 semanas
+                  Approval Rate — last 5 weeks
                 </div>
                 <SparkLine
                   data={agent.weeklyTrend}
                   color={sparkColor(agent.metrics.approvalRate)}
                 />
                 <div className="flex justify-between text-xs text-organa-text-muted mt-1">
-                  <span>Sem 1</span>
-                  <span>Sem 5</span>
+                  <span>Wk 1</span>
+                  <span>Wk 5</span>
                 </div>
               </div>
 
               {/* Metrics grid */}
               <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs content-start">
-                <span className="text-organa-text-muted">Propuestas:</span>
+                <span className="text-organa-text-muted">Proposals:</span>
                 <span className="text-organa-text">
-                  {agent.metrics.proposals} ({agent.metrics.approved} apr / {agent.metrics.rejected} rec)
+                  {agent.metrics.proposals} ({agent.metrics.approved} apr / {agent.metrics.rejected} rej)
                 </span>
-                <span className="text-organa-text-muted">Costo/acción:</span>
+                <span className="text-organa-text-muted">Cost/action:</span>
                 <span className="text-organa-text">${agent.metrics.costPerAction.toFixed(2)}</span>
-                <span className="text-organa-text-muted">Tiempo res.:</span>
+                <span className="text-organa-text-muted">Res. time:</span>
                 <span className="text-organa-text">{agent.metrics.timeToResolution}</span>
-                <span className="text-organa-text-muted">Cobertura KB:</span>
+                <span className="text-organa-text-muted">KB coverage:</span>
                 <span className="text-organa-text">{agent.metrics.knowledgeCoverage}%</span>
-                <span className="text-organa-text-muted">Automatización:</span>
+                <span className="text-organa-text-muted">Automation:</span>
                 <span className="text-organa-text">{agent.metrics.automationRate}%</span>
                 <span className="text-organa-text-muted">Error rate:</span>
                 <span className={errorRateColor(agent.metrics.errorRate)}>
@@ -193,15 +193,15 @@ export default function AgentTableRow({ agent }: Props) {
               {/* Alerts in expanded */}
               {agent.alerts.length > 0 && (
                 <div>
-                  <div className="text-xs text-organa-text-muted mb-2 font-medium">Alertas</div>
+                  <div className="text-xs text-organa-text-muted mb-2 font-medium">Alerts</div>
                   <div className="space-y-1.5">
                     {agent.alerts.map((alert, i) => (
                       <div
                         key={i}
                         className={`text-xs px-2 py-1.5 rounded border flex items-start gap-1.5 ${
                           alert.type === 'critical'
-                            ? 'bg-red-950/30 border-red-900/50 text-red-300'
-                            : 'bg-amber-950/20 border-amber-900/40 text-amber-300'
+                            ? 'bg-red-50 border-red-200 text-red-700'
+                            : 'bg-amber-50 border-amber-200 text-amber-700'
                         }`}
                       >
                         <span className="flex-shrink-0">{alert.type === 'critical' ? '🔴' : '🟡'}</span>

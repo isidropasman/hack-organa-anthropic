@@ -288,7 +288,7 @@ export default function HomePage() {
             >
               <div className="flex items-center gap-3 text-organa-text-muted text-sm">
                 <div className="w-12 h-px bg-organa-border" />
-                <span>o prueba con datos de demo</span>
+                <span>or try with demo data</span>
                 <div className="w-12 h-px bg-organa-border" />
               </div>
               <motion.button
@@ -297,7 +297,7 @@ export default function HomePage() {
                 whileTap={{ scale: 0.97 }}
                 className="px-5 py-2.5 text-sm font-medium text-organa-accent border border-organa-accent bg-organa-accent-light rounded-xl hover:bg-organa-accent hover:text-white transition-colors shadow-sm"
               >
-                Cargar datos de demo
+                Load demo data
               </motion.button>
             </motion.div>
           </motion.div>

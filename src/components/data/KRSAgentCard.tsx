@@ -12,16 +12,16 @@ interface Props {
 }
 
 function krsColors(score: number) {
-  if (score >= 80) return { text: 'text-green-400', bg: 'bg-green-950/40', border: 'border-green-900/50' }
-  if (score >= 60) return { text: 'text-amber-400', bg: 'bg-amber-950/40', border: 'border-amber-900/50' }
-  return { text: 'text-red-400', bg: 'bg-red-950/40', border: 'border-red-900/50' }
+  if (score >= 80) return { text: 'text-green-600', bg: 'bg-green-50', border: 'border-green-200' }
+  if (score >= 60) return { text: 'text-amber-600', bg: 'bg-amber-50', border: 'border-amber-200' }
+  return { text: 'text-red-600', bg: 'bg-red-50', border: 'border-red-200' }
 }
 
 function modeBadgeClass(mode: KRSAgent['mode']) {
   const map = {
-    shadow: 'bg-organa-muted/30 text-organa-text-muted border-organa-border',
-    assisted: 'bg-blue-900/30 text-blue-400 border-blue-800/60',
-    autonomous: 'bg-green-900/30 text-green-400 border-green-800/60',
+    shadow: 'bg-gray-100 text-gray-500 border-gray-200',
+    assisted: 'bg-blue-50 text-blue-600 border-blue-200',
+    autonomous: 'bg-green-50 text-green-600 border-green-200',
   }
   return map[mode]
 }
@@ -64,7 +64,7 @@ export default function KRSAgentCard({ agent }: Props) {
             {/* Task progress bar */}
             <div className="mt-3">
               <div className="flex justify-between text-xs text-organa-text-muted mb-1">
-                <span>{agent.tasksDocumented}/{agent.tasksExpected} tareas documentadas</span>
+                <span>{agent.tasksDocumented}/{agent.tasksExpected} tasks documented</span>
                 <div className="flex items-center gap-2">
                   <span title="Screen learning">🖥 {agent.tasksBySource.screenLearning}</span>
                   <span title="Chat">💬 {agent.tasksBySource.chat}</span>
@@ -80,7 +80,7 @@ export default function KRSAgentCard({ agent }: Props) {
 
             <p className="text-xs text-organa-text-muted mt-2 flex items-center gap-1">
               <Monitor size={11} />
-              {agent.screenHours}h observación
+              {agent.screenHours}h observation
             </p>
           </div>
 
@@ -103,9 +103,9 @@ export default function KRSAgentCard({ agent }: Props) {
         <div className="border-t border-organa-border p-5 bg-organa-bg/30 space-y-5">
           {/* Overlap warning */}
           {agent.overlapWarning && (
-            <div className="flex items-start gap-2 px-3 py-2.5 bg-amber-950/30 border border-amber-900/50 rounded-lg">
-              <span className="text-amber-400 text-xs flex-shrink-0 mt-0.5">⚠</span>
-              <span className="text-amber-300 text-xs">{agent.overlapWarning}</span>
+            <div className="flex items-start gap-2 px-3 py-2.5 bg-amber-50 border border-amber-200 rounded-lg">
+              <span className="text-amber-600 text-xs flex-shrink-0 mt-0.5">⚠</span>
+              <span className="text-amber-700 text-xs">{agent.overlapWarning}</span>
             </div>
           )}
 
@@ -113,7 +113,7 @@ export default function KRSAgentCard({ agent }: Props) {
             {/* Radar chart */}
             <div>
               <h4 className="text-xs font-medium text-organa-text-muted uppercase tracking-wide mb-2">
-                Dimensiones KRS
+                KRS Dimensions
               </h4>
               <KRSRadarChart dimensions={agent.dimensions} />
             </div>
@@ -122,7 +122,7 @@ export default function KRSAgentCard({ agent }: Props) {
             <div className="space-y-4">
               <div>
                 <h4 className="text-xs font-medium text-organa-text-muted uppercase tracking-wide mb-2">
-                  Gaps detectados ({agent.gaps.length})
+                  Detected gaps ({agent.gaps.length})
                 </h4>
                 <KRSGapsList agent={agent} />
               </div>
@@ -139,7 +139,7 @@ export default function KRSAgentCard({ agent }: Props) {
               disabled
               className="px-4 py-2 text-sm bg-organa-accent/10 text-organa-accent border border-organa-accent/30 rounded-lg cursor-default opacity-60"
             >
-              Iniciar observación adicional
+              Start additional observation
             </button>
           </div>
         </div>

@@ -10,14 +10,21 @@ interface Props {
 }
 
 const DEPT_COLORS: Record<string, { bg: string; text: string }> = {
-  'Dirección General': { bg: '#EFF6FF', text: '#1E40AF' },
-  'Fundadores':        { bg: '#EFF6FF', text: '#1E40AF' },
-  'Cuentas':           { bg: '#F0FDF4', text: '#166534' },
-  'Growth':            { bg: '#F0FDF4', text: '#166534' },
-  'Creatividad':       { bg: '#FDF4FF', text: '#7E22CE' },
-  'Finanzas':          { bg: '#FFFBEB', text: '#92400E' },
-  'Operaciones':       { bg: '#FFF7ED', text: '#C2410C' },
-  'Tecnología':        { bg: '#F0F9FF', text: '#0369A1' },
+  'Dirección General':  { bg: '#EFF6FF', text: '#1E40AF' },
+  'General Management': { bg: '#EFF6FF', text: '#1E40AF' },
+  'Fundadores':         { bg: '#EFF6FF', text: '#1E40AF' },
+  'Founders':           { bg: '#EFF6FF', text: '#1E40AF' },
+  'Cuentas':            { bg: '#F0FDF4', text: '#166534' },
+  'Accounts':           { bg: '#F0FDF4', text: '#166534' },
+  'Growth':             { bg: '#F0FDF4', text: '#166534' },
+  'Creatividad':        { bg: '#FDF4FF', text: '#7E22CE' },
+  'Creative':           { bg: '#FDF4FF', text: '#7E22CE' },
+  'Finanzas':           { bg: '#FFFBEB', text: '#92400E' },
+  'Finance':            { bg: '#FFFBEB', text: '#92400E' },
+  'Operaciones':        { bg: '#FFF7ED', text: '#C2410C' },
+  'Operations':         { bg: '#FFF7ED', text: '#C2410C' },
+  'Tecnología':         { bg: '#F0F9FF', text: '#0369A1' },
+  'Technology':         { bg: '#F0F9FF', text: '#0369A1' },
 }
 
 function getInitials(name: string): string {

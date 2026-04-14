@@ -8,9 +8,9 @@ export default function NextSteps({ steps }: Props) {
   return (
     <div className="bg-white border border-organa-border rounded-2xl p-6 shadow-card">
       <div className="mb-5">
-        <h2 className="text-base font-semibold text-organa-text">Próximos pasos</h2>
+        <h2 className="text-base font-semibold text-organa-text">Next steps</h2>
         <p className="text-xs text-organa-text-muted mt-0.5">
-          Acciones para que tu twin siga creciendo
+          Actions to help your twin keep growing
         </p>
       </div>
 
