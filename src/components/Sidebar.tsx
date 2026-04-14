@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Home, Brain, BarChart3, Sparkles, ShieldCheck, User } from 'lucide-react'
+import { Home, Brain, BarChart3, Sparkles, ShieldCheck, User, Network } from 'lucide-react'
 import { getCurrentUser, type CurrentUser } from '@/lib/auth'
 import RoleSwitcher from './RoleSwitcher'
 
@@ -11,6 +11,7 @@ const adminNavItems = [
   { href: '/', label: 'Dashboard', icon: Home },
   { href: '/krs', label: 'AI Workforce', icon: Brain },
   { href: '/monitoring', label: 'Monitoring', icon: BarChart3 },
+  { href: '/brain', label: 'Cerebro Org', icon: Network },
 ]
 
 export default function Sidebar() {
