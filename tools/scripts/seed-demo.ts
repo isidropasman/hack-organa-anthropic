@@ -174,6 +174,63 @@ const sofiaKB: KnowledgeBase = {
   ],
 }
 
+const carlosKB: KnowledgeBase = {
+  agentId: 'carlos-operations',
+  completedAt: NOW,
+  summary:
+    'Carlos Méndez is Operations Manager at Nova Agency, responsible for all logistics, vendor portals, dispatch workflows, and day-to-day production ops. He is the first responder for any operational outage and owns the Andreani relationship.',
+  categories: {
+    tasks: [
+      'Daily review of all pending dispatches in Andreani portal before 10am',
+      'Coordinates print production orders with external vendors every Tuesday',
+      'Weekly ops report: delivery SLA compliance, pending invoices, portal incidents',
+      'Manages agency courier assignments and vehicle schedule',
+      'Escalation contact for any supplier portal issue — client SLAs depend on this',
+    ],
+    tools: [
+      'Andreani portal — primary dispatch and tracking tool at andreani.com/empresas',
+      'Google Sheets "Despachos Nova" — manual backup log when portal is down',
+      'WhatsApp group "Proveedores Ops" — direct line to Andreani account manager (Rodrigo)',
+      'Notion "Ops Runbooks" — step-by-step guides for every recurring incident',
+      'Slack #operaciones — internal escalations and status updates',
+    ],
+    team: [
+      'Reports to Valentina Torres (CEO)',
+      'Works daily with Martín Ruiz (Accounts) to align dispatch with client deadlines',
+      'External: Rodrigo at Andreani (account manager), contact via WhatsApp only',
+      '2 direct reports: logistics coordinator and production assistant',
+    ],
+    comms: [
+      'Any portal outage over 30 minutes must be logged in Slack #operaciones with ETA',
+      'Client-facing delays always go through Martín — never contact the client directly from ops',
+      'Rodrigo at Andreani responds on WhatsApp within 2 hours during business days',
+      'Uses Loom to document new workarounds so the team can self-serve next time',
+    ],
+    decisions: [
+      'Which courier to use when Andreani is unavailable (backup: OCA)',
+      'Approves all print and production invoices under $200k ARS',
+      'Decides dispatch priority when orders conflict on the same day',
+      'Does NOT decide: client deadlines (Martín), budget overruns above threshold (Valentina)',
+    ],
+    knowledge: [
+      'Andreani portal crashes almost every Monday morning between 8am and 10am — it is a known issue caused by a batch job that overloads their servers on weekly reset. Rodrigo confirmed this.',
+      'When the portal is down: export the pending orders CSV from the last sync saved in Google Sheets "Despachos Nova" tab "Backup CSV", then call Andreani ops line 0810-122-1111 and dictate the top 3 priority dispatches manually — they process by phone during outages.',
+      'The CSV backup must be updated every Friday afternoon before EOD — if it is stale you lose visibility on weekend orders.',
+      'OCA is the backup courier but takes 48h longer — only use for non-urgent orders.',
+      'Andreani portal password resets expire every 60 days — set a calendar reminder or you get locked out on a Monday.',
+      'The print vendor (Imprenta Del Sur) needs 72h notice for A3 jobs — never promise same-week delivery for large format.',
+    ],
+  },
+  rawTranscript: [
+    msg('assistant', "Hi Carlos! I'm ARIA. Let's capture how you run operations at Nova. Walk me through a typical Monday morning."),
+    msg('user', "First thing I do is log into the Andreani portal to check pending dispatches. Mondays are tricky because the portal often crashes between 8 and 10am — there's a batch job on their end that overloads the servers. So I always have the backup CSV ready from Friday."),
+    msg('assistant', 'What do you do exactly when the portal is down on a Monday morning?'),
+    msg('user', "I pull up the Google Sheets backup — I export the CSV every Friday from the last successful sync. Then I call Andreani's ops line 0810-122-1111 and dictate the top 3 priority dispatches manually. They can process by phone during outages. Rodrigo, my account manager there, usually texts me on WhatsApp when it's back up."),
+    msg('assistant', "Smart system. What would happen if someone forgot to update that CSV on Friday?"),
+    msg('user', "We'd lose visibility on any orders that came in over the weekend. That's a problem if a client has a Monday deadline. I've made it a hard rule — Friday EOD, no exceptions."),
+  ],
+}
+
 // ─── Untrained agents (shell only) ───────────────────────────────────────────
 
 function shell(id: string, name: string, role: string, department: string, reportsTo: string | null): Agent {
@@ -230,6 +287,17 @@ export const NOVA_AGENCY_DEMO: DemoCompany = {
       knowledgeBase: sofiaKB,
       onboardingMessages: sofiaKB.rawTranscript,
     },
+    {
+      id: 'carlos-operations',
+      name: 'Carlos Méndez',
+      role: 'Operations Manager',
+      department: 'Operaciones',
+      reportsTo: 'valentina-torres',
+      readinessScore: 100,
+      onboardingComplete: true,
+      knowledgeBase: carlosKB,
+      onboardingMessages: carlosKB.rawTranscript,
+    },
     // Untrained
     shell('lucas-fernandez', 'Lucas Fernández', 'CFO', 'Finanzas', 'valentina-torres'),
     shell('camila-rios', 'Camila Ríos', 'Senior Account Manager', 'Cuentas', 'martin-ruiz'),
@@ -244,10 +312,209 @@ export const NOVA_AGENCY_DEMO: DemoCompany = {
   ],
 }
 
+// ─── Nova Commerce — Ecommerce Template (5 agents) ───────────────────────────
+
+const elenaKB: KnowledgeBase = {
+  agentId: 'elena-vega',
+  completedAt: NOW,
+  summary:
+    'Elena Vega is the CEO of Nova Commerce, an ecommerce startup building curated product experiences for Latin America. She owns the product roadmap, investor relations, and key supplier partnerships.',
+  categories: {
+    tasks: [
+      'Weekly all-hands every Monday at 10am — product, growth, and ops updates',
+      'Investor update email every Friday with GMV, conversion rate, and CAC',
+      'Final approval on all supplier contracts above $10k USD',
+      'Monthly roadmap review with tech and growth leads',
+      'Bi-weekly 1:1s with each direct report',
+    ],
+    tools: [
+      'Notion — product roadmap, OKRs, investor docs',
+      'Slack — primary async comms; monitors #founders, #incidents, #growth channels',
+      'Mixpanel — product analytics, funnel performance',
+      'Google Meet — all investor calls, always recorded',
+      'Linear — tracks product priorities across engineering',
+    ],
+    team: [
+      'Rodrigo Castro (Head of Growth) — daily check-in on acquisition metrics',
+      'Paula Jiménez (Head of Operations) — weekly ops review on fulfillment and suppliers',
+      'Reports to board — monthly written update, quarterly in-person',
+    ],
+    comms: [
+      'Data-first: every decision pitch starts with a number',
+      'Never escalates to investors without a proposed solution in hand',
+      'Prefers Loom videos over long Slack threads for strategic updates',
+      'Responds to Slack within 4 hours during business hours; off after 8pm',
+    ],
+    decisions: [
+      'Any partnership or supplier contract above $10k',
+      'Product bets that require more than 2 weeks of engineering time',
+      'Hiring decisions for senior roles (Head-level and above)',
+      'Does NOT decide: campaign creative (Rodrigo), logistics vendors (Paula)',
+    ],
+    knowledge: [
+      'Our best converting channel is email — protect the list, never spam it',
+      'Argentina logistics is our biggest operational risk — always have a backup carrier',
+      'Q4 (Oct-Dec) is 60% of our annual GMV — freeze major tech changes in November',
+      'Investors care about CAC:LTV ratio above all — optimize for that, not raw revenue',
+      'The founding story (Buenos Aires → LatAm) resonates with both users and press — use it',
+    ],
+  },
+  rawTranscript: [
+    msg('assistant', "Hi Elena! I'm ARIA. Let's capture how you run Nova Commerce. Walk me through a typical week."),
+    msg('user', 'Monday all-hands, then I spend the week between product calls, investor comms, and supplier negotiations. Fridays I send the investor update and do 1:1s.'),
+    msg('assistant', "That investor update sounds critical. What are the 3 things only you can do at Nova Commerce?"),
+    msg('user', 'Manage investor relationships, close big supplier deals, and set the product direction. Everything else can be delegated.'),
+  ],
+}
+
+const rodrigoKB: KnowledgeBase = {
+  agentId: 'rodrigo-castro',
+  completedAt: NOW,
+  summary:
+    'Rodrigo Castro is Head of Growth at Nova Commerce, owning all acquisition channels, retention marketing, and revenue targets. He runs a lean growth stack and moves fast on experiments.',
+  categories: {
+    tasks: [
+      'Daily review of acquisition metrics: CAC, ROAS, email open rates',
+      'Weekly growth experiment review — what launched, what learned, what ships next',
+      'Manages paid channels: Meta, Google, TikTok — total budget $50k/month',
+      'Email marketing: 3 campaigns per week, all A/B tested',
+      'Monthly channel attribution report for Elena and board',
+    ],
+    tools: [
+      'Meta Ads Manager — primary paid social channel, 40% of paid budget',
+      'Google Ads — search + shopping, 35% of paid budget',
+      'Klaviyo — all email flows and campaigns; owns the 80k subscriber list',
+      'Mixpanel — funnel analysis and cohort retention',
+      'Notion — growth experiments backlog and retrospectives',
+    ],
+    team: [
+      'Works with Paula on post-purchase email flows and fulfillment messaging',
+      'Matías (Tech Lead) for landing page experiments and tracking implementation',
+      'Elena for budget approvals above $5k and channel strategy pivots',
+    ],
+    comms: [
+      'Weekly growth update in #growth Slack channel every Monday morning',
+      'Escalates to Elena only when ROAS drops below 2x for 3+ consecutive days',
+      'All experiment results documented in Notion before launching next experiment',
+      'Prefers async — only calls for decisions that need back-and-forth',
+    ],
+    decisions: [
+      'All paid media budget allocation within approved monthly budget',
+      'Email calendar and campaign content',
+      'Which growth experiments to run and in what order',
+      'Does NOT decide: product features, supplier selection, hiring',
+    ],
+    knowledge: [
+      'Our email list converts 3x better than paid — prioritize list growth over paid scale',
+      'TikTok works for top-of-funnel but attribution is unreliable — use it for brand, not ROAS',
+      'Friday sends have the highest open rates for our audience; avoid Monday sends',
+      'Winning creative formula: real user UGC + product in context + price anchor',
+      'Black Friday prep starts in September — brief Matías on landing pages by Oct 1',
+    ],
+  },
+  rawTranscript: [
+    msg('assistant', "Hi Rodrigo! I'm ARIA. Let's capture the growth playbook. What does your week look like?"),
+    msg('user', 'Every morning I check the numbers. Monday I review what experiments ran last week and plan the next ones. The rest of the week is campaign management and email.'),
+  ],
+}
+
+const paulaKB: KnowledgeBase = {
+  agentId: 'paula-jimenez',
+  completedAt: NOW,
+  summary:
+    'Paula Jiménez is Head of Operations at Nova Commerce, owning the entire supply chain from supplier onboarding to last-mile delivery. She is the reason orders arrive on time and customers stay.',
+  categories: {
+    tasks: [
+      'Daily fulfillment dashboard review — SLA compliance, pending shipments, exceptions',
+      'Weekly supplier performance review — on-time rate, quality complaints, stock levels',
+      'Manages 3PL relationship with Andreani and backup carrier OCA',
+      'Coordinates returns process: 48h SLA from customer request to refund issued',
+      'Monthly inventory forecast with suppliers — 6-week horizon',
+    ],
+    tools: [
+      'Shopify — order management, fulfillment status, customer service tickets',
+      'Google Sheets — inventory tracker and supplier scorecards (not yet in a WMS)',
+      'WhatsApp — supplier communication (they all prefer it)',
+      'Andreani portal — shipment tracking and label generation',
+      'Slack — internal ops channel #fulfillment for daily exception alerts',
+    ],
+    team: [
+      'Camila Aguirre (Customer Success) — daily handoff on delivery escalations',
+      'Rodrigo (Growth) — coordinates post-purchase email triggers based on fulfillment status',
+      'Elena for supplier contract renewals and new vendor approvals',
+    ],
+    comms: [
+      'Posts daily fulfillment summary in #ops Slack by 9am',
+      'Calls (never texts) suppliers when there is a stock or delivery issue',
+      'Customer delivery escalations: responds within 2 hours during business hours',
+      'Weekly ops report to Elena every Thursday afternoon',
+    ],
+    decisions: [
+      'Which carrier to use for each shipment tier',
+      'Stock reorder quantities and timing',
+      'Supplier quality complaints and resolution',
+      'Does NOT decide: product catalog, marketing campaigns, pricing',
+    ],
+    knowledge: [
+      'Andreani is 20% cheaper but has 15% more exceptions than OCA — use OCA for high-value orders',
+      'Argentine customs delays spike in March and September — buffer 2 extra weeks for imports',
+      'Our return rate is 4% — double the category average. Focus on size guides first.',
+      'Suppliers in Mendoza have 3-day shipping lead time; Buenos Aires is same-day',
+      'Never promise delivery dates to customers — promise a range and overdeliver',
+    ],
+  },
+  rawTranscript: [
+    msg('assistant', "Hi Paula! I'm ARIA. Let's capture how ops runs at Nova Commerce. Walk me through your week."),
+    msg('user', 'I start every day checking the fulfillment dashboard. If anything is off-SLA I deal with it immediately. Then supplier check-ins, inventory, and escalations.'),
+  ],
+}
+
+export const NOVA_COMMERCE_DEMO: DemoCompany = {
+  name: 'Nova Commerce',
+  description: 'Ecommerce startup building curated product experiences for Latin America.',
+  agents: [
+    {
+      id: 'elena-vega',
+      name: 'Elena Vega',
+      role: 'CEO',
+      department: 'Fundadores',
+      reportsTo: null,
+      readinessScore: 100,
+      onboardingComplete: true,
+      knowledgeBase: elenaKB,
+      onboardingMessages: elenaKB.rawTranscript,
+    },
+    {
+      id: 'rodrigo-castro',
+      name: 'Rodrigo Castro',
+      role: 'Head of Growth',
+      department: 'Growth',
+      reportsTo: 'elena-vega',
+      readinessScore: 100,
+      onboardingComplete: true,
+      knowledgeBase: rodrigoKB,
+      onboardingMessages: rodrigoKB.rawTranscript,
+    },
+    {
+      id: 'paula-jimenez',
+      name: 'Paula Jiménez',
+      role: 'Head of Operations',
+      department: 'Operaciones',
+      reportsTo: 'elena-vega',
+      readinessScore: 100,
+      onboardingComplete: true,
+      knowledgeBase: paulaKB,
+      onboardingMessages: paulaKB.rawTranscript,
+    },
+    shell('matias-romero', 'Matías Romero', 'Full Stack Developer', 'Tecnología', 'elena-vega'),
+    shell('camila-aguirre', 'Camila Aguirre', 'Customer Success', 'Operaciones', 'paula-jimenez'),
+  ],
+}
+
 // ─── CLI runner ───────────────────────────────────────────────────────────────
 
 // This script is meant to be run in a Node.js context that has access to localStorage.
-// For browser seeding, import NOVA_AGENCY_DEMO and call agentStore.seedDemoCompany(NOVA_AGENCY_DEMO).
+// For browser seeding, import NOVA_AGENCY_DEMO or NOVA_COMMERCE_DEMO and call agentStore.seedDemoCompany().
 // For CLI use, this just validates the data shape.
 
 if (require.main === module) {
@@ -257,5 +524,11 @@ if (require.main === module) {
   console.log(`  Trained: ${NOVA_AGENCY_DEMO.agents.filter(a => a.onboardingComplete).length}`)
   console.log(`  Untrained: ${NOVA_AGENCY_DEMO.agents.filter(a => !a.onboardingComplete).length}`)
   console.log('')
-  console.log('To seed in browser: import { NOVA_AGENCY_DEMO } from "tools/scripts/seed-demo" and call agentStore.seedDemoCompany(NOVA_AGENCY_DEMO)')
+  console.log('Nova Commerce Demo Data:')
+  console.log(`  Company: ${NOVA_COMMERCE_DEMO.name}`)
+  console.log(`  Total agents: ${NOVA_COMMERCE_DEMO.agents.length}`)
+  console.log(`  Trained: ${NOVA_COMMERCE_DEMO.agents.filter(a => a.onboardingComplete).length}`)
+  console.log(`  Untrained: ${NOVA_COMMERCE_DEMO.agents.filter(a => !a.onboardingComplete).length}`)
+  console.log('')
+  console.log('To seed in browser: import { NOVA_COMMERCE_DEMO } from "tools/scripts/seed-demo" and call agentStore.seedDemoCompany(NOVA_COMMERCE_DEMO)')
 }
