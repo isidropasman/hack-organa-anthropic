@@ -14,7 +14,7 @@ export default function KRSPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-organa-text">AI Workforce</h1>
         <p className="text-organa-text-muted mt-1 text-sm">
-          Knowledge Readiness Score — estado del conocimiento capturado por cada agente
+          Knowledge Readiness Score — knowledge status captured by each agent
         </p>
       </div>
 
@@ -26,7 +26,7 @@ export default function KRSPage() {
       {/* Section B: Agent KRS cards */}
       <div className="mb-8">
         <h2 className="text-sm font-semibold text-organa-text-muted uppercase tracking-wide mb-4">
-          Agentes
+          Agents
         </h2>
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
           {krsAgents.map(agent => (
@@ -38,9 +38,9 @@ export default function KRSPage() {
       {/* Section C: Gaps summary */}
       <div className="bg-organa-surface border border-organa-border rounded-xl p-5">
         <h2 className="text-sm font-semibold text-organa-text mb-4">
-          Resumen de Gaps{' '}
+          Gaps Summary{' '}
           <span className="text-organa-text-muted font-normal">
-            — {totalGaps} gaps detectados en total
+            — {totalGaps} gaps detected in total
           </span>
         </h2>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
