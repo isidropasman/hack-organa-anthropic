@@ -42,9 +42,9 @@ export default function SynapsePanel() {
             borderRadius: 6,
             fontSize:     12,
             fontWeight:   600,
-            border:       filter === 'all' ? '1px solid #6366F1' : '1px solid #334155',
-            background:   filter === 'all' ? '#6366F122' : 'transparent',
-            color:        filter === 'all' ? '#A5B4FC' : '#64748B',
+            border:       filter === 'all' ? '1px solid #4F6BED' : '1px solid #E2E8F0',
+            background:   filter === 'all' ? 'rgba(79,107,237,0.1)' : 'transparent',
+            color:        filter === 'all' ? '#4F6BED' : '#64748B',
             cursor:       'pointer',
           }}
         >
@@ -61,7 +61,7 @@ export default function SynapsePanel() {
               fontWeight:   600,
               border:       filter === intent
                 ? `1px solid ${INTENT_COLORS[intent]}`
-                : '1px solid #334155',
+                : '1px solid #E2E8F0',
               background:   filter === intent ? `${INTENT_COLORS[intent]}22` : 'transparent',
               color:        filter === intent ? INTENT_COLORS[intent] : '#64748B',
               cursor:       'pointer',
@@ -76,14 +76,13 @@ export default function SynapsePanel() {
       {/* Messages */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         {filtered.map(msg => {
-          const fromAgent = AGENTS.find(a => a.id === msg.from)
           const intentColor = INTENT_COLORS[msg.intent]
           return (
             <div
               key={msg.id}
               style={{
-                background:   '#0F172A',
-                border:       `1px solid #1E293B`,
+                background:   '#FFFFFF',
+                border:       `1px solid #E2E8F0`,
                 borderLeft:   `3px solid ${intentColor}`,
                 borderRadius: 8,
                 padding:      '12px 16px',
@@ -95,7 +94,7 @@ export default function SynapsePanel() {
               {/* Header row */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                 <AgentChip agentId={msg.from} size="sm" />
-                <span style={{ color: '#475569', fontSize: 11 }}>→</span>
+                <span style={{ color: '#94A3B8', fontSize: 11 }}>→</span>
                 <AgentChip agentId={msg.to} size="sm" />
                 <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6 }}>
                   <IntentBadge intent={msg.intent} />
@@ -116,12 +115,12 @@ export default function SynapsePanel() {
                       {msg.urgency}
                     </span>
                   )}
-                  <span style={{ color: '#475569', fontSize: 11 }}>{msg.timestamp}</span>
+                  <span style={{ color: '#64748B', fontSize: 11 }}>{msg.timestamp}</span>
                 </div>
               </div>
 
               {/* Content */}
-              <p style={{ color: '#94A3B8', fontSize: 13, lineHeight: 1.5, margin: 0 }}>
+              <p style={{ color: '#475569', fontSize: 13, lineHeight: 1.5, margin: 0 }}>
                 {msg.content}
               </p>
 
@@ -136,10 +135,10 @@ export default function SynapsePanel() {
                     flexShrink:   0,
                   }}
                 />
-                <span style={{ color: '#475569', fontSize: 11, textTransform: 'capitalize' }}>
+                <span style={{ color: '#64748B', fontSize: 11, textTransform: 'capitalize' }}>
                   {msg.outcome.replace('_', ' ')}
                 </span>
-                <span style={{ color: '#334155', fontSize: 11, marginLeft: 'auto' }}>
+                <span style={{ color: '#94A3B8', fontSize: 11, marginLeft: 'auto' }}>
                   {msg.tokens_used.toLocaleString()} tokens
                 </span>
               </div>
@@ -147,7 +146,7 @@ export default function SynapsePanel() {
           )
         })}
         {filtered.length === 0 && (
-          <p style={{ color: '#475569', textAlign: 'center', padding: '40px 0', fontSize: 14 }}>
+          <p style={{ color: '#64748B', textAlign: 'center', padding: '40px 0', fontSize: 14 }}>
             No messages for this filter.
           </p>
         )}

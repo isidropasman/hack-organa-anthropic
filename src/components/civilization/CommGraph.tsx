@@ -108,8 +108,8 @@ export default function CommGraph({ links }: Props) {
       .selectAll<SVGLineElement, SimLink>('line')
       .data(simLinks)
       .enter().append('line')
-      .attr('stroke', '#475569')
-      .attr('stroke-opacity', 0.3)
+      .attr('stroke', '#CBD5E1')
+      .attr('stroke-opacity', 0.8)
       .attr('stroke-width', d => 1 + (d.weight / maxWeight) * 4)
 
     // Node groups
@@ -150,7 +150,7 @@ export default function CommGraph({ links }: Props) {
     nodeGroups.append('text')
       .attr('dy', d => nodeRadius(d) + 13)
       .attr('text-anchor', 'middle')
-      .attr('fill', '#94A3B8')
+      .attr('fill', '#475569')
       .attr('font-size', 10)
       .attr('font-weight', 500)
       .attr('pointer-events', 'none')
@@ -191,7 +191,7 @@ export default function CommGraph({ links }: Props) {
       })
       .on('mouseleave', () => {
         nodeGroups.attr('opacity', 1)
-        linkEls.attr('stroke', '#475569').attr('stroke-opacity', 0.3)
+        linkEls.attr('stroke', '#CBD5E1').attr('stroke-opacity', 0.8)
       })
 
     // Tick
@@ -206,7 +206,7 @@ export default function CommGraph({ links }: Props) {
 
     // Fade in
     nodeGroups.attr('opacity', 0).transition().delay((_d, i) => i * 40).duration(600).attr('opacity', 1)
-    linkEls.attr('stroke-opacity', 0).transition().delay(400).duration(700).attr('stroke-opacity', 0.3)
+    linkEls.attr('stroke-opacity', 0).transition().delay(400).duration(700).attr('stroke-opacity', 0.8)
 
     return () => { simulation.stop() }
   }, [links])

@@ -45,8 +45,8 @@ export default function NexusPanel() {
           <div
             key={meeting.id}
             style={{
-              background:   '#0F172A',
-              border:       `1px solid ${isExpanded ? '#334155' : '#1E293B'}`,
+              background:   '#FFFFFF',
+              border:       `1px solid ${isExpanded ? '#CBD5E1' : '#E2E8F0'}`,
               borderRadius: 10,
               overflow:     'hidden',
             }}
@@ -84,10 +84,10 @@ export default function NexusPanel() {
               </span>
 
               <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ color: '#E2E8F0', fontSize: 14, fontWeight: 600, margin: 0, lineHeight: 1.3 }}>
+                <p style={{ color: '#1E293B', fontSize: 14, fontWeight: 600, margin: 0, lineHeight: 1.3 }}>
                   {meeting.title}
                 </p>
-                <p style={{ color: '#475569', fontSize: 11, margin: '2px 0 0', lineHeight: 1 }}>
+                <p style={{ color: '#64748B', fontSize: 11, margin: '2px 0 0', lineHeight: 1 }}>
                   Facilitated by {facilitator?.name ?? meeting.facilitator_id} · {meeting.participant_ids.length} participants
                 </p>
               </div>
@@ -107,7 +107,7 @@ export default function NexusPanel() {
                 {STATUS_LABELS[meeting.status]}
               </span>
 
-              <span style={{ color: '#334155', fontSize: 16, userSelect: 'none' }}>
+              <span style={{ color: '#94A3B8', fontSize: 16, userSelect: 'none' }}>
                 {isExpanded ? '▲' : '▼'}
               </span>
             </button>
@@ -122,22 +122,22 @@ export default function NexusPanel() {
                   transition={{ duration: 0.3 }}
                   style={{ overflow: 'hidden' }}
                 >
-                  <div style={{ padding: '0 18px 18px', borderTop: '1px solid #1E293B' }}>
+                  <div style={{ padding: '0 18px 18px', borderTop: '1px solid #E2E8F0' }}>
                     {/* Meta row */}
                     <div style={{ display: 'flex', gap: 16, padding: '12px 0', flexWrap: 'wrap' }}>
                       <div>
-                        <p style={{ color: '#475569', fontSize: 11, margin: '0 0 2px' }}>Started</p>
-                        <p style={{ color: '#94A3B8', fontSize: 12, margin: 0 }}>{meeting.started_at}</p>
+                        <p style={{ color: '#64748B', fontSize: 11, margin: '0 0 2px' }}>Started</p>
+                        <p style={{ color: '#475569', fontSize: 12, margin: 0 }}>{meeting.started_at}</p>
                       </div>
                       {meeting.ended_at && (
                         <div>
-                          <p style={{ color: '#475569', fontSize: 11, margin: '0 0 2px' }}>Ended</p>
-                          <p style={{ color: '#94A3B8', fontSize: 12, margin: 0 }}>{meeting.ended_at}</p>
+                          <p style={{ color: '#64748B', fontSize: 11, margin: '0 0 2px' }}>Ended</p>
+                          <p style={{ color: '#475569', fontSize: 12, margin: 0 }}>{meeting.ended_at}</p>
                         </div>
                       )}
                       <div>
-                        <p style={{ color: '#475569', fontSize: 11, margin: '0 0 2px' }}>Total tokens</p>
-                        <p style={{ color: '#94A3B8', fontSize: 12, margin: 0 }}>{meeting.total_tokens.toLocaleString()}</p>
+                        <p style={{ color: '#64748B', fontSize: 11, margin: '0 0 2px' }}>Total tokens</p>
+                        <p style={{ color: '#475569', fontSize: 12, margin: 0 }}>{meeting.total_tokens.toLocaleString()}</p>
                       </div>
                     </div>
 
@@ -145,15 +145,15 @@ export default function NexusPanel() {
                     {meeting.minutes_summary && (
                       <div
                         style={{
-                          background:   '#080810',
-                          border:       '1px solid #1E293B',
+                          background:   '#F8FAFC',
+                          border:       '1px solid #E2E8F0',
                           borderRadius: 6,
                           padding:      '10px 14px',
                           marginBottom: 16,
                         }}
                       >
-                        <p style={{ color: '#475569', fontSize: 11, margin: '0 0 4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Summary</p>
-                        <p style={{ color: '#94A3B8', fontSize: 13, margin: 0, lineHeight: 1.55 }}>
+                        <p style={{ color: '#64748B', fontSize: 11, margin: '0 0 4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Summary</p>
+                        <p style={{ color: '#475569', fontSize: 13, margin: 0, lineHeight: 1.55 }}>
                           {meeting.minutes_summary}
                         </p>
                       </div>
@@ -184,8 +184,8 @@ export default function NexusPanel() {
                                   alignItems:   'center',
                                   gap:          10,
                                   padding:      '8px 12px',
-                                  background:   '#080810',
-                                  border:       '1px solid #1E293B',
+                                  background:   '#F8FAFC',
+                                  border:       '1px solid #E2E8F0',
                                   borderRadius: 6,
                                 }}
                               >
@@ -198,7 +198,7 @@ export default function NexusPanel() {
                                     flexShrink:   0,
                                   }}
                                 />
-                                <p style={{ color: '#CBD5E1', fontSize: 13, margin: 0, flex: 1 }}>
+                                <p style={{ color: '#334155', fontSize: 13, margin: 0, flex: 1 }}>
                                   {item.description}
                                 </p>
                                 <AgentChip agentId={item.assigned_to} size="sm" />

@@ -7,7 +7,7 @@ export default function CivilizationPage() {
   return (
     <div
       style={{
-        background:  '#080810',
+        background:  '#F8FAFC',
         minHeight:   '100vh',
         padding:     '28px 32px',
         display:     'flex',
@@ -25,14 +25,14 @@ export default function CivilizationPage() {
               width:          32,
               height:         32,
               borderRadius:   8,
-              background:     '#6366F122',
-              border:         '1px solid #6366F133',
+              background:     'rgba(79,107,237,0.1)',
+              border:         '1px solid rgba(79,107,237,0.2)',
               fontSize:       16,
             }}
           >
             ⬡
           </span>
-          <h1 style={{ color: '#E2E8F0', fontSize: 22, fontWeight: 800, margin: 0, letterSpacing: '-0.01em' }}>
+          <h1 style={{ color: '#1E293B', fontSize: 22, fontWeight: 800, margin: 0, letterSpacing: '-0.01em' }}>
             Agent Civilization Layer
           </h1>
           <span
@@ -41,9 +41,9 @@ export default function CivilizationPage() {
               borderRadius: 4,
               fontSize:     10,
               fontWeight:   700,
-              background:   '#8B5CF622',
-              color:        '#A78BFA',
-              border:       '1px solid #8B5CF633',
+              background:   'rgba(139,92,246,0.1)',
+              color:        '#8B5CF6',
+              border:       '1px solid rgba(139,92,246,0.2)',
               textTransform: 'uppercase',
               letterSpacing: '0.06em',
             }}
@@ -51,14 +51,14 @@ export default function CivilizationPage() {
             Demo
           </span>
         </div>
-        <p style={{ color: '#475569', fontSize: 13, margin: 0 }}>
+        <p style={{ color: '#64748B', fontSize: 13, margin: 0 }}>
           5 interconnected systems: SYNAPSE · NEXUS · SCORE · TRIBUNAL · ACADEMIA
         </p>
       </div>
 
       {/* Main layout (takes remaining height) */}
       <div style={{ flex: 1, minHeight: 0 }}>
-        <Suspense fallback={<p style={{ color: '#475569' }}>Loading…</p>}>
+        <Suspense fallback={<p style={{ color: '#64748B' }}>Loading…</p>}>
           <CivilizationLayout />
         </Suspense>
       </div>

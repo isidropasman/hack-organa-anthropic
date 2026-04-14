@@ -44,8 +44,8 @@ export default function ControlRoom() {
           <div
             key={m.label}
             style={{
-              background:   '#0F172A',
-              border:       `1px solid ${m.color}22`,
+              background:   '#FFFFFF',
+              border:       `1px solid ${m.color}33`,
               borderRadius: 8,
               padding:      '14px 16px',
             }}
@@ -53,7 +53,7 @@ export default function ControlRoom() {
             <p style={{ color: m.color, fontSize: 28, fontWeight: 800, margin: 0, fontVariantNumeric: 'tabular-nums' }}>
               {m.value}
             </p>
-            <p style={{ color: '#475569', fontSize: 11, margin: '4px 0 0' }}>{m.label}</p>
+            <p style={{ color: '#64748B', fontSize: 11, margin: '4px 0 0' }}>{m.label}</p>
           </div>
         ))}
       </div>
@@ -63,17 +63,17 @@ export default function ControlRoom() {
         {/* CommGraph */}
         <div
           style={{
-            background:   '#0F172A',
-            border:       '1px solid #1E293B',
+            background:   '#FFFFFF',
+            border:       '1px solid #E2E8F0',
             borderRadius: 10,
             overflow:     'hidden',
           }}
         >
-          <div style={{ padding: '12px 16px', borderBottom: '1px solid #1E293B' }}>
-            <p style={{ color: '#94A3B8', fontSize: 13, fontWeight: 600, margin: 0 }}>
+          <div style={{ padding: '12px 16px', borderBottom: '1px solid #E2E8F0' }}>
+            <p style={{ color: '#1E293B', fontSize: 13, fontWeight: 600, margin: 0 }}>
               Communication Network
             </p>
-            <p style={{ color: '#334155', fontSize: 11, margin: '2px 0 0' }}>
+            <p style={{ color: '#64748B', fontSize: 11, margin: '2px 0 0' }}>
               Node size = message volume · Edge thickness = channel weight · Color = score level
             </p>
           </div>
@@ -85,16 +85,16 @@ export default function ControlRoom() {
         {/* Recent messages */}
         <div
           style={{
-            background:   '#0F172A',
-            border:       '1px solid #1E293B',
+            background:   '#FFFFFF',
+            border:       '1px solid #E2E8F0',
             borderRadius: 10,
             overflow:     'hidden',
             display:      'flex',
             flexDirection:'column',
           }}
         >
-          <div style={{ padding: '12px 16px', borderBottom: '1px solid #1E293B' }}>
-            <p style={{ color: '#94A3B8', fontSize: 13, fontWeight: 600, margin: 0 }}>
+          <div style={{ padding: '12px 16px', borderBottom: '1px solid #E2E8F0' }}>
+            <p style={{ color: '#1E293B', fontSize: 13, fontWeight: 600, margin: 0 }}>
               Recent Messages
             </p>
           </div>
@@ -104,20 +104,20 @@ export default function ControlRoom() {
                 key={msg.id}
                 style={{
                   padding:      '8px 10px',
-                  background:   '#080810',
-                  border:       `1px solid #1E293B`,
+                  background:   '#F8FAFC',
+                  border:       `1px solid #E2E8F0`,
                   borderLeft:   `2px solid ${INTENT_COLORS[msg.intent]}`,
                   borderRadius: 6,
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
                   <AgentChip agentId={msg.from} size="sm" showName={false} />
-                  <span style={{ color: '#334155', fontSize: 10 }}>→</span>
+                  <span style={{ color: '#94A3B8', fontSize: 10 }}>→</span>
                   <AgentChip agentId={msg.to} size="sm" showName={false} />
                   <IntentBadge intent={msg.intent} />
-                  <span style={{ color: '#334155', fontSize: 10, marginLeft: 'auto' }}>{msg.timestamp}</span>
+                  <span style={{ color: '#94A3B8', fontSize: 10, marginLeft: 'auto' }}>{msg.timestamp}</span>
                 </div>
-                <p style={{ color: '#64748B', fontSize: 11, margin: 0, lineHeight: 1.4 }}>
+                <p style={{ color: '#475569', fontSize: 11, margin: 0, lineHeight: 1.4 }}>
                   {msg.content.length > 80 ? msg.content.slice(0, 79) + '…' : msg.content}
                 </p>
               </div>
@@ -128,7 +128,7 @@ export default function ControlRoom() {
 
       {/* Agent status grid */}
       <div>
-        <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 12px' }}>
+        <p style={{ color: '#64748B', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 12px' }}>
           Agent Status Grid
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 10 }}>
@@ -144,8 +144,8 @@ export default function ControlRoom() {
               <div
                 key={agent.id}
                 style={{
-                  background:   '#0F172A',
-                  border:       `1px solid ${color}22`,
+                  background:   '#FFFFFF',
+                  border:       `1px solid ${color}33`,
                   borderRadius: 8,
                   padding:      '12px 14px',
                   display:      'flex',
@@ -172,7 +172,7 @@ export default function ControlRoom() {
                   {agent.avatar}
                 </div>
                 <div style={{ minWidth: 0 }}>
-                  <p style={{ color: '#E2E8F0', fontSize: 12, fontWeight: 600, margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <p style={{ color: '#1E293B', fontSize: 12, fontWeight: 600, margin: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {agent.name.split(' ')[0]}
                   </p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 3 }}>

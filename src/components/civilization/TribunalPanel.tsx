@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { TRIBUNAL_CASES, AGENTS } from '@/lib/mock-data-civilization'
-import { SCORES } from '@/lib/mock-data-civilization'
 import { type CaseSeverity, type CaseStatus } from '@/types/civilization'
 import AgentChip from './AgentChip'
 
@@ -47,15 +46,15 @@ export default function TribunalPanel() {
           <div
             key={m.label}
             style={{
-              background:   '#0F172A',
-              border:       '1px solid #1E293B',
+              background:   '#FFFFFF',
+              border:       '1px solid #E2E8F0',
               borderRadius: 8,
               padding:      '14px 16px',
               textAlign:    'center',
             }}
           >
             <p style={{ color: m.color, fontSize: 28, fontWeight: 800, margin: 0 }}>{m.value}</p>
-            <p style={{ color: '#475569', fontSize: 11, margin: '4px 0 0' }}>{m.label}</p>
+            <p style={{ color: '#64748B', fontSize: 11, margin: '4px 0 0' }}>{m.label}</p>
           </div>
         ))}
       </div>
@@ -72,11 +71,11 @@ export default function TribunalPanel() {
             <div
               key={c.id}
               style={{
-                background:   '#0F172A',
-                border:       `1px solid ${isCritical ? '#EF444433' : '#1E293B'}`,
+                background:   '#FFFFFF',
+                border:       `1px solid ${isCritical ? '#EF444433' : '#E2E8F0'}`,
                 borderRadius: 10,
                 overflow:     'hidden',
-                boxShadow:    isCritical ? '0 0 12px #EF444418' : 'none',
+                boxShadow:    isCritical ? '0 0 12px #EF444410' : 'none',
               }}
             >
               <button
@@ -114,7 +113,7 @@ export default function TribunalPanel() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
                     <AgentChip agentId={c.agent_id} size="sm" />
                   </div>
-                  <p style={{ color: '#64748B', fontSize: 12, margin: 0, lineHeight: 1.4 }}>
+                  <p style={{ color: '#475569', fontSize: 12, margin: 0, lineHeight: 1.4 }}>
                     {c.trigger.length > 90 ? c.trigger.slice(0, 89) + '…' : c.trigger}
                   </p>
                 </div>
@@ -135,7 +134,7 @@ export default function TribunalPanel() {
                   {c.status}
                 </span>
 
-                <span style={{ color: '#334155', fontSize: 14 }}>
+                <span style={{ color: '#94A3B8', fontSize: 14 }}>
                   {isExpanded ? '▲' : '▼'}
                 </span>
               </button>
@@ -149,35 +148,34 @@ export default function TribunalPanel() {
                     transition={{ duration: 0.3 }}
                     style={{ overflow: 'hidden' }}
                   >
-                    <div style={{ padding: '0 18px 18px', borderTop: '1px solid #1E293B' }}>
+                    <div style={{ padding: '0 18px 18px', borderTop: '1px solid #E2E8F0' }}>
                       {/* Full trigger */}
                       <div style={{ padding: '12px 0' }}>
-                        <p style={{ color: '#475569', fontSize: 11, margin: '0 0 6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        <p style={{ color: '#64748B', fontSize: 11, margin: '0 0 6px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                           Trigger
                         </p>
-                        <p style={{ color: '#94A3B8', fontSize: 13, margin: 0, lineHeight: 1.55 }}>
+                        <p style={{ color: '#475569', fontSize: 13, margin: 0, lineHeight: 1.55 }}>
                           {c.trigger}
                         </p>
                       </div>
 
                       {/* Chain of responsibility */}
                       <div style={{ marginBottom: 16 }}>
-                        <p style={{ color: '#475569', fontSize: 11, margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        <p style={{ color: '#64748B', fontSize: 11, margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                           Chain of Responsibility
                         </p>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                           {c.chain_of_responsibility.map((entry, i) => {
                             const pct = Math.round(entry.contribution * 100)
-                            const score = SCORES[entry.agent_id]
                             const barColor = pct >= 60 ? '#EF4444' : pct >= 30 ? '#F59E0B' : '#64748B'
                             return (
                               <div key={i}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
                                   <AgentChip agentId={entry.agent_id} size="sm" />
-                                  <span style={{ color: '#64748B', fontSize: 12, flex: 1 }}>{entry.role_in_failure}</span>
+                                  <span style={{ color: '#475569', fontSize: 12, flex: 1 }}>{entry.role_in_failure}</span>
                                   <span style={{ color: barColor, fontSize: 13, fontWeight: 700 }}>{pct}%</span>
                                 </div>
-                                <div style={{ height: 4, background: '#1E293B', borderRadius: 2, overflow: 'hidden' }}>
+                                <div style={{ height: 4, background: '#E2E8F0', borderRadius: 2, overflow: 'hidden' }}>
                                   <div
                                     style={{
                                       width:      `${pct}%`,
@@ -197,14 +195,14 @@ export default function TribunalPanel() {
                       {c.verdict && (
                         <div
                           style={{
-                            background:   '#080810',
-                            border:       `1px solid ${VERDICT_COLORS[c.verdict.action] ?? '#334155'}44`,
+                            background:   '#F8FAFC',
+                            border:       `1px solid ${VERDICT_COLORS[c.verdict.action] ?? '#E2E8F0'}44`,
                             borderRadius: 8,
                             padding:      '12px 14px',
                           }}
                         >
                           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                            <p style={{ color: '#475569', fontSize: 11, margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                            <p style={{ color: '#64748B', fontSize: 11, margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                               Verdict
                             </p>
                             <span
@@ -214,15 +212,15 @@ export default function TribunalPanel() {
                                 fontSize:     11,
                                 fontWeight:   700,
                                 background:   `${VERDICT_COLORS[c.verdict.action]}22`,
-                                color:        VERDICT_COLORS[c.verdict.action] ?? '#94A3B8',
-                                border:       `1px solid ${VERDICT_COLORS[c.verdict.action] ?? '#334155'}44`,
+                                color:        VERDICT_COLORS[c.verdict.action] ?? '#475569',
+                                border:       `1px solid ${VERDICT_COLORS[c.verdict.action] ?? '#E2E8F0'}44`,
                                 textTransform: 'uppercase',
                               }}
                             >
                               {c.verdict.action}
                             </span>
                           </div>
-                          <p style={{ color: '#94A3B8', fontSize: 13, margin: 0, lineHeight: 1.55 }}>
+                          <p style={{ color: '#475569', fontSize: 13, margin: 0, lineHeight: 1.55 }}>
                             {c.verdict.reasoning}
                           </p>
                         </div>
@@ -231,13 +229,13 @@ export default function TribunalPanel() {
                       {/* Dates */}
                       <div style={{ display: 'flex', gap: 16, marginTop: 12 }}>
                         <div>
-                          <p style={{ color: '#334155', fontSize: 11, margin: '0 0 2px' }}>Opened</p>
-                          <p style={{ color: '#475569', fontSize: 12, margin: 0 }}>{c.created_at}</p>
+                          <p style={{ color: '#94A3B8', fontSize: 11, margin: '0 0 2px' }}>Opened</p>
+                          <p style={{ color: '#64748B', fontSize: 12, margin: 0 }}>{c.created_at}</p>
                         </div>
                         {c.resolved_at && (
                           <div>
-                            <p style={{ color: '#334155', fontSize: 11, margin: '0 0 2px' }}>Resolved</p>
-                            <p style={{ color: '#475569', fontSize: 12, margin: 0 }}>{c.resolved_at}</p>
+                            <p style={{ color: '#94A3B8', fontSize: 11, margin: '0 0 2px' }}>Resolved</p>
+                            <p style={{ color: '#64748B', fontSize: 12, margin: 0 }}>{c.resolved_at}</p>
                           </div>
                         )}
                       </div>

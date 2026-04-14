@@ -177,31 +177,33 @@ export default function BrainPage() {
 
       {/* ── Graph area — DARK BACKGROUND intentional for node visibility ────── */}
       <div
-        className="flex min-h-0 gap-4 p-4"
-        style={{ height: 'calc(100vh - 196px)', background: '#0F172A' }}
+        className="mx-0 rounded-xl overflow-hidden"
+        style={{ background: '#0F172A' }}
       >
-        <div className="flex-1 min-h-0 min-w-0 relative">
-          <BrainGraph
-            nodes={graphNodes}
-            links={graphLinks}
-            selectedNodeId={selectedNode?.id ?? null}
-            onNodeClick={setSelectedNode}
-          />
-        </div>
-
-        {selectedNode && (
-          <div
-            className="flex-shrink-0 self-start mt-2"
-            style={{ animation: 'slideInRight 0.2s ease-out' }}
-          >
-            <BrainNodeDetail
-              node={selectedNode}
+        <div className="flex items-start gap-4 p-4">
+          <div className="flex-1 min-w-0">
+            <BrainGraph
               nodes={graphNodes}
               links={graphLinks}
-              onClose={() => setSelectedNode(null)}
+              selectedNodeId={selectedNode?.id ?? null}
+              onNodeClick={setSelectedNode}
             />
           </div>
-        )}
+
+          {selectedNode && (
+            <div
+              className="flex-shrink-0 mt-2"
+              style={{ animation: 'slideInRight 0.2s ease-out' }}
+            >
+              <BrainNodeDetail
+                node={selectedNode}
+                nodes={graphNodes}
+                links={graphLinks}
+                onClose={() => setSelectedNode(null)}
+              />
+            </div>
+          )}
+        </div>
       </div>
 
       {/* ── Documents section ───────────────────────────────────────────────── */}

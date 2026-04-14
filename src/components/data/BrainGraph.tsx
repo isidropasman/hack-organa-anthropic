@@ -115,9 +115,9 @@ export default function BrainGraph({ nodes, links, selectedNodeId, onNodeClick }
       )
       .force(
         'charge',
-        d3.forceManyBody<SimNode>().strength(d => (d.type === 'person' ? -700 : -140)),
+        d3.forceManyBody<SimNode>().strength(d => (d.type === 'person' ? -900 : -200)),
       )
-      .force('center', d3.forceCenter(W / 2, H / 2).strength(0.04))
+      .force('center', d3.forceCenter(W / 2, H / 2).strength(0.08))
       .force(
         'collide',
         d3.forceCollide<SimNode>().radius(d => getRadius(d) + 12).strength(0.8),
@@ -260,6 +260,12 @@ export default function BrainGraph({ nodes, links, selectedNodeId, onNodeClick }
 
     // ── Tick ─────────────────────────────────────────────────────────────────
     simulation.on('tick', () => {
+      // Keep nodes at least 50px from every edge
+      simNodes.forEach(n => {
+        n.x = Math.max(50, Math.min(W - 50, n.x ?? W / 2))
+        n.y = Math.max(50, Math.min(H - 50, n.y ?? H / 2))
+      })
+
       linkEls
         .attr('x1', d => (d.source as SimNode).x ?? 0)
         .attr('y1', d => (d.source as SimNode).y ?? 0)
@@ -298,8 +304,8 @@ export default function BrainGraph({ nodes, links, selectedNodeId, onNodeClick }
   }, [selectedNodeId])
 
   return (
-    <div ref={containerRef} className="w-full h-full">
-      <svg ref={svgRef} className="w-full h-full" style={{ display: 'block' }} />
+    <div ref={containerRef} style={{ width: '100%', height: 700, overflow: 'hidden' }}>
+      <svg ref={svgRef} style={{ display: 'block' }} />
     </div>
   )
 }

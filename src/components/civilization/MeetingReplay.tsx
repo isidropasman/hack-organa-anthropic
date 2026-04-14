@@ -57,9 +57,9 @@ export default function MeetingReplay({ contributions }: Props) {
               borderRadius: 6,
               fontSize:     12,
               fontWeight:   600,
-              background:   visibleCount >= contributions.length ? '#1E293B' : '#6366F122',
-              color:        visibleCount >= contributions.length ? '#334155' : '#A5B4FC',
-              border:       '1px solid #334155',
+              background:   visibleCount >= contributions.length ? '#F1F5F9' : 'rgba(79,107,237,0.1)',
+              color:        visibleCount >= contributions.length ? '#CBD5E1' : '#4F6BED',
+              border:       '1px solid #CBD5E1',
               cursor:       visibleCount >= contributions.length ? 'default' : 'pointer',
             }}
           >
@@ -73,9 +73,9 @@ export default function MeetingReplay({ contributions }: Props) {
               borderRadius: 6,
               fontSize:     12,
               fontWeight:   600,
-              background:   '#F59E0B22',
-              color:        '#FCD34D',
-              border:       '1px solid #F59E0B44',
+              background:   '#FEF3C7',
+              color:        '#D97706',
+              border:       '1px solid #FDE68A',
               cursor:       'pointer',
             }}
           >
@@ -90,8 +90,8 @@ export default function MeetingReplay({ contributions }: Props) {
             fontSize:     12,
             fontWeight:   600,
             background:   'transparent',
-            color:        '#475569',
-            border:       '1px solid #1E293B',
+            color:        '#64748B',
+            border:       '1px solid #E2E8F0',
             cursor:       'pointer',
           }}
         >
@@ -99,18 +99,18 @@ export default function MeetingReplay({ contributions }: Props) {
         </button>
 
         {/* Progress bar */}
-        <div style={{ flex: 1, height: 4, background: '#1E293B', borderRadius: 2, overflow: 'hidden' }}>
+        <div style={{ flex: 1, height: 4, background: '#E2E8F0', borderRadius: 2, overflow: 'hidden' }}>
           <div
             style={{
               width:        `${progress}%`,
               height:       '100%',
-              background:   '#6366F1',
+              background:   '#4F6BED',
               borderRadius: 2,
               transition:   'width 0.4s ease',
             }}
           />
         </div>
-        <span style={{ color: '#475569', fontSize: 11, whiteSpace: 'nowrap' }}>
+        <span style={{ color: '#64748B', fontSize: 11, whiteSpace: 'nowrap' }}>
           {visibleCount}/{contributions.length}
         </span>
       </div>
@@ -128,8 +128,8 @@ export default function MeetingReplay({ contributions }: Props) {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.35 }}
                 style={{
-                  background:   '#0F172A',
-                  border:       '1px solid #1E293B',
+                  background:   '#FFFFFF',
+                  border:       '1px solid #E2E8F0',
                   borderRadius: 8,
                   padding:      '10px 14px',
                   display:      'flex',
@@ -152,11 +152,11 @@ export default function MeetingReplay({ contributions }: Props) {
                         border:       `1px solid ${stance.color}44`,
                       }}
                     >
-                      {stance.icon} {c.role === 'facilitator' ? 'Facilitador' : c.stance.replace('_', ' ')}
+                      {stance.icon} {c.role === 'facilitator' ? 'Facilitator' : c.stance.replace('_', ' ')}
                     </span>
-                    <span style={{ color: '#334155', fontSize: 10, marginLeft: 'auto' }}>{c.timestamp}</span>
+                    <span style={{ color: '#94A3B8', fontSize: 10, marginLeft: 'auto' }}>{c.timestamp}</span>
                   </div>
-                  <p style={{ color: '#94A3B8', fontSize: 13, lineHeight: 1.55, margin: 0 }}>
+                  <p style={{ color: '#475569', fontSize: 13, lineHeight: 1.55, margin: 0 }}>
                     {c.content}
                   </p>
                 </div>

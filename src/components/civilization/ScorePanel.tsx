@@ -56,8 +56,8 @@ export default function ScorePanel() {
                 fontSize:     12,
                 fontWeight:   600,
                 background:   active ? `${c}22` : 'transparent',
-                color:        active ? c : '#475569',
-                border:       active ? `1px solid ${c}55` : '1px solid #1E293B',
+                color:        active ? c : '#64748B',
+                border:       active ? `1px solid ${c}55` : '1px solid #E2E8F0',
                 cursor:       'pointer',
                 display:      'flex',
                 alignItems:   'center',
@@ -74,7 +74,7 @@ export default function ScorePanel() {
                 }}
               />
               {a.name.split(' ')[0]}
-              <span style={{ color: active ? c : '#334155', fontSize: 11 }}>{s.composite}</span>
+              <span style={{ color: active ? c : '#94A3B8', fontSize: 11 }}>{s.composite}</span>
             </button>
           )
         })}
@@ -83,7 +83,7 @@ export default function ScorePanel() {
       {/* Detail card */}
       <div
         style={{
-          background:   '#0F172A',
+          background:   '#FFFFFF',
           border:       `1px solid ${color}33`,
           borderRadius: 10,
           padding:      20,
@@ -110,8 +110,8 @@ export default function ScorePanel() {
           </div>
 
           <div style={{ flex: 1 }}>
-            <p style={{ color: '#E2E8F0', fontSize: 16, fontWeight: 700, margin: 0 }}>{agent.name}</p>
-            <p style={{ color: '#475569', fontSize: 12, margin: '2px 0' }}>{agent.role}</p>
+            <p style={{ color: '#1E293B', fontSize: 16, fontWeight: 700, margin: 0 }}>{agent.name}</p>
+            <p style={{ color: '#64748B', fontSize: 12, margin: '2px 0' }}>{agent.role}</p>
             <span
               style={{
                 padding:      '1px 7px',
@@ -144,12 +144,12 @@ export default function ScorePanel() {
             return (
               <div key={dim.key}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                  <span style={{ color: '#94A3B8', fontSize: 12 }}>
-                    {dim.label} <span style={{ color: '#334155' }}>({dim.weight})</span>
+                  <span style={{ color: '#475569', fontSize: 12 }}>
+                    {dim.label} <span style={{ color: '#94A3B8' }}>({dim.weight})</span>
                   </span>
                   <span style={{ color: barColor, fontSize: 12, fontWeight: 700 }}>{val}</span>
                 </div>
-                <div style={{ height: 5, background: '#1E293B', borderRadius: 3, overflow: 'hidden' }}>
+                <div style={{ height: 5, background: '#E2E8F0', borderRadius: 3, overflow: 'hidden' }}>
                   <div
                     style={{
                       width:      `${val}%`,
@@ -167,7 +167,7 @@ export default function ScorePanel() {
 
         {/* Chart */}
         <div>
-          <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 8px' }}>
+          <p style={{ color: '#64748B', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 8px' }}>
             14-day composite trajectory
           </p>
           <ScoreChart history={history} agentName={agent.name} trending={trending} />
@@ -186,7 +186,7 @@ export default function ScorePanel() {
           <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
             <span style={{ width: 8, height: 8, borderRadius: '50%', background: l.color, flexShrink: 0 }} />
             <span style={{ color: '#64748B', fontSize: 11 }}>{l.label}</span>
-            <span style={{ color: '#334155', fontSize: 10 }}>{l.threshold}</span>
+            <span style={{ color: '#94A3B8', fontSize: 10 }}>{l.threshold}</span>
           </div>
         ))}
       </div>

@@ -58,11 +58,11 @@ export default function ScoreChart({ history, agentName, trending }: Props) {
         />
         <Tooltip
           contentStyle={{
-            background:   '#0F172A',
-            border:       '1px solid #1E293B',
+            background:   '#FFFFFF',
+            border:       '1px solid #E2E8F0',
             borderRadius: 6,
             fontSize:     12,
-            color:        '#CBD5E1',
+            color:        '#334155',
           }}
           labelStyle={{ color: '#64748B', marginBottom: 4 }}
           formatter={(value) => [typeof value === 'number' ? value.toFixed(1) : value, 'Composite']}

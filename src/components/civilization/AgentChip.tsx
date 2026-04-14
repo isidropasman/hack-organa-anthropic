@@ -44,7 +44,7 @@ export default function AgentChip({ agentId, size = 'md', showName = true }: Pro
       {showName && (
         <span
           style={{
-            color:      '#CBD5E1',
+            color:      '#334155',
             fontSize:   size === 'sm' ? 11 : 13,
             fontWeight: 500,
             whiteSpace: 'nowrap',

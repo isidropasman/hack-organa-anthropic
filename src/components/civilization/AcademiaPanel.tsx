@@ -22,7 +22,7 @@ const CURRICULUM_ICONS: Record<string, string> = {
 const CURRICULUM_COLORS: Record<string, string> = {
   passed:      '#10B981',
   in_progress: '#F59E0B',
-  pending:     '#334155',
+  pending:     '#94A3B8',
   failed:      '#EF4444',
 }
 
@@ -31,15 +31,15 @@ export default function AcademiaPanel() {
     return (
       <div
         style={{
-          background:   '#0F172A',
-          border:       '1px solid #1E293B',
+          background:   '#FFFFFF',
+          border:       '1px solid #E2E8F0',
           borderRadius: 10,
           padding:      '40px 20px',
           textAlign:    'center',
         }}
       >
-        <p style={{ color: '#475569', fontSize: 14, marginBottom: 8 }}>No active learning sessions</p>
-        <p style={{ color: '#334155', fontSize: 13 }}>
+        <p style={{ color: '#64748B', fontSize: 14, marginBottom: 8 }}>No active learning sessions</p>
+        <p style={{ color: '#94A3B8', fontSize: 13 }}>
           Academia sessions are initiated when the Tribunal flags an agent for retraining. Sessions draw mentor patterns from top-performing agents and build personalized curricula from failure profiles.
         </p>
       </div>
@@ -60,7 +60,7 @@ export default function AcademiaPanel() {
             {/* Session card */}
             <div
               style={{
-                background:   '#0F172A',
+                background:   '#FFFFFF',
                 border:       `1px solid ${statusColor}33`,
                 borderRadius: 10,
                 padding:      20,
@@ -71,10 +71,10 @@ export default function AcademiaPanel() {
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
                 <AgentChip agentId={session.agent_id} size="md" />
                 <div style={{ flex: 1 }}>
-                  <p style={{ color: '#E2E8F0', fontSize: 14, fontWeight: 600, margin: 0 }}>
+                  <p style={{ color: '#1E293B', fontSize: 14, fontWeight: 600, margin: 0 }}>
                     {agent?.name ?? session.agent_id}
                   </p>
-                  <p style={{ color: '#475569', fontSize: 12, margin: '2px 0 0' }}>
+                  <p style={{ color: '#64748B', fontSize: 12, margin: '2px 0 0' }}>
                     Started: {session.started_at}
                   </p>
                 </div>
@@ -100,9 +100,9 @@ export default function AcademiaPanel() {
                   <span style={{ color: '#64748B', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                     Curriculum progress
                   </span>
-                  <span style={{ color: '#94A3B8', fontSize: 11 }}>{passedCount}/{totalCount} skills</span>
+                  <span style={{ color: '#475569', fontSize: 11 }}>{passedCount}/{totalCount} skills</span>
                 </div>
-                <div style={{ height: 5, background: '#1E293B', borderRadius: 3, overflow: 'hidden' }}>
+                <div style={{ height: 5, background: '#E2E8F0', borderRadius: 3, overflow: 'hidden' }}>
                   <div
                     style={{
                       width:      `${progress}%`,
@@ -117,7 +117,7 @@ export default function AcademiaPanel() {
 
               {/* Curriculum list */}
               <div style={{ marginBottom: 20 }}>
-                <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 10px' }}>
+                <p style={{ color: '#64748B', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 10px' }}>
                   Curriculum
                 </p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -132,8 +132,8 @@ export default function AcademiaPanel() {
                           alignItems:   'center',
                           gap:          10,
                           padding:      '10px 14px',
-                          background:   '#080810',
-                          border:       `1px solid ${item.status === 'passed' ? '#10B98133' : '#1E293B'}`,
+                          background:   '#F8FAFC',
+                          border:       `1px solid ${item.status === 'passed' ? '#10B98133' : '#E2E8F0'}`,
                           borderRadius: 7,
                         }}
                       >
@@ -155,7 +155,7 @@ export default function AcademiaPanel() {
                         >
                           {icon}
                         </span>
-                        <span style={{ color: '#CBD5E1', fontSize: 13, flex: 1 }}>{item.skill}</span>
+                        <span style={{ color: '#334155', fontSize: 13, flex: 1 }}>{item.skill}</span>
                         {item.score !== undefined && (
                           <span
                             style={{
@@ -189,7 +189,7 @@ export default function AcademiaPanel() {
               {/* Mentor patterns */}
               {session.mentor_patterns.length > 0 && (
                 <div style={{ marginBottom: 16 }}>
-                  <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 10px' }}>
+                  <p style={{ color: '#64748B', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 10px' }}>
                     Patterns from mentor agents
                   </p>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
@@ -201,15 +201,15 @@ export default function AcademiaPanel() {
                           alignItems:   'flex-start',
                           gap:          10,
                           padding:      '8px 12px',
-                          background:   '#080810',
-                          border:       '1px solid #1E293B',
+                          background:   '#F8FAFC',
+                          border:       '1px solid #E2E8F0',
                           borderRadius: 6,
                         }}
                       >
                         <AgentChip agentId={mp.from_agent_id} size="sm" showName={false} />
                         <div>
                           <AgentChip agentId={mp.from_agent_id} size="sm" showName />
-                          <p style={{ color: '#64748B', fontSize: 12, margin: '3px 0 0', lineHeight: 1.45 }}>
+                          <p style={{ color: '#475569', fontSize: 12, margin: '3px 0 0', lineHeight: 1.45 }}>
                             {mp.pattern}
                           </p>
                         </div>
@@ -222,16 +222,16 @@ export default function AcademiaPanel() {
               {/* Graduation criteria */}
               <div
                 style={{
-                  background:   '#080810',
-                  border:       '1px solid #1E293B',
+                  background:   '#F8FAFC',
+                  border:       '1px solid #E2E8F0',
                   borderRadius: 7,
                   padding:      '10px 14px',
                 }}
               >
-                <p style={{ color: '#475569', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 6px' }}>
+                <p style={{ color: '#64748B', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 6px' }}>
                   Graduation criteria
                 </p>
-                <p style={{ color: '#64748B', fontSize: 12, margin: 0, lineHeight: 1.5 }}>
+                <p style={{ color: '#475569', fontSize: 12, margin: 0, lineHeight: 1.5 }}>
                   Pass all 4 curriculum skills · Minimum composite graduation score of 70 · No failed mandatory modules
                 </p>
                 {session.graduation_score !== undefined && (

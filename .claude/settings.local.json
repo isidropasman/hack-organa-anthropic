@@ -11,7 +11,11 @@
       "Bash(cmd:*)",
       "Bash(powershell:*)",
       "Bash(taskkill /PID 8604 /F)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(npm run:*)",
+      "Bash(echo \"Server PID: $!\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/civilization)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/brain)"
     ]
   }
 }
