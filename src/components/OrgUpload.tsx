@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { agentStore } from '@/lib/agent-store'
-import { NOVA_AGENCY_DEMO, NOVA_COMMERCE_DEMO } from '../../tools/scripts/seed-demo'
+import { NOVA_AGENCY_DEMO, NOVA_COMMERCE_DEMO } from '@/lib/demo-data'
 import type { Agent, OrgChartParseResponse } from '@/lib/types'
 
 interface Props {
