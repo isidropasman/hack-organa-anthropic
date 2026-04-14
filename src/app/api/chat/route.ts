@@ -1,59 +1,55 @@
 // src/app/api/chat/route.ts
-// POST /api/chat
-// Sends a message to a trained agent and returns the response
+// POST /api/chat — SSE streaming endpoint with extended thinking
+// Streams AgentStreamEvent JSON lines as Server-Sent Events
 
-import { NextRequest, NextResponse } from 'next/server'
-import { agentChat } from '@/lib/claude'
-import type { AgentChatRequest, AgentChatResponse, Message } from '@/lib/types'
+import { NextRequest } from 'next/server'
+import { agentChatStream } from '@/lib/claude'
+import type { AgentChatRequest } from '@/lib/types'
 
-export async function POST(request: NextRequest): Promise<NextResponse<AgentChatResponse>> {
+export async function POST(request: NextRequest): Promise<Response> {
+  let body: Partial<AgentChatRequest>
   try {
-    const body = await request.json() as Partial<AgentChatRequest>
-    const { agentId, agentName, agentRole, companyName, knowledgeBase, messages } = body
-
-    if (!agentId || !agentName || !agentRole || !companyName || !messages) {
-      const errorMessage: Message = {
-        role: 'assistant',
-        content: 'Missing required fields',
-        timestamp: new Date().toISOString(),
-      }
-      return NextResponse.json(
-        { message: errorMessage, error: 'Missing required fields' },
-        { status: 400 }
-      )
-    }
-
-    if (!knowledgeBase) {
-      const errorMessage: Message = {
-        role: 'assistant',
-        content: 'This agent has not completed onboarding yet.',
-        timestamp: new Date().toISOString(),
-      }
-      return NextResponse.json(
-        { message: errorMessage, error: 'Agent has not completed onboarding' },
-        { status: 400 }
-      )
-    }
-
-    const reply = await agentChat(agentName, agentRole, companyName, knowledgeBase, messages)
-
-    const message: Message = {
-      role: 'assistant',
-      content: reply,
-      timestamp: new Date().toISOString(),
-    }
-
-    return NextResponse.json({ message })
-  } catch (err) {
-    const errorMsg = err instanceof Error ? err.message : 'Unknown error'
-    const errorMessage: Message = {
-      role: 'assistant',
-      content: 'Sorry, something went wrong. Please try again.',
-      timestamp: new Date().toISOString(),
-    }
-    return NextResponse.json(
-      { message: errorMessage, error: errorMsg },
-      { status: 500 }
-    )
+    body = await request.json() as Partial<AgentChatRequest>
+  } catch {
+    return new Response('{"type":"error","message":"Invalid JSON"}', { status: 400 })
   }
+
+  const { agentId, agentName, agentRole, companyName, knowledgeBase, messages } = body
+
+  if (!agentId || !agentName || !agentRole || !companyName || !messages) {
+    return new Response('{"type":"error","message":"Missing required fields"}', { status: 400 })
+  }
+
+  if (!knowledgeBase) {
+    return new Response('{"type":"error","message":"Agent has not completed onboarding"}', { status: 400 })
+  }
+
+  const encoder = new TextEncoder()
+
+  const readable = new ReadableStream({
+    async start(controller) {
+      try {
+        const gen = agentChatStream(agentName, agentRole, companyName, knowledgeBase, messages)
+        for await (const event of gen) {
+          controller.enqueue(encoder.encode(`data: ${JSON.stringify(event)}\n\n`))
+        }
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : 'Unknown error'
+        controller.enqueue(
+          encoder.encode(`data: ${JSON.stringify({ type: 'error', message: msg })}\n\n`)
+        )
+      } finally {
+        controller.close()
+      }
+    },
+  })
+
+  return new Response(readable, {
+    headers: {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache, no-transform',
+      'X-Accel-Buffering': 'no',
+      'Connection': 'keep-alive',
+    },
+  })
 }

@@ -1,77 +1,137 @@
 'use client'
 
-// src/components/AgentCard.tsx
-// Displays a single agent's status — readiness score, training state
-// Click navigates to /onboard/[agentId] or /agent/[agentId] depending on onboardingComplete
-
+import { motion } from 'framer-motion'
 import type { Agent } from '@/lib/types'
 
 interface Props {
   agent: Agent
   onClick: () => void
+  index?: number
+}
+
+const DEPT_COLORS: Record<string, { bg: string; text: string }> = {
+  'Dirección General': { bg: '#EFF6FF', text: '#1E40AF' },
+  'Fundadores':        { bg: '#EFF6FF', text: '#1E40AF' },
+  'Cuentas':           { bg: '#F0FDF4', text: '#166534' },
+  'Growth':            { bg: '#F0FDF4', text: '#166534' },
+  'Creatividad':       { bg: '#FDF4FF', text: '#7E22CE' },
+  'Finanzas':          { bg: '#FFFBEB', text: '#92400E' },
+  'Operaciones':       { bg: '#FFF7ED', text: '#C2410C' },
+  'Tecnología':        { bg: '#F0F9FF', text: '#0369A1' },
 }
 
 function getInitials(name: string): string {
-  return name
-    .split(' ')
-    .map(n => n[0])
-    .slice(0, 2)
-    .join('')
-    .toUpperCase()
+  return name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()
 }
 
-export default function AgentCard({ agent, onClick }: Props) {
-  return (
-    <button
-      onClick={onClick}
-      className="w-full text-left p-5 bg-organa-surface border border-organa-border rounded-xl hover:border-organa-muted transition-all group"
-    >
-      {/* TODO: Implement full card UI */}
+function getAvatarColor(name: string): string {
+  const colors = [
+    '#0071E3', '#34C759', '#FF9F0A', '#FF375F',
+    '#BF5AF2', '#32ADE6', '#FF6961', '#30D158',
+  ]
+  let hash = 0
+  for (const c of name) hash = (hash * 31 + c.charCodeAt(0)) & 0xFFFF
+  return colors[hash % colors.length]
+}
 
-      {/* Avatar + status badge */}
+export default function AgentCard({ agent, onClick, index = 0 }: Props) {
+  const avatarColor = getAvatarColor(agent.name)
+  const deptStyle = DEPT_COLORS[agent.department] ?? { bg: '#F5F5F7', text: '#6E6E73' }
+
+  return (
+    <motion.button
+      onClick={onClick}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        delay: index * 0.055,
+        duration: 0.45,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      whileHover={{ y: -4, boxShadow: '0 12px 32px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.04)' }}
+      whileTap={{ scale: 0.98 }}
+      className="w-full text-left p-5 bg-organa-surface rounded-2xl shadow-card transition-shadow duration-200 group"
+    >
+      {/* Top row: avatar + badge */}
       <div className="flex items-start justify-between mb-4">
-        <div className="w-10 h-10 rounded-full bg-organa-accent/20 flex items-center justify-center text-organa-accent font-semibold text-sm">
-          {getInitials(agent.name)}
+        <div className="relative">
+          <div
+            className="w-11 h-11 rounded-full flex items-center justify-center text-white font-semibold text-sm select-none"
+            style={{ backgroundColor: avatarColor }}
+          >
+            {getInitials(agent.name)}
+          </div>
+          {agent.onboardingComplete && (
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: index * 0.055 + 0.3, type: 'spring', stiffness: 300 }}
+              className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-organa-success rounded-full border-2 border-white flex items-center justify-center"
+            >
+              <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
+                <path d="M1.5 4L3 5.5L6.5 2" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </motion.div>
+          )}
         </div>
-        {/* Trained / Untrained badge */}
-        <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-          agent.onboardingComplete
-            ? 'bg-green-900/40 text-green-400 border border-green-800'
-            : 'bg-organa-muted/30 text-organa-text-muted border border-organa-border'
-        }`}>
-          {agent.onboardingComplete ? 'Trained' : 'Untrained'}
+
+        <span
+          className="text-xs px-2.5 py-1 rounded-full font-medium"
+          style={{ backgroundColor: deptStyle.bg, color: deptStyle.text }}
+        >
+          {agent.department}
         </span>
       </div>
 
-      {/* Name and role */}
+      {/* Name + role */}
       <div className="mb-4">
-        <p className="font-semibold text-organa-text group-hover:text-white transition-colors">
+        <p className="font-semibold text-organa-text text-[15px] leading-tight">
           {agent.name}
         </p>
-        <p className="text-organa-text-muted text-sm mt-0.5">{agent.role}</p>
-        <p className="text-organa-text-muted text-xs mt-0.5">{agent.department}</p>
+        <p className="text-organa-text-secondary text-sm mt-0.5">{agent.role}</p>
       </div>
 
-      {/* Readiness score bar */}
-      <div>
-        <div className="flex justify-between text-xs text-organa-text-muted mb-1">
+      {/* Readiness bar */}
+      <div className="mb-4">
+        <div className="flex justify-between text-xs text-organa-text-muted mb-1.5">
           <span>Readiness</span>
-          <span>{agent.readinessScore}%</span>
+          <span className={agent.onboardingComplete ? 'text-organa-success font-medium' : ''}>
+            {agent.readinessScore}%
+          </span>
         </div>
-        <div className="h-1.5 bg-organa-border rounded-full overflow-hidden">
-          <div
-            className={`h-full rounded-full transition-all duration-500 ${
-              agent.onboardingComplete ? 'bg-green-500' : 'bg-organa-accent'
+        <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${agent.readinessScore}%` }}
+            transition={{ delay: index * 0.055 + 0.2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className={`h-full rounded-full ${
+              agent.onboardingComplete ? 'bg-organa-success' : 'bg-organa-accent'
             }`}
-            style={{ width: `${agent.readinessScore}%` }}
           />
         </div>
       </div>
 
-      {/* CTA label */}
-      <p className="text-xs text-organa-text-muted mt-3 group-hover:text-organa-accent transition-colors">
-        {agent.onboardingComplete ? 'Chat with agent →' : 'Start onboarding →'}
-      </p>
-    </button>
+      {/* CTA */}
+      <div className="flex items-center justify-between">
+        <span
+          className={`text-xs font-medium transition-colors ${
+            agent.onboardingComplete
+              ? 'text-organa-accent group-hover:text-organa-accent-hover'
+              : 'text-organa-text-secondary group-hover:text-organa-text'
+          }`}
+        >
+          {agent.onboardingComplete ? 'Chat with agent →' : 'Start onboarding →'}
+        </span>
+        {agent.onboardingComplete ? (
+          <span className="text-xs text-organa-success bg-organa-success-light px-2 py-0.5 rounded-full font-medium">
+            Trained
+          </span>
+        ) : (
+          <span className="text-xs text-organa-text-muted bg-gray-100 px-2 py-0.5 rounded-full">
+            Draft
+          </span>
+        )}
+      </div>
+    </motion.button>
   )
 }
