@@ -43,6 +43,10 @@ export default function OrgUpload({ onAgentsGenerated, isLoading }: Props) {
       setError('Please upload a JPEG, PNG, GIF, or WebP image')
       return
     }
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image must be under 5MB. Try compressing it first.')
+      return
+    }
     setError(null)
     setFileName(file.name)
     setIsProcessing(true)

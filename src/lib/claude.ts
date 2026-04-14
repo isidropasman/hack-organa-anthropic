@@ -140,8 +140,8 @@ export async function* agentChatStream(
 
   const stream = await client.messages.create({
     model: MODEL,
-    max_tokens: 12000,
-    thinking: { type: 'enabled', budget_tokens: 8000 },
+    max_tokens: 4096,
+    thinking: { type: 'enabled', budget_tokens: 1024 },
     stream: true,
     system: PROMPTS.TRAINED_AGENT(agentName, agentRole, companyName, serialized),
     messages: messages.map(msg => ({ role: msg.role, content: msg.content })),
