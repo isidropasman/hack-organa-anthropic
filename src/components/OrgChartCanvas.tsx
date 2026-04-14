@@ -61,14 +61,14 @@ function buildLayout(agents: Agent[]): Map<string, { x: number; y: number }> {
   return pos
 }
 
-// ─── Department color palette ─────────────────────────────────────────────────
+// ─── Shared helpers ───────────────────────────────────────────────────────────
 const PALETTE = [
-  { bg: '#EFF6FF', fg: '#1D4ED8' },
-  { bg: '#F5F3FF', fg: '#6D28D9' },
-  { bg: '#ECFDF5', fg: '#065F46' },
-  { bg: '#FFF7ED', fg: '#C2410C' },
-  { bg: '#FDF2F8', fg: '#9D174D' },
-  { bg: '#EEF2FF', fg: '#3730A3' },
+  { bg: '#EFF6FF', fg: '#1D4ED8', bar: '#1D4ED8' },
+  { bg: '#F5F3FF', fg: '#6D28D9', bar: '#6D28D9' },
+  { bg: '#ECFDF5', fg: '#065F46', bar: '#059669' },
+  { bg: '#FFF7ED', fg: '#C2410C', bar: '#EA580C' },
+  { bg: '#FDF2F8', fg: '#9D174D', bar: '#DB2777' },
+  { bg: '#EEF2FF', fg: '#3730A3', bar: '#4F46E5' },
 ] as const
 
 function deptColor(dept: string) {
@@ -80,7 +80,9 @@ function initials(name: string) {
   return name.split(' ').slice(0, 2).map(w => w[0] ?? '').join('').toUpperCase()
 }
 
-// ─── Custom node ──────────────────────────────────────────────────────────────
+const handleStyle = { opacity: 0, pointerEvents: 'none' as const, width: 1, height: 1 }
+
+// ─── Node data ────────────────────────────────────────────────────────────────
 interface NodeData {
   agent: Agent
   isRoot: boolean
@@ -88,38 +90,107 @@ interface NodeData {
   editable: boolean
 }
 
+// ─── Person node (left / human side) ─────────────────────────────────────────
+function PersonNode({ data }: NodeProps<NodeData>) {
+  const { agent, isRoot, isSelected, editable } = data
+  const c = deptColor(agent.department)
+
+  return (
+    <div style={{
+      width: NODE_W,
+      background: '#fff',
+      borderRadius: 12,
+      border: `1.5px solid ${isSelected ? '#0071E3' : isRoot ? '#c7d9f5' : 'rgba(0,0,0,0.09)'}`,
+      boxShadow: isSelected
+        ? '0 0 0 3px rgba(0,113,227,0.15), 0 2px 8px rgba(0,0,0,0.07)'
+        : '0 1px 6px rgba(0,0,0,0.05)',
+      display: 'flex',
+      overflow: 'hidden',
+      cursor: editable ? 'pointer' : 'default',
+      transition: 'border-color 0.15s, box-shadow 0.15s',
+    }}>
+      <Handle type="target" position={Position.Top} style={handleStyle} />
+
+      {/* Left accent bar */}
+      <div style={{ width: 4, flexShrink: 0, background: c.bar, opacity: 0.7 }} />
+
+      {/* Content */}
+      <div style={{ flex: 1, padding: '9px 11px', minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <div style={{
+            width: 28, height: 28, borderRadius: '50%', flexShrink: 0,
+            background: c.bg, color: c.fg,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 10, fontWeight: 700,
+          }}>
+            {initials(agent.name)}
+          </div>
+          <div style={{ minWidth: 0 }}>
+            <p style={{
+              margin: 0, fontSize: 12, fontWeight: 600, color: '#1d1d1f',
+              lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+            }}>
+              {agent.name}
+            </p>
+            <p style={{
+              margin: 0, fontSize: 10.5, color: '#6e6e73',
+              lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+            }}>
+              {agent.role}
+            </p>
+          </div>
+        </div>
+        <p style={{
+          margin: '6px 0 0', fontSize: 9.5, color: c.fg,
+          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+          opacity: 0.8,
+        }}>
+          {agent.department}
+        </p>
+      </div>
+
+      <Handle type="source" position={Position.Bottom} style={handleStyle} />
+    </div>
+  )
+}
+
+// ─── Agent node (right / AI side) ────────────────────────────────────────────
 function AgentNode({ data }: NodeProps<NodeData>) {
   const { agent, isRoot, isSelected, editable } = data
   const c = deptColor(agent.department)
-  const handleStyle = { opacity: 0, pointerEvents: 'none' as const, width: 1, height: 1 }
-
-  const borderColor = isSelected ? '#0071E3' : isRoot ? '#0071E3' : 'rgba(0,0,0,0.08)'
-  const borderWidth = isSelected || isRoot ? 2 : 1.5
-  const boxShadow = isSelected
-    ? '0 0 0 3px rgba(0,113,227,0.18), 0 4px 16px rgba(0,0,0,0.10)'
-    : '0 2px 12px rgba(0,0,0,0.07)'
+  const trained = agent.onboardingComplete
+  const score = agent.readinessScore
 
   return (
-    <div
-      style={{
-        width: NODE_W,
-        background: isSelected ? '#F0F7FF' : '#fff',
-        borderRadius: 16,
-        border: `${borderWidth}px solid ${borderColor}`,
-        boxShadow,
-        padding: '10px 12px',
-        cursor: editable ? 'pointer' : 'default',
-        transition: 'box-shadow 0.15s, border-color 0.15s, background 0.15s',
-      }}
-    >
+    <div style={{
+      width: NODE_W,
+      background: isSelected ? '#F0F7FF' : '#fff',
+      borderRadius: 16,
+      border: `${isSelected || isRoot ? 2 : 1.5}px solid ${isSelected ? '#0071E3' : isRoot ? '#0071E3' : 'rgba(0,0,0,0.08)'}`,
+      boxShadow: isSelected
+        ? '0 0 0 3px rgba(0,113,227,0.18), 0 4px 16px rgba(0,0,0,0.10)'
+        : '0 2px 12px rgba(0,0,0,0.07)',
+      padding: '10px 12px 8px',
+      cursor: editable ? 'pointer' : 'default',
+      transition: 'box-shadow 0.15s, border-color 0.15s, background 0.15s',
+      position: 'relative',
+    }}>
       <Handle type="target" position={Position.Top} style={handleStyle} />
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+      {/* Trained dot */}
+      {trained && (
         <div style={{
-          width: 34, height: 34, borderRadius: 10,
+          position: 'absolute', top: 8, right: 8,
+          width: 8, height: 8, borderRadius: '50%', background: '#34C759',
+        }} />
+      )}
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 7 }}>
+        <div style={{
+          width: 34, height: 34, borderRadius: 10, flexShrink: 0,
           background: c.bg, color: c.fg,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 11, fontWeight: 700, flexShrink: 0, letterSpacing: '0.02em',
+          fontSize: 11, fontWeight: 700, letterSpacing: '0.02em',
         }}>
           {initials(agent.name)}
         </div>
@@ -128,7 +199,7 @@ function AgentNode({ data }: NodeProps<NodeData>) {
             margin: 0, fontSize: 12, fontWeight: 600, color: '#1d1d1f',
             lineHeight: 1.3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
           }}>
-            {agent.name || '(Unknown)'}
+            {agent.name}
           </p>
           <p style={{
             margin: 0, fontSize: 11, color: '#6e6e73',
@@ -139,20 +210,33 @@ function AgentNode({ data }: NodeProps<NodeData>) {
         </div>
       </div>
 
-      <div style={{
-        fontSize: 10, background: c.bg, color: c.fg,
-        padding: '2px 8px', borderRadius: 6, fontWeight: 500,
-        display: 'inline-block', maxWidth: '100%',
-        overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-      }}>
-        {agent.department}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+        <div style={{
+          fontSize: 10, background: c.bg, color: c.fg,
+          padding: '2px 8px', borderRadius: 6, fontWeight: 500,
+          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1,
+        }}>
+          {agent.department}
+        </div>
+        {trained && (
+          <span style={{ fontSize: 10, color: '#34C759', fontWeight: 600, flexShrink: 0 }}>
+            {score}%
+          </span>
+        )}
       </div>
 
-      {agent.onboardingComplete && (
+      {/* Readiness bar */}
+      {score > 0 && (
         <div style={{
-          position: 'absolute', top: 8, right: 8,
-          width: 8, height: 8, borderRadius: '50%', background: '#34C759',
-        }} />
+          marginTop: 6, height: 3, borderRadius: 2,
+          background: 'rgba(0,0,0,0.07)', overflow: 'hidden',
+        }}>
+          <div style={{
+            height: '100%', width: `${score}%`,
+            background: trained ? '#34C759' : '#0071E3',
+            borderRadius: 2, transition: 'width 0.6s ease',
+          }} />
+        </div>
       )}
 
       <Handle type="source" position={Position.Bottom} style={handleStyle} />
@@ -160,18 +244,22 @@ function AgentNode({ data }: NodeProps<NodeData>) {
   )
 }
 
-const nodeTypes: NodeTypes = { agentOrg: AgentNode }
+// ─── Node type registries (must be module-level for ReactFlow stability) ──────
+const agentNodeTypes: NodeTypes = { agentOrg: AgentNode }
+const personNodeTypes: NodeTypes = { agentOrg: PersonNode }
 
 // ─── Inner flow ───────────────────────────────────────────────────────────────
 interface OrgFlowProps {
   agents: Agent[]
+  variant: 'person' | 'agent'
   editable?: boolean
   onAgentClick?: (agent: Agent) => void
   selectedAgentId?: string
 }
 
-function OrgFlow({ agents, editable = false, onAgentClick, selectedAgentId }: OrgFlowProps) {
+function OrgFlow({ agents, variant, editable = false, onAgentClick, selectedAgentId }: OrgFlowProps) {
   const rootId = agents.find(a => a.reportsTo === null)?.id
+  const nodeTypes = variant === 'person' ? personNodeTypes : agentNodeTypes
 
   const { nodes, edges } = useMemo(() => {
     const positions = buildLayout(agents)
@@ -197,16 +285,14 @@ function OrgFlow({ agents, editable = false, onAgentClick, selectedAgentId }: Or
         source: a.reportsTo!,
         target: a.id,
         type: 'smoothstep',
-        style: { stroke: 'rgba(0,0,0,0.15)', strokeWidth: 1.5 },
+        style: { stroke: 'rgba(0,0,0,0.13)', strokeWidth: 1.5 },
       }))
 
     return { nodes, edges }
   }, [agents, rootId, selectedAgentId, editable])
 
   const handleNodeClick: NodeMouseHandler = (_event, node) => {
-    if (editable && onAgentClick) {
-      onAgentClick((node.data as NodeData).agent)
-    }
+    if (editable && onAgentClick) onAgentClick((node.data as NodeData).agent)
   }
 
   return (
@@ -232,17 +318,25 @@ function OrgFlow({ agents, editable = false, onAgentClick, selectedAgentId }: Or
 // ─── Public export ────────────────────────────────────────────────────────────
 interface OrgChartCanvasProps {
   agents: Agent[]
+  variant?: 'person' | 'agent'
   editable?: boolean
   onAgentClick?: (agent: Agent) => void
   selectedAgentId?: string
 }
 
-export default function OrgChartCanvas({ agents, editable, onAgentClick, selectedAgentId }: OrgChartCanvasProps) {
+export default function OrgChartCanvas({
+  agents,
+  variant = 'agent',
+  editable,
+  onAgentClick,
+  selectedAgentId,
+}: OrgChartCanvasProps) {
   return (
     <ReactFlowProvider>
       <div style={{ width: '100%', height: '100%' }}>
         <OrgFlow
           agents={agents}
+          variant={variant}
           editable={editable}
           onAgentClick={onAgentClick}
           selectedAgentId={selectedAgentId}
