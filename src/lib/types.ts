@@ -79,3 +79,96 @@ export interface DemoCompany {
   description: string
   agents: Agent[]
 }
+
+// ============================================
+// DATA LAYER TYPES (Lorenzo — KRS + Monitoring)
+// ============================================
+
+export interface KRSDimensions {
+  completitud: number      // 0-100
+  especificidad: number    // 0-100
+  consistencia: number     // 0-100
+  unicidad: number         // 0-100
+  temporalidad: number     // 0-100
+}
+
+export interface KRSAgent {
+  id: string
+  name: string
+  role: string
+  avatar: string                    // initials e.g. "MG"
+  krs: number                      // 0-100 composite score
+  mode: 'shadow' | 'assisted' | 'autonomous'
+  dimensions: KRSDimensions
+  tasksDocumented: number
+  tasksExpected: number
+  tasksBySource: {
+    screenLearning: number
+    chat: number
+  }
+  screenHours: number
+  gaps: string[]
+  lastObservation: string           // ISO timestamp
+  onboardingDuration: string
+  overlapWarning?: string
+}
+
+export interface AgentMetrics {
+  approvalRate: number
+  proposals: number
+  approved: number
+  rejected: number
+  costPerAction: number
+  totalCost: number
+  tokensUsed: number
+  confidenceAvg: number
+  timeToResolution: string
+  knowledgeCoverage: number
+  automationRate: number
+  errorRate: number
+  screenHours: number
+  tasksFromScreen: number
+  screenEfficiency: number
+}
+
+export interface AgentAlert {
+  type: 'critical' | 'warning'
+  message: string
+  metric: string
+}
+
+export interface MonitoredAgent {
+  id: string
+  role: string
+  name: string
+  mode: 'shadow' | 'assisted' | 'autonomous'
+  metrics: AgentMetrics
+  weeklyTrend: number[]           // approval rate last 5 weeks
+  alerts: AgentAlert[]
+}
+
+export interface MonitoringSummary {
+  totalAgents: number
+  activeAgents: number
+  totalProposals: number
+  totalApproved: number
+  totalRejected: number
+  avgApprovalRate: number
+  totalTokensUsed: number
+  totalCost: number
+  avgConfidence: number
+  avgTimeToResolution: string
+  automationRate: number
+  alertsActive: number
+  totalScreenHours: number
+  screenLearningRate: number
+  costPerScreenHour: number
+}
+
+export interface OrgTrend {
+  labels: string[]
+  approvalRate: number[]
+  costTotal: number[]
+  automationRate: number[]
+  screenLearningRate: number[]
+}
