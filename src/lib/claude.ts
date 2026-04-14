@@ -11,6 +11,7 @@ const client = new Anthropic({
 })
 
 const MODEL = 'claude-opus-4-6'
+const MODEL_SONNET = 'claude-sonnet-4-6'
 
 // ─── Streaming types ─────────────────────────────────────────────────────────
 
@@ -124,6 +125,75 @@ export async function agentChat(
   const block = response.content[0]
   if (block.type !== 'text') throw new Error('Unexpected response type from agent chat')
   return block.text
+}
+
+// ─── analyzeRecordingStream ──────────────────────────────────────────────────
+
+export async function* analyzeRecordingStream(
+  systemPrompt: string,
+  frames: string[],       // base64 data URLs (data:image/jpeg;base64,...)
+  agentName: string,
+  agentRole: string,
+): AsyncGenerator<AgentStreamEvent> {
+  const imageBlocks = frames.map(frame => ({
+    type: 'image' as const,
+    source: {
+      type: 'base64' as const,
+      media_type: 'image/jpeg' as const,
+      data: frame.includes(',') ? frame.split(',')[1] : frame,
+    },
+  }))
+
+  const stream = await client.messages.create({
+    model: MODEL_SONNET,
+    max_tokens: 1024,
+    stream: true,
+    system: systemPrompt
+      .replace('[NOMBRE]', agentName)
+      .replace('[ROL]', agentRole),
+    messages: [{
+      role: 'user',
+      content: [
+        ...imageBlocks,
+        {
+          type: 'text',
+          text: `Estas son ${frames.length} capturas de mi pantalla mientras realizaba una tarea. Mi nombre es ${agentName} y soy ${agentRole}. Analizá la tarea y evaluá si es automatizable.`,
+        },
+      ],
+    }],
+  })
+
+  for await (const event of stream) {
+    if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+      yield { type: 'text', text: event.delta.text }
+    }
+  }
+  yield { type: 'done', thinkingSeconds: 0 }
+}
+
+// ─── homeGreetingStream ──────────────────────────────────────────────────────
+
+export async function* homeGreetingStream(
+  systemPrompt: string,
+  userData: object
+): AsyncGenerator<AgentStreamEvent> {
+  const userMessage = `<user_data>\n${JSON.stringify(userData, null, 2)}\n</user_data>`
+
+  const stream = await client.messages.create({
+    model: MODEL_SONNET,
+    max_tokens: 300,
+    stream: true,
+    system: systemPrompt,
+    messages: [{ role: 'user', content: userMessage }],
+  })
+
+  for await (const event of stream) {
+    if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+      yield { type: 'text', text: event.delta.text }
+    }
+  }
+
+  yield { type: 'done', thinkingSeconds: 0 }
 }
 
 // ─── agentChatStream (agentic — extended thinking + streaming) ────────────────
