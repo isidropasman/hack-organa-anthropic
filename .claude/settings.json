@@ -3,7 +3,12 @@
     "allow": [
       "Bash(npm:*)",
       "Bash(npx:*)",
-      "Bash(git:*)"
+      "Bash(git:*)",
+      "Bash(tasklist)",
+      "Bash(findstr node:*)",
+      "Bash(findstr :3000)",
+      "Bash(taskkill /PID 8828 /F)",
+      "Bash(taskkill //PID 8828 //F)"
     ]
   }
 }
