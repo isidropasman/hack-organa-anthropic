@@ -12,7 +12,6 @@ import ReactFlow, {
   type Node,
   type NodeTypes,
 } from 'reactflow'
-import 'reactflow/dist/style.css'
 import type { Agent } from '@/lib/types'
 
 // ─── Layout constants ────────────────────────────────────────────────────────
