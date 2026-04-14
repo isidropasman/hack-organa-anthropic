@@ -9,7 +9,8 @@
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "bug-solver": "tsx tools/scripts/bug-solver.ts",
-    "bug-solver:dry": "tsx tools/scripts/bug-solver.ts --dry-run"
+    "bug-solver:dry": "tsx tools/scripts/bug-solver.ts --dry-run",
+    "postinstall": "puppeteer browsers install chrome"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.88.0",
