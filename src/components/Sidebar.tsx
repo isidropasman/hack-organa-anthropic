@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, Brain, BarChart3, Sparkles, ShieldCheck, User, GitBranch, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Home, Brain, BarChart3, Sparkles, ShieldCheck, User, GitBranch, ChevronLeft, ChevronRight, Cpu } from 'lucide-react'
 import { getCurrentUser, type CurrentUser } from '@/lib/auth'
 import RoleSwitcher from './RoleSwitcher'
 import Logo from './Logo'
@@ -14,6 +14,7 @@ const adminNavItems = [
   { href: '/org', label: 'Org Chart', icon: GitBranch },
   { href: '/krs', label: 'AI Workforce', icon: Brain },
   { href: '/monitoring', label: 'Monitoring', icon: BarChart3 },
+  { href: '/civilization', label: 'Civilization', icon: Cpu },
 ]
 
 export default function Sidebar() {
