@@ -4,7 +4,11 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+<<<<<<< Updated upstream
 import { Home, Brain, BarChart3, Sparkles, ShieldCheck, User, GitBranch, ChevronLeft, ChevronRight, Cpu } from 'lucide-react'
+=======
+import { Home, Brain, BarChart3, Sparkles, ShieldCheck, User, GitBranch, Network, ChevronLeft, ChevronRight } from 'lucide-react'
+>>>>>>> Stashed changes
 import { getCurrentUser, type CurrentUser } from '@/lib/auth'
 import RoleSwitcher from './RoleSwitcher'
 import Logo from './Logo'
@@ -14,7 +18,11 @@ const adminNavItems = [
   { href: '/org', label: 'Org Chart', icon: GitBranch },
   { href: '/krs', label: 'AI Workforce', icon: Brain },
   { href: '/monitoring', label: 'Monitoring', icon: BarChart3 },
+<<<<<<< Updated upstream
   { href: '/civilization', label: 'Civilization', icon: Cpu },
+=======
+  { href: '/brain', label: 'Org Brain', icon: Network },
+>>>>>>> Stashed changes
 ]
 
 export default function Sidebar() {
@@ -135,9 +143,15 @@ export default function Sidebar() {
       {/* Navigation */}
       <nav className="p-2 flex-1">
         {isAdmin ? (
-          <ul className="space-y-0.5">
-            {adminNavItems.map(({ href, label, icon: Icon }) => navLink(href, label, Icon))}
-          </ul>
+          <>
+            <ul className="space-y-0.5">
+              {adminNavItems.map(({ href, label, icon: Icon }) => navLink(href, label, Icon))}
+            </ul>
+            <div className="my-2 border-t border-organa-border" />
+            <ul className="space-y-0.5">
+              {navLink(myTwinHref, 'My Twin', Sparkles)}
+            </ul>
+          </>
         ) : (
           <ul className="space-y-0.5">
             {navLink(myTwinHref, 'My Twin', Sparkles)}
