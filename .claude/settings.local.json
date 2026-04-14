@@ -11,7 +11,9 @@
       "Bash(cmd:*)",
       "Bash(powershell:*)",
       "Bash(taskkill /PID 8604 /F)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(python3:*)",
+      "Bash(pnpm install:*)"
     ]
   }
 }
