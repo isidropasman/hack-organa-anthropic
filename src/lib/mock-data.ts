@@ -8,7 +8,7 @@ import type { KRSAgent, MonitoredAgent, MonitoringSummary, OrgTrend } from './ty
 export const krsAgents: KRSAgent[] = [
   {
     id: 'ceo-twin',
-    role: 'CEO / Director General',
+    role: 'CEO / General Manager',
     name: 'Martín García',
     avatar: 'MG',
     krs: 87,
@@ -25,11 +25,11 @@ export const krsAgents: KRSAgent[] = [
     tasksBySource: { screenLearning: 8, chat: 4 },
     screenHours: 6.5,
     gaps: [
-      'Proceso de evaluación de proveedores nuevos',
-      'Criterio de aprobación de descuentos >15%',
+      'New vendor evaluation process',
+      'Discount approval criteria >15%',
     ],
     lastObservation: '2026-04-14T14:22:00',
-    onboardingDuration: '6.5 hrs observación + 18 min chat',
+    onboardingDuration: '6.5 hrs observation + 18 min chat',
   },
   {
     id: 'marketing-twin',
@@ -50,18 +50,18 @@ export const krsAgents: KRSAgent[] = [
     tasksBySource: { screenLearning: 5, chat: 3 },
     screenHours: 3.2,
     gaps: [
-      'Criterio de segmentación de audiencia',
-      'Proceso de aprobación de contenido',
-      'Gestión de presupuesto de pauta',
-      'Calendario editorial',
+      'Audience segmentation criteria',
+      'Content approval process',
+      'Ad budget management',
+      'Editorial calendar',
     ],
     lastObservation: '2026-04-14T13:45:00',
-    onboardingDuration: '3.2 hrs observación + 12 min chat',
-    overlapWarning: "Overlap con Soporte en 'respuesta en redes sociales'",
+    onboardingDuration: '3.2 hrs observation + 12 min chat',
+    overlapWarning: "Overlap with Support on 'social media response'",
   },
   {
     id: 'ops-twin',
-    role: 'Operaciones / Logística',
+    role: 'Operations / Logistics',
     name: 'Carlos Méndez',
     avatar: 'CM',
     krs: 91,
@@ -79,11 +79,11 @@ export const krsAgents: KRSAgent[] = [
     screenHours: 8.0,
     gaps: [],
     lastObservation: '2026-04-14T14:50:00',
-    onboardingDuration: '8 hrs observación + 22 min chat',
+    onboardingDuration: '8 hrs observation + 22 min chat',
   },
   {
     id: 'finance-twin',
-    role: 'Finanzas / Administración',
+    role: 'Finance / Administration',
     name: 'Ana Ruiz',
     avatar: 'AR',
     krs: 83,
@@ -100,15 +100,15 @@ export const krsAgents: KRSAgent[] = [
     tasksBySource: { screenLearning: 6, chat: 3 },
     screenHours: 5.5,
     gaps: [
-      'Proceso de cierre mensual contable',
-      'Criterio de categorización de gastos',
+      'Monthly accounting close process',
+      'Expense categorization criteria',
     ],
     lastObservation: '2026-04-14T14:10:00',
-    onboardingDuration: '5.5 hrs observación + 20 min chat',
+    onboardingDuration: '5.5 hrs observation + 20 min chat',
   },
   {
     id: 'support-twin',
-    role: 'Soporte al Cliente',
+    role: 'Customer Support',
     name: 'Diego López',
     avatar: 'DL',
     krs: 64,
@@ -125,14 +125,14 @@ export const krsAgents: KRSAgent[] = [
     tasksBySource: { screenLearning: 2, chat: 3 },
     screenHours: 1.5,
     gaps: [
-      'Protocolo de escalamiento de reclamos',
-      'SLA de respuesta por canal',
-      'Proceso de devoluciones',
-      'Base de conocimiento de productos',
+      'Claims escalation protocol',
+      'Response SLA per channel',
+      'Returns process',
+      'Product knowledge base',
     ],
     lastObservation: '2026-04-14T11:30:00',
-    onboardingDuration: '1.5 hrs observación + 8 min chat',
-    overlapWarning: "Overlap con Marketing en 'respuesta en redes sociales'",
+    onboardingDuration: '1.5 hrs observation + 8 min chat',
+    overlapWarning: "Overlap with Marketing on 'social media response'",
   },
 ]
 
@@ -157,7 +157,7 @@ export const monitoringSummary: MonitoringSummary = {
 export const monitoredAgents: MonitoredAgent[] = [
   {
     id: 'ceo-twin',
-    role: 'CEO / Director General',
+    role: 'CEO / General Manager',
     name: 'Martín García',
     mode: 'assisted',
     metrics: {
@@ -208,14 +208,14 @@ export const monitoredAgents: MonitoredAgent[] = [
       { type: 'warning', message: 'Cost per action > $0.50 ($0.55)', metric: 'costPerAction' },
       {
         type: 'critical',
-        message: 'Error rate > 5% (7.2%) — considerar volver a Shadow Mode',
+        message: 'Error rate > 5% (7.2%) — consider reverting to Shadow Mode',
         metric: 'errorRate',
       },
     ],
   },
   {
     id: 'ops-twin',
-    role: 'Operaciones / Logística',
+    role: 'Operations / Logistics',
     name: 'Carlos Méndez',
     mode: 'assisted',
     metrics: {
@@ -240,7 +240,7 @@ export const monitoredAgents: MonitoredAgent[] = [
   },
   {
     id: 'finance-twin',
-    role: 'Finanzas / Administración',
+    role: 'Finance / Administration',
     name: 'Ana Ruiz',
     mode: 'assisted',
     metrics: {
@@ -265,7 +265,7 @@ export const monitoredAgents: MonitoredAgent[] = [
   },
   {
     id: 'support-twin',
-    role: 'Soporte al Cliente',
+    role: 'Customer Support',
     name: 'Diego López',
     mode: 'shadow',
     metrics: {
@@ -294,7 +294,7 @@ export const monitoredAgents: MonitoredAgent[] = [
 ]
 
 export const orgTrend: OrgTrend = {
-  labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Sem 5'],
+  labels: ['Wk 1', 'Wk 2', 'Wk 3', 'Wk 4', 'Wk 5'],
   approvalRate: [76, 78, 80, 81, 80.3],
   costTotal: [28.5, 32.1, 35.8, 39.2, 42.71],
   automationRate: [15, 20, 25, 30, 34],

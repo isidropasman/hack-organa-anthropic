@@ -6,14 +6,14 @@ interface Props {
 }
 
 const headers = [
-  { label: 'Agente' },
-  { label: 'Rol' },
-  { label: 'Modo' },
+  { label: 'Agent' },
+  { label: 'Role' },
+  { label: 'Mode' },
   { label: 'Approval Rate' },
   { label: 'Confidence' },
-  { label: 'Costo' },
-  { label: 'Observación' },
-  { label: 'Alertas' },
+  { label: 'Cost' },
+  { label: 'Observation' },
+  { label: 'Alerts' },
   { label: '' },
 ]
 

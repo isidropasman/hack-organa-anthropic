@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(taskkill /F /IM node.exe)",
+      "Bash(rm -rf .next)",
+      "Bash(netstat -ano)",
+      "Bash(findstr \":3000 \\\\|:3001 \\\\|:3002 \")",
+      "Bash(findstr \":3001 \")",
+      "Bash(taskkill /PID 20404 /F)",
+      "Bash(taskkill /PID 17244 /F)",
+      "Bash(cmd:*)",
+      "Bash(powershell:*)",
+      "Bash(taskkill /PID 8604 /F)",
+      "Bash(rm:*)",
+      "Bash(npm run:*)",
+      "Bash(echo \"Server PID: $!\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/civilization)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/brain)"
+    ]
+  }
+}

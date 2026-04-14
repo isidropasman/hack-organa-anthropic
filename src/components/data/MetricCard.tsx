@@ -10,10 +10,10 @@ interface Props {
 }
 
 function highlightClasses(h?: Props['highlight']) {
-  if (h === 'green') return { icon: 'text-green-400', card: 'bg-green-900/20 border-green-900/40' }
-  if (h === 'amber') return { icon: 'text-amber-400', card: 'bg-amber-900/20 border-amber-900/40' }
-  if (h === 'red') return { icon: 'text-red-400', card: 'bg-red-900/20 border-red-900/40' }
-  if (h === 'blue') return { icon: 'text-blue-400', card: 'bg-blue-900/20 border-blue-900/40' }
+  if (h === 'green') return { icon: 'text-green-600', card: 'bg-green-50 border-green-200' }
+  if (h === 'amber') return { icon: 'text-amber-600', card: 'bg-amber-50 border-amber-200' }
+  if (h === 'red') return { icon: 'text-red-600', card: 'bg-red-50 border-red-200' }
+  if (h === 'blue') return { icon: 'text-blue-600', card: 'bg-blue-50 border-blue-200' }
   return { icon: 'text-organa-accent', card: 'bg-organa-surface border-organa-border' }
 }
 
@@ -21,7 +21,7 @@ export default function MetricCard({ label, value, icon: Icon, highlight }: Prop
   const cls = highlightClasses(highlight)
   return (
     <div className={`border rounded-xl p-4 flex items-center gap-4 ${cls.card}`}>
-      <div className={`p-2 rounded-lg bg-organa-bg/60 flex-shrink-0 ${cls.icon}`}>
+      <div className={`p-2 rounded-lg bg-slate-50 flex-shrink-0 ${cls.icon}`}>
         <Icon size={18} />
       </div>
       <div>

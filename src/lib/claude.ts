@@ -1,6 +1,5 @@
 // src/lib/claude.ts
 // Single file for ALL Claude API calls in ORGANA MVP
-// Three functions. Nothing else.
 // Import Anthropic SDK here only — never in components or route handlers.
 
 import Anthropic from '@anthropic-ai/sdk'
@@ -11,60 +10,104 @@ const client = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 })
 
-const MODEL = 'claude-opus-4-5-20251101'
+const MODEL = 'claude-opus-4-6'
 
-/**
- * parseOrgChart
- * Sends an org chart image to Claude vision and returns structured Agent[]
- * Called by: POST /api/parse-org
- */
+// ─── Streaming types ─────────────────────────────────────────────────────────
+
+export type AgentStreamEvent =
+  | { type: 'thinking'; text: string }
+  | { type: 'text'; text: string }
+  | { type: 'done'; thinkingSeconds: number }
+  | { type: 'error'; message: string }
+
+// ─── parseOrgChart ───────────────────────────────────────────────────────────
+
 export async function parseOrgChart(request: OrgChartParseRequest): Promise<Agent[]> {
-  // TODO: Implement
-  // 1. Call client.messages.create with vision:
-  //    model: MODEL, max_tokens: 4096
-  //    system: PROMPTS.ORG_CHART_PARSER
-  //    messages: [{ role: 'user', content: [
-  //      { type: 'image', source: { type: 'base64', media_type: request.mediaType, data: request.imageBase64 } },
-  //      { type: 'text', text: 'Parse this org chart and return the JSON array.' }
-  //    ]}]
-  // 2. Extract text from response.content[0] (type: 'text')
-  // 3. Parse text as JSON → Agent[]
-  // 4. Validate each agent has id, name, role, department, reportsTo
-  // 5. Throw Error('Failed to parse org chart: <reason>') if JSON parse fails or array is empty
-  throw new Error('Not implemented')
+  const response = await client.messages.create({
+    model: MODEL,
+    max_tokens: 4096,
+    system: PROMPTS.ORG_CHART_PARSER,
+    messages: [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'image',
+            source: {
+              type: 'base64',
+              media_type: request.mediaType,
+              data: request.imageBase64,
+            },
+          },
+          { type: 'text', text: 'Parse this org chart and return the JSON array.' },
+        ],
+      },
+    ],
+  })
+
+  const block = response.content[0]
+  if (block.type !== 'text') {
+    throw new Error('Failed to parse org chart: unexpected response type')
+  }
+
+  let text = block.text.trim()
+  if (text.startsWith('```')) {
+    text = text.replace(/^```[^\n]*\n?/, '').replace(/```$/, '').trim()
+  }
+
+  let agents: Agent[]
+  try {
+    agents = JSON.parse(text) as Agent[]
+  } catch {
+    throw new Error('Failed to parse org chart: response was not valid JSON')
+  }
+
+  if (!Array.isArray(agents) || agents.length === 0) {
+    throw new Error('Failed to parse org chart: no agents found in response')
+  }
+
+  for (const agent of agents) {
+    if (!agent.id || !agent.name || !agent.role) {
+      throw new Error('Failed to parse org chart: agent missing required fields')
+    }
+    agent.readinessScore = agent.readinessScore ?? 0
+    agent.onboardingComplete = agent.onboardingComplete ?? false
+    agent.knowledgeBase = agent.knowledgeBase ?? null
+    agent.onboardingMessages = agent.onboardingMessages ?? []
+  }
+
+  return agents
 }
 
-/**
- * onboardingTurn
- * Sends one turn of the onboarding interview to Claude
- * Returns Claude's next question and whether onboarding is complete
- * Called by: POST /api/onboard
- */
+// ─── onboardingTurn ──────────────────────────────────────────────────────────
+
 export async function onboardingTurn(
   agentName: string,
   agentRole: string,
   companyName: string,
   messages: Message[]
 ): Promise<{ reply: string; isComplete: boolean }> {
-  // TODO: Implement
-  // 1. Map messages to Anthropic MessageParam format:
-  //    { role: msg.role, content: msg.content }
-  // 2. Call client.messages.create:
-  //    model: MODEL, max_tokens: 1024
-  //    system: PROMPTS.ONBOARDING_INTERVIEWER(agentName, agentRole, companyName)
-  //    messages: mappedMessages
-  // 3. Extract reply text from response.content[0] (type: 'text')
-  // 4. Check if reply includes 'ONBOARDING_COMPLETE'
-  // 5. Return { reply, isComplete }
-  throw new Error('Not implemented')
+  const response = await client.messages.create({
+    model: MODEL,
+    max_tokens: 1024,
+    system: PROMPTS.ONBOARDING_INTERVIEWER(agentName, agentRole, companyName),
+    messages: messages.length === 0
+      ? [{ role: 'user' as const, content: 'Hello, please start the interview.' }]
+      : messages.map(msg => ({ role: msg.role, content: msg.content })),
+  })
+
+  const block = response.content[0]
+  if (block.type !== 'text') {
+    throw new Error('Unexpected response type from onboarding turn')
+  }
+
+  const reply = block.text
+  const isComplete = reply.includes('ONBOARDING_COMPLETE')
+  return { reply, isComplete }
 }
 
-/**
- * agentChat
- * Sends a chat message to a trained agent
- * Injects the agent's knowledge base into context
- * Called by: POST /api/chat
- */
+// ─── agentChat (non-streaming fallback) ──────────────────────────────────────
+
 export async function agentChat(
   agentName: string,
   agentRole: string,
@@ -72,15 +115,94 @@ export async function agentChat(
   knowledgeBase: KnowledgeBase,
   messages: Message[]
 ): Promise<string> {
-  // TODO: Implement
-  // 1. Serialize knowledgeBase: JSON.stringify(knowledgeBase, null, 2)
-  // 2. Map messages to Anthropic MessageParam format:
-  //    { role: msg.role, content: msg.content }
-  // 3. Call client.messages.create:
-  //    model: MODEL, max_tokens: 1024
-  //    system: PROMPTS.TRAINED_AGENT(agentName, agentRole, companyName, serializedKnowledgeBase)
-  //    messages: mappedMessages
-  // 4. Extract reply text from response.content[0] (type: 'text')
-  // 5. Return reply string
-  throw new Error('Not implemented')
+  const serializedKnowledgeBase = JSON.stringify(knowledgeBase, null, 2)
+  const response = await client.messages.create({
+    model: MODEL,
+    max_tokens: 1024,
+    system: PROMPTS.TRAINED_AGENT(agentName, agentRole, companyName, serializedKnowledgeBase),
+    messages: messages.map(msg => ({ role: msg.role, content: msg.content })),
+  })
+
+  const block = response.content[0]
+  if (block.type !== 'text') throw new Error('Unexpected response type from agent chat')
+  return block.text
+}
+
+// ─── agentChatStream (agentic — extended thinking + streaming) ────────────────
+
+export async function* agentChatStream(
+  agentName: string,
+  agentRole: string,
+  companyName: string,
+  knowledgeBase: KnowledgeBase,
+  messages: Message[]
+): AsyncGenerator<AgentStreamEvent> {
+  const serialized = JSON.stringify(knowledgeBase, null, 2)
+  const startTime = Date.now()
+
+  const stream = await client.messages.create({
+    model: MODEL,
+    max_tokens: 4096,
+    thinking: { type: 'enabled', budget_tokens: 1024 },
+    stream: true,
+    system: PROMPTS.TRAINED_AGENT(agentName, agentRole, companyName, serialized),
+    messages: messages.map(msg => ({ role: msg.role, content: msg.content })),
+  })
+
+  for await (const event of stream) {
+    if (event.type === 'content_block_delta') {
+      if (event.delta.type === 'thinking_delta') {
+        yield { type: 'thinking', text: event.delta.thinking }
+      } else if (event.delta.type === 'text_delta') {
+        yield { type: 'text', text: event.delta.text }
+      }
+    }
+  }
+
+  const thinkingSeconds = Math.round((Date.now() - startTime) / 1000)
+  yield { type: 'done', thinkingSeconds }
+}
+
+// ─── analyzeRecordingStream ──────────────────────────────────────────────────
+
+export async function* analyzeRecordingStream(
+  systemPrompt: string,
+  frames: string[],       // base64 data URLs (data:image/jpeg;base64,...)
+  agentName: string,
+  agentRole: string,
+): AsyncGenerator<AgentStreamEvent> {
+  const imageBlocks = frames.map(frame => ({
+    type: 'image' as const,
+    source: {
+      type: 'base64' as const,
+      media_type: 'image/jpeg' as const,
+      data: frame.includes(',') ? frame.split(',')[1] : frame,
+    },
+  }))
+
+  const stream = await client.messages.create({
+    model: MODEL,
+    max_tokens: 1024,
+    stream: true,
+    system: systemPrompt
+      .replace('[NOMBRE]', agentName)
+      .replace('[ROL]', agentRole),
+    messages: [{
+      role: 'user',
+      content: [
+        ...imageBlocks,
+        {
+          type: 'text',
+          text: `Estas son ${frames.length} capturas de mi pantalla mientras realizaba una tarea. Mi nombre es ${agentName} y soy ${agentRole}. Analizá la tarea y evaluá si es automatizable.`,
+        },
+      ],
+    }],
+  })
+
+  for await (const event of stream) {
+    if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+      yield { type: 'text', text: event.delta.text }
+    }
+  }
+  yield { type: 'done', thinkingSeconds: 0 }
 }

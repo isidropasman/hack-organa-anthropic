@@ -4,15 +4,35 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { parseOrgChart } from '@/lib/claude'
-import type { OrgChartParseRequest, OrgChartParseResponse } from '@/lib/types'
+import type { OrgChartParseResponse } from '@/lib/types'
+
+const ALLOWED_MEDIA_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'] as const
 
 export async function POST(request: NextRequest): Promise<NextResponse<OrgChartParseResponse>> {
-  // TODO: Implement
-  // 1. Parse request body: const { imageBase64, mediaType } = await request.json()
-  // 2. Validate: imageBase64 must be non-empty string, mediaType must be one of the allowed values
-  //    Return NextResponse.json({ agents: [], error: 'Missing imageBase64' }, { status: 400 }) on failure
-  // 3. Call: const agents = await parseOrgChart({ imageBase64, mediaType })
-  // 4. Return: NextResponse.json({ agents })
-  // 5. Catch errors: return NextResponse.json({ agents: [], error: err.message }, { status: 500 })
-  return NextResponse.json({ agents: [], error: 'Not implemented' }, { status: 501 })
+  try {
+    const body = await request.json() as { imageBase64?: unknown; mediaType?: unknown }
+    const { imageBase64, mediaType } = body
+
+    if (!imageBase64 || typeof imageBase64 !== 'string') {
+      return NextResponse.json({ agents: [], error: 'Missing imageBase64' }, { status: 400 })
+    }
+
+    if (!mediaType || !ALLOWED_MEDIA_TYPES.includes(mediaType as typeof ALLOWED_MEDIA_TYPES[number])) {
+      return NextResponse.json(
+        { agents: [], error: 'mediaType must be image/jpeg, image/png, image/gif, or image/webp' },
+        { status: 400 }
+      )
+    }
+
+    const agents = await parseOrgChart({
+      imageBase64,
+      mediaType: mediaType as typeof ALLOWED_MEDIA_TYPES[number],
+    })
+
+    return NextResponse.json({ agents })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error'
+    console.error('[parse-org] error:', err)
+    return NextResponse.json({ agents: [], error: message }, { status: 500 })
+  }
 }
