@@ -2,6 +2,76 @@
 // ALL TypeScript interfaces for ORGANA MVP
 // Import from here everywhere — never define types inline
 
+// ============================================
+// SCORING SYSTEM
+// ============================================
+
+export type AgentLevel = 'bronze' | 'silver' | 'gold' | 'elite'
+
+export const LEVEL_THRESHOLDS: Record<AgentLevel, number> = {
+  bronze: 0,
+  silver: 500,
+  gold:   1500,
+  elite:  4000,
+}
+
+export const LEVEL_COLORS: Record<AgentLevel, string> = {
+  bronze: '#CD7F32',
+  silver: '#C0C0C0',
+  gold:   '#FFD700',
+  elite:  '#4F6BED',
+}
+
+export const LEVEL_LABELS: Record<AgentLevel, string> = {
+  bronze: 'Bronze',
+  silver: 'Silver',
+  gold:   'Gold',
+  elite:  'Elite',
+}
+
+export const POINT_VALUES = {
+  ONBOARDING_COMPLETE:  100,
+  CHAT_MESSAGE:           5,
+  TASK_RECORDED:         20,
+  AUTOMATION_APPROVED:   30,
+  AUTOMATION_RUN:        10,
+} as const
+
+export type PointEventType = keyof typeof POINT_VALUES
+
+export interface PointEvent {
+  type: PointEventType
+  points: number
+  timestamp: string       // ISO
+  description?: string
+}
+
+// ============================================
+// AUTOMATIONS
+// ============================================
+
+export type AutomationStatus = 'pending_approval' | 'learning' | 'active' | 'paused' | 'failed'
+export type AutomationSource = 'chat' | 'recording' | 'suggestion'
+
+export interface Automation {
+  id: string
+  name: string
+  description: string
+  steps: string[]
+  status: AutomationStatus
+  source: AutomationSource
+  createdAt: string             // ISO
+  lastRun?: string              // ISO
+  runsTotal: number
+  timeSavedMinutes: number
+  nextRun?: string              // ISO
+  estimatedFrequency: 'daily' | 'weekly' | 'monthly' | 'on-demand'
+}
+
+// ============================================
+// AGENT
+// ============================================
+
 export interface Agent {
   id: string                    // slugified name: "valentina-torres"
   name: string                  // "Valentina Torres"
@@ -12,6 +82,12 @@ export interface Agent {
   onboardingComplete: boolean
   knowledgeBase: KnowledgeBase | null
   onboardingMessages: Message[]
+  // Scoring
+  points: number
+  level: AgentLevel
+  pointHistory: PointEvent[]
+  // Automations
+  automations: Automation[]
 }
 
 export interface KnowledgeBase {
@@ -85,11 +161,11 @@ export interface DemoCompany {
 // ============================================
 
 export interface KRSDimensions {
-  completitud: number      // 0-100
-  especificidad: number    // 0-100
-  consistencia: number     // 0-100
-  unicidad: number         // 0-100
-  temporalidad: number     // 0-100
+  completeness: number     // 0-100
+  specificity: number      // 0-100
+  consistency: number      // 0-100
+  uniqueness: number       // 0-100
+  timeliness: number       // 0-100
 }
 
 export interface KRSAgent {
