@@ -4,11 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-<<<<<<< Updated upstream
-import { Home, Brain, BarChart3, Sparkles, ShieldCheck, User, GitBranch, ChevronLeft, ChevronRight, Cpu } from 'lucide-react'
-=======
-import { Home, Brain, BarChart3, Sparkles, ShieldCheck, User, GitBranch, Network, ChevronLeft, ChevronRight } from 'lucide-react'
->>>>>>> Stashed changes
+import { Home, Brain, BarChart3, Sparkles, GitBranch, Network, ChevronLeft, ChevronRight, Cpu } from 'lucide-react'
 import { getCurrentUser, type CurrentUser } from '@/lib/auth'
 import RoleSwitcher from './RoleSwitcher'
 import Logo from './Logo'
@@ -18,11 +14,8 @@ const adminNavItems = [
   { href: '/org', label: 'Org Chart', icon: GitBranch },
   { href: '/krs', label: 'AI Workforce', icon: Brain },
   { href: '/monitoring', label: 'Monitoring', icon: BarChart3 },
-<<<<<<< Updated upstream
-  { href: '/civilization', label: 'Civilization', icon: Cpu },
-=======
   { href: '/brain', label: 'Org Brain', icon: Network },
->>>>>>> Stashed changes
+  { href: '/civilization', label: 'Civilization', icon: Cpu },
 ]
 
 export default function Sidebar() {
@@ -124,13 +117,13 @@ export default function Sidebar() {
                 transition={{ duration: 0.18 }}
                 className="min-w-0 overflow-hidden"
               >
-                <p className="text-organa-text text-xs font-medium truncate">{user.name}</p>
-                <div className="flex items-center gap-1 mt-0.5">
-                  {isAdmin
-                    ? <ShieldCheck size={10} className="text-organa-accent opacity-80" />
-                    : <User size={10} className="text-organa-text-muted opacity-80" />
-                  }
-                  <span className={`text-[10px] font-medium whitespace-nowrap ${isAdmin ? 'text-organa-accent' : 'text-organa-text-muted'}`}>
+                <div className="flex items-center gap-1.5 min-w-0">
+                  <p className="text-organa-text text-xs font-medium truncate">{user.name}</p>
+                  <span className={`flex-shrink-0 text-[9px] font-semibold px-1.5 py-0.5 rounded-full border ${
+                    isAdmin
+                      ? 'bg-blue-50 text-blue-700 border-blue-200'
+                      : 'bg-slate-100 text-slate-600 border-slate-200'
+                  }`}>
                     {isAdmin ? 'Admin' : 'Employee'}
                   </span>
                 </div>
@@ -168,7 +161,6 @@ export default function Sidebar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.15 }}
-              className="overflow-hidden"
             >
               <RoleSwitcher />
               <div className="mt-2">
