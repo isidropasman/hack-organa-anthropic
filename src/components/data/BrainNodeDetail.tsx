@@ -13,6 +13,7 @@ const TYPE_LABEL: Record<GraphNode['type'], string> = {
   tool:      'Herramienta',
   decision:  'Decisión',
   knowledge: 'Conocimiento tácito',
+  document:  'Documento',
 }
 
 interface Props {
@@ -30,6 +31,7 @@ export default function BrainNodeDetail({ node, nodes, links, onClose }: Props) 
   const tools       = connections.filter(c => c.node.type === 'tool')
   const decisions   = connections.filter(c => c.node.type === 'decision')
   const knowledge   = connections.filter(c => c.node.type === 'knowledge')
+  const documents   = connections.filter(c => c.node.type === 'document')
 
   function Section({ title, items }: { title: string; items: typeof connections }) {
     if (items.length === 0) return null
@@ -111,20 +113,39 @@ export default function BrainNodeDetail({ node, nodes, links, onClose }: Props) 
             <Section title="Herramientas" items={tools} />
             <Section title="Decisiones clave" items={decisions} />
             <Section title="Conocimiento tácito" items={knowledge} />
+            <Section title="Documentos" items={documents} />
             <Section title="Trabaja con" items={persons} />
           </div>
         )}
 
         {node.type === 'tool' && (
-          <Section title="Usado por" items={persons} />
+          <div className="space-y-4">
+            <Section title="Usado por" items={persons} />
+            <Section title="Documentado en" items={documents} />
+          </div>
         )}
 
         {node.type === 'decision' && (
-          <Section title="Involucra" items={persons} />
+          <div className="space-y-4">
+            <Section title="Involucra" items={persons} />
+            <Section title="Documentado en" items={documents} />
+          </div>
         )}
 
         {node.type === 'knowledge' && (
-          <Section title="Conocido por" items={persons} />
+          <div className="space-y-4">
+            <Section title="Conocido por" items={persons} />
+            <Section title="Documentado en" items={documents} />
+          </div>
+        )}
+
+        {node.type === 'document' && (
+          <div className="space-y-4">
+            <Section title="Propietario" items={persons} />
+            <Section title="Herramientas" items={tools} />
+            <Section title="Decisiones" items={decisions} />
+            <Section title="Conocimiento" items={knowledge} />
+          </div>
         )}
       </div>
     </div>

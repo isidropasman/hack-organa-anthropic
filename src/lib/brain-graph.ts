@@ -3,7 +3,7 @@
 // Derived from the Nova Store seed: persons, tools, decisions, and
 // tribal knowledge extracted from each agent's KnowledgeBase categories.
 
-export type NodeType = 'person' | 'tool' | 'decision' | 'knowledge'
+export type NodeType = 'person' | 'tool' | 'decision' | 'knowledge' | 'document'
 
 export interface GraphNode {
   id: string
@@ -17,7 +17,7 @@ export interface GraphNode {
 export interface GraphLink {
   source: string
   target: string
-  type: 'reports_to' | 'uses_tool' | 'makes_decision' | 'shares_knowledge' | 'works_with'
+  type: 'reports_to' | 'uses_tool' | 'makes_decision' | 'shares_knowledge' | 'works_with' | 'documents'
   label?: string
 }
 
@@ -33,6 +33,7 @@ export const NODE_COLOR: Record<NodeType, string> = {
   tool:      '#F59E0B',
   decision:  '#EF4444',
   knowledge: '#8B5CF6',
+  document:  '#06B6D4',
 }
 
 export const LINK_COLOR: Record<GraphLink['type'], string> = {
@@ -41,6 +42,7 @@ export const LINK_COLOR: Record<GraphLink['type'], string> = {
   uses_tool:       '#F59E0B',
   makes_decision:  '#EF4444',
   shares_knowledge:'#8B5CF6',
+  documents:       '#06B6D4',
 }
 
 // ─── Graph nodes ─────────────────────────────────────────────────────────────
@@ -156,6 +158,48 @@ const NODES: GraphNode[] = [
     group: 'ops',
     connections: 1,
     detail: 'Selección del operador logístico según zona de envío.',
+  },
+
+  // ── Documents (5) ──────────────────────────────────────────────────────────
+  {
+    id: 'doc-ceo',
+    label: 'Manual CEO',
+    type: 'document',
+    group: 'ceo',
+    connections: 9,
+    detail: 'Manual de Dirección General. Procesos de decisión, pricing, proveedores y reglas de negocio.',
+  },
+  {
+    id: 'doc-ops',
+    label: 'Manual Operaciones',
+    type: 'document',
+    group: 'ops',
+    connections: 10,
+    detail: 'Manual de Operaciones y Logística. Gestión de stock, envíos, devoluciones y operadores.',
+  },
+  {
+    id: 'doc-fin',
+    label: 'Manual Finanzas',
+    type: 'document',
+    group: 'finanzas',
+    connections: 8,
+    detail: 'Manual de Finanzas y Administración. Facturación, flujo de caja y pagos a proveedores.',
+  },
+  {
+    id: 'doc-mkt',
+    label: 'Manual Marketing',
+    type: 'document',
+    group: 'marketing',
+    connections: 8,
+    detail: 'Manual de Marketing Digital. Redes sociales, email marketing, pauta y métricas.',
+  },
+  {
+    id: 'doc-sup',
+    label: 'Manual Soporte',
+    type: 'document',
+    group: 'soporte',
+    connections: 6,
+    detail: 'Manual de Atención al Cliente. Canales, SLAs, reclamos y templates de respuesta.',
   },
 
   // ── Knowledge (8) ──────────────────────────────────────────────────────────
@@ -304,11 +348,100 @@ const LINKS: GraphLink[] = [
   { source: 'soporte',   target: 'know-ml',        type: 'shares_knowledge' },
   { source: 'marketing', target: 'know-postear',   type: 'shares_knowledge' },
   { source: 'ops',       target: 'know-oca',       type: 'shares_knowledge' },
+
+  // ── Document → Owner (person) ──────────────────────────────────────────────
+  { source: 'doc-ceo', target: 'ceo',       type: 'documents' },
+  { source: 'doc-ops', target: 'ops',       type: 'documents' },
+  { source: 'doc-fin', target: 'finanzas',  type: 'documents' },
+  { source: 'doc-mkt', target: 'marketing', type: 'documents' },
+  { source: 'doc-sup', target: 'soporte',   type: 'documents' },
+
+  // ── Document → Tools ──────────────────────────────────────────────────────
+  { source: 'doc-ceo', target: 'google-sheets',    type: 'documents' },
+  { source: 'doc-ceo', target: 'whatsapp',          type: 'documents' },
+  { source: 'doc-ceo', target: 'tienda-nube',       type: 'documents' },
+  { source: 'doc-ceo', target: 'mercadolibre',      type: 'documents' },
+
+  { source: 'doc-ops', target: 'google-sheets',    type: 'documents' },
+  { source: 'doc-ops', target: 'tienda-nube',       type: 'documents' },
+  { source: 'doc-ops', target: 'mercadolibre',      type: 'documents' },
+  { source: 'doc-ops', target: 'oca',               type: 'documents' },
+  { source: 'doc-ops', target: 'correo-argentino',  type: 'documents' },
+
+  { source: 'doc-fin', target: 'arca-afip',         type: 'documents' },
+  { source: 'doc-fin', target: 'excel',             type: 'documents' },
+  { source: 'doc-fin', target: 'banco-galicia',     type: 'documents' },
+  { source: 'doc-fin', target: 'mercadopago',       type: 'documents' },
+
+  { source: 'doc-mkt', target: 'instagram',         type: 'documents' },
+  { source: 'doc-mkt', target: 'canva',             type: 'documents' },
+  { source: 'doc-mkt', target: 'mailchimp',         type: 'documents' },
+  { source: 'doc-mkt', target: 'meta-ads',          type: 'documents' },
+  { source: 'doc-mkt', target: 'google-analytics',  type: 'documents' },
+
+  { source: 'doc-sup', target: 'whatsapp-business', type: 'documents' },
+  { source: 'doc-sup', target: 'mercadolibre',      type: 'documents' },
+  { source: 'doc-sup', target: 'tienda-nube',       type: 'documents' },
+
+  // ── Document → Decisions ───────────────────────────────────────────────────
+  { source: 'doc-ceo', target: 'dec-descuentos', type: 'documents' },
+  { source: 'doc-ceo', target: 'dec-compras',    type: 'documents' },
+  { source: 'doc-ops', target: 'dec-logistica',  type: 'documents' },
+  { source: 'doc-ops', target: 'dec-stock',      type: 'documents' },
+  { source: 'doc-fin', target: 'dec-compras',    type: 'documents' },
+  { source: 'doc-mkt', target: 'dec-pauta',      type: 'documents' },
+  { source: 'doc-sup', target: 'dec-reclamo',    type: 'documents' },
+
+  // ── Document → Knowledge ───────────────────────────────────────────────────
+  { source: 'doc-ceo', target: 'know-margen',    type: 'documents' },
+  { source: 'doc-ceo', target: 'know-proveedor', type: 'documents' },
+  { source: 'doc-ops', target: 'know-despacho',  type: 'documents' },
+  { source: 'doc-ops', target: 'know-oca',       type: 'documents' },
+  { source: 'doc-fin', target: 'know-contador',  type: 'documents' },
+  { source: 'doc-fin', target: 'know-arca',      type: 'documents' },
+  { source: 'doc-mkt', target: 'know-postear',   type: 'documents' },
+  { source: 'doc-sup', target: 'know-ml',        type: 'documents' },
 ]
 
 export const BRAIN_GRAPH_DATA: BrainGraphData = {
   nodes: NODES,
   links: LINKS,
+}
+
+// ─── Dynamic document node builder ───────────────────────────────────────────
+
+const RANDOM_TOOL_POOL = [
+  'google-sheets', 'whatsapp', 'gmail', 'tienda-nube', 'mercadolibre',
+  'instagram', 'canva', 'mercadopago', 'google-meet', 'google-analytics',
+]
+
+export function buildUploadedDocNode(
+  docId: string,
+  filename: string,
+  ownerPersonId: string = 'ceo',
+): { node: GraphNode; links: GraphLink[] } {
+  const nodeId = `doc-upload-${docId}`
+  const label  = filename.replace(/\.(docx?|pdf|txt)$/i, '').slice(0, 20)
+
+  // Pick 2 random tools from the pool
+  const shuffled = [...RANDOM_TOOL_POOL].sort(() => Math.random() - 0.5)
+  const linkedTools = shuffled.slice(0, 2)
+
+  const links: GraphLink[] = [
+    { source: nodeId, target: ownerPersonId, type: 'documents' },
+    ...linkedTools.map(t => ({ source: nodeId, target: t, type: 'documents' as const })),
+  ]
+
+  const node: GraphNode = {
+    id:          nodeId,
+    label,
+    type:        'document',
+    group:       ownerPersonId,
+    connections: links.length,
+    detail:      `Documento subido: ${filename}`,
+  }
+
+  return { node, links }
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────

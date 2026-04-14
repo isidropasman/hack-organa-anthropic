@@ -16,7 +16,8 @@ interface SimLink extends d3.SimulationLinkDatum<SimNode> {
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 function getRadius(n: SimNode): number {
-  if (n.type === 'person') return 26
+  if (n.type === 'person')   return 26
+  if (n.type === 'document') return 18
   return Math.max(8, Math.min(8 + n.connections * 2, 18))
 }
 
@@ -143,16 +144,45 @@ export default function BrainGraph({ nodes, links, selectedNodeId, onNodeClick }
       .attr('data-id', d => d.id)
       .style('cursor', 'pointer')
 
-    // Ambient glow disc
-    nodeGroups.append('circle')
+    // Ambient glow disc — circles for all non-document nodes
+    nodeGroups.filter(d => d.type !== 'document')
+      .append('circle')
       .attr('r', d => getRadius(d) * 2.2)
       .attr('fill', d => NODE_COLOR[d.type])
       .attr('opacity', 0.07)
       .attr('pointer-events', 'none')
 
-    // Main circle
-    nodeGroups.append('circle')
+    // Ambient glow rect — for document nodes
+    nodeGroups.filter(d => d.type === 'document')
+      .append('rect')
+      .attr('x', d => -getRadius(d) * 2.2)
+      .attr('y', d => -getRadius(d) * 2.2)
+      .attr('width', d => getRadius(d) * 4.4)
+      .attr('height', d => getRadius(d) * 4.4)
+      .attr('rx', 8)
+      .attr('fill', d => NODE_COLOR[d.type])
+      .attr('opacity', 0.07)
+      .attr('pointer-events', 'none')
+
+    // Main circle — non-document nodes
+    nodeGroups.filter(d => d.type !== 'document')
+      .append('circle')
       .attr('r', d => getRadius(d))
+      .attr('fill', d => NODE_COLOR[d.type])
+      .attr('fill-opacity', 0.85)
+      .attr('stroke', d => NODE_COLOR[d.type])
+      .attr('stroke-width', 1.5)
+      .attr('stroke-opacity', 0.6)
+      .attr('filter', d => `url(#glow-${d.type})`)
+
+    // Main rounded rect — document nodes
+    nodeGroups.filter(d => d.type === 'document')
+      .append('rect')
+      .attr('x', d => -getRadius(d))
+      .attr('y', d => -getRadius(d))
+      .attr('width', d => getRadius(d) * 2)
+      .attr('height', d => getRadius(d) * 2)
+      .attr('rx', 4)
       .attr('fill', d => NODE_COLOR[d.type])
       .attr('fill-opacity', 0.85)
       .attr('stroke', d => NODE_COLOR[d.type])

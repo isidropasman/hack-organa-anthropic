@@ -18,6 +18,16 @@ export interface BrainDoc {
   linkedAgents?: string[]
 }
 
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+export const ACCEPTED_EXTENSIONS = ['.docx', '.pdf', '.txt']
+
+export function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+}
+
 // ─── Pre-loaded demo documents ────────────────────────────────────────────────
 
 export const PRELOADED_DOCS: BrainDoc[] = [
@@ -67,6 +77,9 @@ export const PRELOADED_DOCS: BrainDoc[] = [
     linkedAgents: ['support-twin'],
   },
 ]
+
+// Set of IDs that belong to the pre-seeded demo — these cannot be deleted
+export const PRELOADED_DOC_IDS = new Set(PRELOADED_DOCS.map(d => d.id))
 
 // ─── Mock extraction results ─────────────────────────────────────────────────
 // Shown when a user "processes" a newly-uploaded file.

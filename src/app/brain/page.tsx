@@ -1,28 +1,149 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
 import { Network, FileStack } from 'lucide-react'
-import { BRAIN_GRAPH_DATA, type GraphNode } from '@/lib/brain-graph'
-import BrainGraph from '@/components/data/BrainGraph'
-import BrainLegend from '@/components/data/BrainLegend'
+import {
+  BRAIN_GRAPH_DATA,
+  buildUploadedDocNode,
+  type GraphNode,
+  type GraphLink,
+} from '@/lib/brain-graph'
+import {
+  loadDocs,
+  saveDocs,
+  getMockExtractedItems,
+  formatFileSize,
+  ACCEPTED_EXTENSIONS,
+  type BrainDoc,
+} from '@/lib/brain-docs'
+import BrainGraph     from '@/components/data/BrainGraph'
+import BrainLegend    from '@/components/data/BrainLegend'
 import BrainNodeDetail from '@/components/data/BrainNodeDetail'
-import BrainUpload from '@/components/data/BrainUpload'
-import BrainChat from '@/components/data/BrainChat'
+import BrainUpload    from '@/components/data/BrainUpload'
+import BrainChat      from '@/components/data/BrainChat'
 import BrainChatButton from '@/components/data/BrainChatButton'
+import DocCompleteness from '@/components/data/DocCompleteness'
+import Toast          from '@/components/data/Toast'
 
-const { nodes, links } = BRAIN_GRAPH_DATA
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+interface ToastState {
+  id:      number
+  message: string
+  type:    'success' | 'error' | 'info'
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function BrainPage() {
-  const [selectedNode, setSelectedNode] = useState<GraphNode | null>(null)
-  const [chatOpen, setChatOpen] = useState(false)
+  // ── Graph state ──────────────────────────────────────────────────────────────
+  const [graphNodes, setGraphNodes] = useState<GraphNode[]>(BRAIN_GRAPH_DATA.nodes)
+  const [graphLinks, setGraphLinks] = useState<GraphLink[]>(BRAIN_GRAPH_DATA.links)
 
-  const stats = useMemo(() => {
-    const persons   = nodes.filter(n => n.type === 'person').length
-    const tools     = nodes.filter(n => n.type === 'tool').length
-    const decisions = nodes.filter(n => n.type === 'decision').length
-    const knowledge = nodes.filter(n => n.type === 'knowledge').length
-    return { persons, tools, decisions, knowledge, links: links.length }
+  // ── Doc state (source of truth for the upload panel) ─────────────────────────
+  const [docs, setDocs] = useState<BrainDoc[]>([])
+  useEffect(() => { setDocs(loadDocs()) }, [])
+
+  // ── UI state ─────────────────────────────────────────────────────────────────
+  const [selectedNode, setSelectedNode] = useState<GraphNode | null>(null)
+  const [chatOpen,     setChatOpen]     = useState(false)
+  const [toast,        setToast]        = useState<ToastState | null>(null)
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  function showToast(message: string, type: ToastState['type'] = 'success') {
+    if (toastTimer.current) clearTimeout(toastTimer.current)
+    setToast({ id: Date.now(), message, type })
+    toastTimer.current = setTimeout(() => setToast(null), 3000)
+  }
+
+  // ── Stats ─────────────────────────────────────────────────────────────────────
+  const stats = useMemo(() => ({
+    persons:   graphNodes.filter(n => n.type === 'person').length,
+    tools:     graphNodes.filter(n => n.type === 'tool').length,
+    decisions: graphNodes.filter(n => n.type === 'decision').length,
+    knowledge: graphNodes.filter(n => n.type === 'knowledge').length,
+    documents: graphNodes.filter(n => n.type === 'document').length,
+    links:     graphLinks.length,
+  }), [graphNodes, graphLinks])
+
+  // ── Doc handlers ──────────────────────────────────────────────────────────────
+
+  const handleAddFiles = useCallback((files: FileList | null) => {
+    if (!files || files.length === 0) return
+    const newDocs: BrainDoc[] = []
+    for (const file of Array.from(files)) {
+      const ext = '.' + (file.name.split('.').pop()?.toLowerCase() ?? '')
+      if (!ACCEPTED_EXTENSIONS.includes(ext)) continue
+      newDocs.push({
+        id:         `doc-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+        filename:   file.name,
+        uploadedAt: new Date().toISOString(),
+        size:       formatFileSize(file.size),
+        status:     'pending',
+      })
+    }
+    if (newDocs.length === 0) return
+    setDocs(prev => {
+      const updated = [...newDocs, ...prev]
+      saveDocs(updated)
+      return updated
+    })
   }, [])
+
+  const handleProcess = useCallback((id: string) => {
+    // Capture filename synchronously before the async gap
+    setDocs(prev => {
+      const filename = prev.find(d => d.id === id)?.filename ?? 'Documento'
+      const updated  = prev.map(d => d.id === id ? { ...d, status: 'processing' as const } : d)
+      saveDocs(updated)
+
+      setTimeout(() => {
+        const extracted = getMockExtractedItems()
+        setDocs(cur => {
+          const next = cur.map(d =>
+            d.id === id
+              ? { ...d, status: 'processed' as const, extractedItems: extracted }
+              : d,
+          )
+          saveDocs(next)
+          return next
+        })
+
+        // Add node to the graph
+        const { node, links: newLinks } = buildUploadedDocNode(id, filename, 'ceo')
+        setGraphNodes(cur => [...cur, node])
+        setGraphLinks(cur => [...cur, ...newLinks])
+
+        showToast(`Documento procesado — ${newLinks.length} nuevas conexiones detectadas`)
+      }, 2000)
+
+      return updated
+    })
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleDelete = useCallback((id: string) => {
+    // Remove from doc list
+    setDocs(prev => {
+      const updated = prev.filter(d => d.id !== id)
+      saveDocs(updated)
+      return updated
+    })
+
+    // Remove graph node and all its links.
+    // User-uploaded nodes follow the pattern doc-upload-{id}.
+    const nodeId = `doc-upload-${id}`
+    setGraphNodes(prev => prev.filter(n => n.id !== nodeId))
+    setGraphLinks(prev =>
+      prev.filter(l => l.source !== nodeId && l.target !== nodeId),
+    )
+
+    // Deselect if the deleted node was selected
+    setSelectedNode(cur => (cur?.id === nodeId ? null : cur))
+
+    showToast('Documento eliminado — la red se actualizó')
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ─────────────────────────────────────────────────────────────────────────────
 
   return (
     <div className="flex flex-col" style={{ background: '#080810', minHeight: '100vh' }}>
@@ -52,11 +173,12 @@ export default function BrainPage() {
 
           {/* Stats */}
           <div className="flex items-center gap-5 flex-wrap">
-            <Stat value={stats.persons}   label="roles"               color="#4F6BED" />
-            <Stat value={stats.tools}     label="herramientas"        color="#F59E0B" />
-            <Stat value={stats.decisions} label="decisiones clave"    color="#EF4444" />
+            <Stat value={stats.persons}   label="roles"                color="#4F6BED" />
+            <Stat value={stats.tools}     label="herramientas"         color="#F59E0B" />
+            <Stat value={stats.decisions} label="decisiones clave"     color="#EF4444" />
             <Stat value={stats.knowledge} label="conocimientos tácitos" color="#8B5CF6" />
-            <Stat value={stats.links}     label="conexiones"          color="#94A3B8" />
+            <Stat value={stats.documents} label="documentos"           color="#06B6D4" />
+            <Stat value={stats.links}     label="conexiones"           color="#94A3B8" />
           </div>
         </div>
 
@@ -69,8 +191,8 @@ export default function BrainPage() {
       <div className="flex min-h-0 gap-4 p-4" style={{ height: 'calc(100vh - 196px)' }}>
         <div className="flex-1 min-h-0 min-w-0 relative">
           <BrainGraph
-            nodes={nodes}
-            links={links}
+            nodes={graphNodes}
+            links={graphLinks}
             selectedNodeId={selectedNode?.id ?? null}
             onNodeClick={setSelectedNode}
           />
@@ -83,8 +205,8 @@ export default function BrainPage() {
           >
             <BrainNodeDetail
               node={selectedNode}
-              nodes={nodes}
-              links={links}
+              nodes={graphNodes}
+              links={graphLinks}
               onClose={() => setSelectedNode(null)}
             />
           </div>
@@ -105,18 +227,31 @@ export default function BrainPage() {
           </div>
           <div>
             <h2 className="text-white text-sm font-semibold">Documentos del cerebro</h2>
-            <p className="text-slate-600 text-xs">Subí manuales, SOPs y guías para enriquecer el conocimiento organizacional</p>
+            <p className="text-slate-600 text-xs">
+              Subí manuales, SOPs y guías para enriquecer el conocimiento organizacional
+            </p>
           </div>
         </div>
 
         <div style={{ maxWidth: '760px' }}>
-          <BrainUpload />
+          <BrainUpload
+            docs={docs}
+            onAddFiles={handleAddFiles}
+            onProcess={handleProcess}
+            onDelete={handleDelete}
+          />
         </div>
       </div>
+
+      {/* ── Doc completeness analysis ────────────────────────────────────────── */}
+      <DocCompleteness />
 
       {/* ── Floating chat ───────────────────────────────────────────────────── */}
       {!chatOpen && <BrainChatButton onClick={() => setChatOpen(true)} />}
       {chatOpen  && <BrainChat onClose={() => setChatOpen(false)} />}
+
+      {/* ── Toast ────────────────────────────────────────────────────────────── */}
+      {toast && <Toast key={toast.id} message={toast.message} type={toast.type} />}
 
       <style>{`
         @keyframes slideInRight {

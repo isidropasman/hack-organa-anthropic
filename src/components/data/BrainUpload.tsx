@@ -1,85 +1,27 @@
 'use client'
 
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import { Upload, FileText } from 'lucide-react'
 import DocCard from './DocCard'
-import {
-  loadDocs,
-  saveDocs,
-  getMockExtractedItems,
-  type BrainDoc,
-} from '@/lib/brain-docs'
+import { ACCEPTED_EXTENSIONS, PRELOADED_DOC_IDS, type BrainDoc } from '@/lib/brain-docs'
 
-const ACCEPTED = ['.docx', '.pdf', '.txt']
-
-function fileSize(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+interface BrainUploadProps {
+  docs:       BrainDoc[]
+  onAddFiles: (files: FileList | null) => void
+  onProcess:  (id: string) => void
+  onDelete:   (id: string) => void
 }
 
-export default function BrainUpload() {
-  const [docs, setDocs] = useState<BrainDoc[]>([])
+export default function BrainUpload({ docs, onAddFiles, onProcess, onDelete }: BrainUploadProps) {
   const [dragging, setDragging] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  useEffect(() => {
-    setDocs(loadDocs())
-  }, [])
-
-  const addFiles = useCallback((files: FileList | null) => {
-    if (!files || files.length === 0) return
-
-    const newDocs: BrainDoc[] = []
-    for (const file of Array.from(files)) {
-      const ext = '.' + file.name.split('.').pop()?.toLowerCase()
-      if (!ACCEPTED.includes(ext)) continue
-      newDocs.push({
-        id: `doc-${Date.now()}-${Math.random().toString(36).slice(2)}`,
-        filename: file.name,
-        uploadedAt: new Date().toISOString(),
-        size: fileSize(file.size),
-        status: 'pending',
-      })
-    }
-
-    if (newDocs.length === 0) return
-
-    setDocs(prev => {
-      const updated = [...newDocs, ...prev]
-      saveDocs(updated)
-      return updated
-    })
-  }, [])
-
-  const handleProcess = useCallback((id: string) => {
-    // Mark as processing
-    setDocs(prev => {
-      const updated = prev.map(d => d.id === id ? { ...d, status: 'processing' as const } : d)
-      saveDocs(updated)
-      return updated
-    })
-
-    // After 2s, mark as processed with mock data
-    setTimeout(() => {
-      setDocs(prev => {
-        const updated = prev.map(d =>
-          d.id === id
-            ? { ...d, status: 'processed' as const, extractedItems: getMockExtractedItems() }
-            : d,
-        )
-        saveDocs(updated)
-        return updated
-      })
-    }, 2000)
-  }, [])
-
-  const onDragOver = (e: React.DragEvent) => { e.preventDefault(); setDragging(true) }
+  const onDragOver  = (e: React.DragEvent) => { e.preventDefault(); setDragging(true) }
   const onDragLeave = () => setDragging(false)
-  const onDrop = (e: React.DragEvent) => {
+  const onDrop      = (e: React.DragEvent) => {
     e.preventDefault()
     setDragging(false)
-    addFiles(e.dataTransfer.files)
+    onAddFiles(e.dataTransfer.files)
   }
 
   const processedCount = docs.filter(d => d.status === 'processed').length
@@ -87,8 +29,8 @@ export default function BrainUpload() {
     .filter(d => d.status === 'processed' && d.extractedItems)
     .reduce(
       (acc, d) => ({
-        tasks:     acc.tasks + (d.extractedItems?.tasks ?? 0),
-        tools:     acc.tools + (d.extractedItems?.tools ?? 0),
+        tasks:     acc.tasks     + (d.extractedItems?.tasks     ?? 0),
+        tools:     acc.tools     + (d.extractedItems?.tools     ?? 0),
         decisions: acc.decisions + (d.extractedItems?.decisions ?? 0),
         knowledge: acc.knowledge + (d.extractedItems?.knowledge ?? 0),
       }),
@@ -100,10 +42,12 @@ export default function BrainUpload() {
       {/* Summary chips */}
       {processedCount > 0 && (
         <div className="flex items-center gap-3 flex-wrap">
-          <span className="text-xs text-slate-500">{processedCount} doc{processedCount !== 1 ? 's' : ''} procesados →</span>
-          <Chip value={totalExtracted.tasks}     label="tareas"       color="#4F6BED" />
-          <Chip value={totalExtracted.tools}     label="herramientas" color="#F59E0B" />
-          <Chip value={totalExtracted.decisions} label="decisiones"   color="#EF4444" />
+          <span className="text-xs text-slate-500">
+            {processedCount} doc{processedCount !== 1 ? 's' : ''} procesados →
+          </span>
+          <Chip value={totalExtracted.tasks}     label="tareas"        color="#4F6BED" />
+          <Chip value={totalExtracted.tools}     label="herramientas"  color="#F59E0B" />
+          <Chip value={totalExtracted.decisions} label="decisiones"    color="#EF4444" />
           <Chip value={totalExtracted.knowledge} label="conocimientos" color="#8B5CF6" />
         </div>
       )}
@@ -117,7 +61,7 @@ export default function BrainUpload() {
         className="relative flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed cursor-pointer transition-all py-6 px-4"
         style={{
           borderColor: dragging ? '#4F6BED' : 'rgba(255,255,255,0.10)',
-          background: dragging ? 'rgba(79,107,237,0.07)' : 'rgba(255,255,255,0.02)',
+          background:  dragging ? 'rgba(79,107,237,0.07)' : 'rgba(255,255,255,0.02)',
         }}
       >
         <div
@@ -140,9 +84,9 @@ export default function BrainUpload() {
           ref={inputRef}
           type="file"
           multiple
-          accept={ACCEPTED.join(',')}
+          accept={ACCEPTED_EXTENSIONS.join(',')}
           className="hidden"
-          onChange={e => addFiles(e.target.files)}
+          onChange={e => onAddFiles(e.target.files)}
         />
       </div>
 
@@ -150,7 +94,13 @@ export default function BrainUpload() {
       {docs.length > 0 && (
         <div className="space-y-2">
           {docs.map(doc => (
-            <DocCard key={doc.id} doc={doc} onProcess={handleProcess} />
+            <DocCard
+              key={doc.id}
+              doc={doc}
+              onProcess={onProcess}
+              onDelete={onDelete}
+              canDelete={!PRELOADED_DOC_IDS.has(doc.id)}
+            />
           ))}
         </div>
       )}
