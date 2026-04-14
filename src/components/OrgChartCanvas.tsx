@@ -203,7 +203,9 @@ function OrgFlow({ agents }: { agents: Agent[] }) {
 export default function OrgChartCanvas({ agents }: { agents: Agent[] }) {
   return (
     <ReactFlowProvider>
-      <OrgFlow agents={agents} />
+      <div style={{ width: '100%', height: '100%' }}>
+        <OrgFlow agents={agents} />
+      </div>
     </ReactFlowProvider>
   )
 }

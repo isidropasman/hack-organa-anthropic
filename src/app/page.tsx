@@ -234,15 +234,9 @@ export default function HomePage() {
             </motion.div>
 
             {/* Canvas */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.15, duration: 0.4 }}
-              className="flex-1"
-              style={{ height: 'calc(100vh - 73px)' }}
-            >
+            <div style={{ width: '100%', height: 'calc(100vh - 73px)' }}>
               <OrgChartCanvas agents={previewAgents} />
-            </motion.div>
+            </div>
           </motion.div>
 
         /* ── Upload ── */

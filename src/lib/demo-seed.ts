@@ -3,11 +3,11 @@
 // Call loadDemoData() client-side when no agents exist.
 
 import { agentStore } from './agent-store'
-import { NOVA_STORE_DEMO } from '../../tools/scripts/seed-demo'
+import { NOVA_COMMERCE_DEMO } from '../../tools/scripts/seed-demo'
 
 export function loadDemoData(): boolean {
   try {
-    agentStore.seedDemoCompany(NOVA_STORE_DEMO)
+    agentStore.seedDemoCompany(NOVA_COMMERCE_DEMO)
     return true
   } catch {
     return false
