@@ -162,3 +162,47 @@ export async function* agentChatStream(
   const thinkingSeconds = Math.round((Date.now() - startTime) / 1000)
   yield { type: 'done', thinkingSeconds }
 }
+
+// ─── analyzeRecordingStream ──────────────────────────────────────────────────
+
+export async function* analyzeRecordingStream(
+  systemPrompt: string,
+  frames: string[],       // base64 data URLs (data:image/jpeg;base64,...)
+  agentName: string,
+  agentRole: string,
+): AsyncGenerator<AgentStreamEvent> {
+  const imageBlocks = frames.map(frame => ({
+    type: 'image' as const,
+    source: {
+      type: 'base64' as const,
+      media_type: 'image/jpeg' as const,
+      data: frame.includes(',') ? frame.split(',')[1] : frame,
+    },
+  }))
+
+  const stream = await client.messages.create({
+    model: MODEL,
+    max_tokens: 1024,
+    stream: true,
+    system: systemPrompt
+      .replace('[NOMBRE]', agentName)
+      .replace('[ROL]', agentRole),
+    messages: [{
+      role: 'user',
+      content: [
+        ...imageBlocks,
+        {
+          type: 'text',
+          text: `Estas son ${frames.length} capturas de mi pantalla mientras realizaba una tarea. Mi nombre es ${agentName} y soy ${agentRole}. Analizá la tarea y evaluá si es automatizable.`,
+        },
+      ],
+    }],
+  })
+
+  for await (const event of stream) {
+    if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
+      yield { type: 'text', text: event.delta.text }
+    }
+  }
+  yield { type: 'done', thinkingSeconds: 0 }
+}

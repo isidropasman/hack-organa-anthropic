@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, Brain, BarChart3, Sparkles, GitBranch, Network, ChevronLeft, ChevronRight, Cpu } from 'lucide-react'
+import { Home, Brain, BarChart3, Sparkles, GitBranch, Network, ChevronLeft, ChevronRight, Cpu, Zap, Trophy, Settings, Monitor } from 'lucide-react'
 import { getCurrentUser, type CurrentUser } from '@/lib/auth'
 import RoleSwitcher from './RoleSwitcher'
 import Logo from './Logo'
@@ -16,6 +16,15 @@ const adminNavItems = [
   { href: '/monitoring', label: 'Monitoring', icon: BarChart3 },
   { href: '/brain', label: 'Org Brain', icon: Network },
   { href: '/civilization', label: 'Civilization', icon: Cpu },
+  { href: '/admin/automations', label: 'Automations', icon: Zap },
+  { href: '/admin/portal', label: 'Portal', icon: Trophy },
+  { href: '/settings', label: 'Integrations', icon: Settings },
+]
+
+const employeeNavItems = [
+  { href: '/record', label: 'Record Task', icon: Monitor },
+  { href: '/automations', label: 'Automations', icon: Zap },
+  { href: '/portal', label: 'Portal', icon: Trophy },
 ]
 
 export default function Sidebar() {
@@ -148,6 +157,7 @@ export default function Sidebar() {
         ) : (
           <ul className="space-y-0.5">
             {navLink(myTwinHref, 'My Twin', Sparkles)}
+            {employeeNavItems.map(({ href, label, icon: Icon }) => navLink(href, label, Icon))}
           </ul>
         )}
       </nav>
