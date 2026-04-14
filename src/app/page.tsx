@@ -8,6 +8,7 @@ import OrgUpload from '@/components/OrgUpload'
 import AgentCard from '@/components/AgentCard'
 import { agentStore } from '@/lib/agent-store'
 import { loadDemoData } from '@/lib/demo-seed'
+import Logo from '@/components/Logo'
 import type { Agent } from '@/lib/types'
 
 const OrgChartCanvas = dynamic(() => import('@/components/OrgChartCanvas'), {
@@ -101,15 +102,7 @@ export default function HomePage() {
               className="flex items-center justify-between mb-10"
             >
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 bg-organa-accent rounded-xl flex items-center justify-center shadow-button">
-                  <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                    <circle cx="10" cy="5" r="2.5" fill="white"/>
-                    <circle cx="4" cy="14" r="2.5" fill="white" opacity="0.7"/>
-                    <circle cx="16" cy="14" r="2.5" fill="white" opacity="0.7"/>
-                    <line x1="10" y1="7.5" x2="4" y2="11.5" stroke="white" strokeWidth="1.2" opacity="0.7"/>
-                    <line x1="10" y1="7.5" x2="16" y2="11.5" stroke="white" strokeWidth="1.2" opacity="0.7"/>
-                  </svg>
-                </div>
+                <Logo size="sm" variant="icon" />
                 <div>
                   <h1 className="text-xl font-bold text-organa-text leading-none">{companyName}</h1>
                   <div className="flex items-center gap-1.5 mt-0.5">
@@ -197,15 +190,7 @@ export default function HomePage() {
               className="flex items-center justify-between px-6 py-4 border-b border-organa-border bg-white"
             >
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-organa-accent rounded-xl flex items-center justify-center shadow-button">
-                  <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-                    <circle cx="10" cy="5" r="2.5" fill="white"/>
-                    <circle cx="4" cy="14" r="2.5" fill="white" opacity="0.7"/>
-                    <circle cx="16" cy="14" r="2.5" fill="white" opacity="0.7"/>
-                    <line x1="10" y1="7.5" x2="4" y2="11.5" stroke="white" strokeWidth="1.2" opacity="0.7"/>
-                    <line x1="10" y1="7.5" x2="16" y2="11.5" stroke="white" strokeWidth="1.2" opacity="0.7"/>
-                  </svg>
-                </div>
+                <Logo size="sm" variant="icon" />
                 <div>
                   <p className="text-sm font-semibold text-organa-text leading-none">Review your org chart</p>
                   <p className="text-xs text-organa-text-muted mt-0.5">
@@ -255,17 +240,8 @@ export default function HomePage() {
               transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
               className="text-center mb-12"
             >
-              <div className="inline-flex items-center gap-2.5 mb-5">
-                <div className="w-10 h-10 bg-organa-accent rounded-xl flex items-center justify-center shadow-button">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <circle cx="10" cy="5" r="2.5" fill="white"/>
-                    <circle cx="4" cy="14" r="2.5" fill="white" opacity="0.7"/>
-                    <circle cx="16" cy="14" r="2.5" fill="white" opacity="0.7"/>
-                    <line x1="10" y1="7.5" x2="4" y2="11.5" stroke="white" strokeWidth="1.2" opacity="0.7"/>
-                    <line x1="10" y1="7.5" x2="16" y2="11.5" stroke="white" strokeWidth="1.2" opacity="0.7"/>
-                  </svg>
-                </div>
-                <h1 className="text-2xl font-bold tracking-tight text-organa-text">ORGANA</h1>
+              <div className="mb-5">
+                <Logo size="lg" />
               </div>
               <h2 className="text-[32px] font-bold text-organa-text leading-tight tracking-tight">
                 Your company&apos;s memory,<br />

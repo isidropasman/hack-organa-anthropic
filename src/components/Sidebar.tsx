@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { Home, Brain, BarChart3, Sparkles, ShieldCheck, User, GitBranch } from 'lucide-react'
 import { getCurrentUser, type CurrentUser } from '@/lib/auth'
 import RoleSwitcher from './RoleSwitcher'
+import Logo from './Logo'
 
 const adminNavItems = [
   { href: '/', label: 'Dashboard', icon: Home },
@@ -58,13 +59,8 @@ export default function Sidebar() {
     <aside className="w-60 flex-shrink-0 bg-organa-surface border-r border-organa-border flex flex-col min-h-screen sticky top-0 h-screen">
       {/* Logo */}
       <div className="p-5 border-b border-organa-border">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-organa-accent flex items-center justify-center">
-            <span className="text-white text-xs font-bold">O</span>
-          </div>
-          <span className="font-bold text-organa-text text-lg tracking-tight">ORGANA</span>
-        </div>
-        <p className="text-organa-text-muted text-xs mt-1">Organizational Memory</p>
+        <Logo size="sm" />
+        <p className="text-organa-text-muted text-xs mt-2">Organizational Memory</p>
       </div>
 
       {/* User avatar */}
