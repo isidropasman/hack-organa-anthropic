@@ -144,7 +144,7 @@ export default function OrgEditPanel({ agent, allAgents, onClose, onSaved }: Org
           <div className="flex items-center gap-2.5">
             <UserPlus size={16} className="text-organa-accent" />
             <h2 className="text-organa-text font-semibold text-sm">
-              {isNew ? 'Nueva persona' : 'Editar persona'}
+              {isNew ? 'New person' : 'Edit person'}
             </h2>
           </div>
           <button
@@ -157,43 +157,43 @@ export default function OrgEditPanel({ agent, allAgents, onClose, onSaved }: Org
 
         {/* Form */}
         <div className="flex-1 overflow-y-auto px-5 py-5 space-y-4">
-          <Field label="Nombre completo" required>
+          <Field label="Full name" required>
             <input
               type="text"
               value={form.name}
               onChange={e => set('name', e.target.value)}
-              placeholder="Ej. Valentina Torres"
+              placeholder="e.g. Valentina Torres"
               className="input-base"
             />
           </Field>
 
-          <Field label="Cargo / Rol" required>
+          <Field label="Position / Role" required>
             <input
               type="text"
               value={form.role}
               onChange={e => set('role', e.target.value)}
-              placeholder="Ej. CEO"
+              placeholder="e.g. CEO"
               className="input-base"
             />
           </Field>
 
-          <Field label="Departamento">
+          <Field label="Department">
             <input
               type="text"
               value={form.department}
               onChange={e => set('department', e.target.value)}
-              placeholder="Ej. Dirección General"
+              placeholder="e.g. General Management"
               className="input-base"
             />
           </Field>
 
-          <Field label="Reporta a">
+          <Field label="Reports to">
             <select
               value={form.reportsTo}
               onChange={e => set('reportsTo', e.target.value)}
               className="input-base"
             >
-              <option value="">(Sin manager — nivel raíz)</option>
+              <option value="">(No manager — root level)</option>
               {managerOptions.map(a => (
                 <option key={a.id} value={a.id}>
                   {a.name} — {a.role}
@@ -204,7 +204,7 @@ export default function OrgEditPanel({ agent, allAgents, onClose, onSaved }: Org
 
           {!isNew && (
             <div className="pt-1">
-              <p className="text-organa-text-muted text-xs mb-1">ID del agente</p>
+              <p className="text-organa-text-muted text-xs mb-1">Agent ID</p>
               <code className="text-[11px] text-organa-text-muted bg-organa-border/50 px-2 py-1 rounded font-mono">
                 {agent!.id}
               </code>
@@ -214,11 +214,11 @@ export default function OrgEditPanel({ agent, allAgents, onClose, onSaved }: Org
           {!isNew && (
             <div className="bg-organa-border/30 rounded-lg px-3 py-2.5 flex items-center justify-between">
               <div>
-                <p className="text-organa-text text-xs font-medium">Estado de entrenamiento</p>
+                <p className="text-organa-text text-xs font-medium">Training status</p>
                 <p className="text-organa-text-muted text-xs mt-0.5">
                   {agent!.onboardingComplete
-                    ? `Entrenado — ${agent!.readinessScore}% KRS`
-                    : 'Sin entrenar aún'}
+                    ? `Trained — ${agent!.readinessScore}% KRS`
+                    : 'Not trained yet'}
                 </p>
               </div>
               <div className={`w-2.5 h-2.5 rounded-full ${agent!.onboardingComplete ? 'bg-green-500' : 'bg-organa-border'}`} />
@@ -234,7 +234,7 @@ export default function OrgEditPanel({ agent, allAgents, onClose, onSaved }: Org
             className="w-full flex items-center justify-center gap-2 bg-organa-accent hover:bg-organa-accent/90 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium py-2.5 px-4 rounded-lg transition-colors"
           >
             <Save size={14} />
-            {saving ? 'Guardando…' : isNew ? 'Crear persona' : 'Guardar cambios'}
+            {saving ? 'Saving…' : isNew ? 'Create person' : 'Save changes'}
           </button>
 
           {!isNew && !confirmDelete && (
@@ -243,30 +243,30 @@ export default function OrgEditPanel({ agent, allAgents, onClose, onSaved }: Org
               className="w-full flex items-center justify-center gap-2 text-red-500 hover:bg-red-50 text-sm font-medium py-2 px-4 rounded-lg transition-colors border border-red-200"
             >
               <Trash2 size={14} />
-              Eliminar persona
+              Delete person
             </button>
           )}
 
           {confirmDelete && (
             <div className="rounded-lg border border-red-200 bg-red-50 p-3 space-y-2">
               <p className="text-red-700 text-xs font-medium">
-                ¿Confirmar eliminación de {agent!.name}?
+                Confirm deletion of {agent!.name}?
               </p>
               <p className="text-red-500 text-xs">
-                Sus reportes directos subirán un nivel en la jerarquía.
+                Their direct reports will move up one level in the hierarchy.
               </p>
               <div className="flex gap-2">
                 <button
                   onClick={handleDelete}
                   className="flex-1 bg-red-500 hover:bg-red-600 text-white text-xs font-medium py-1.5 rounded-md transition-colors"
                 >
-                  Sí, eliminar
+                  Yes, delete
                 </button>
                 <button
                   onClick={() => setConfirmDelete(false)}
                   className="flex-1 text-red-500 border border-red-200 text-xs font-medium py-1.5 rounded-md transition-colors hover:bg-red-100"
                 >
-                  Cancelar
+                  Cancel
                 </button>
               </div>
             </div>

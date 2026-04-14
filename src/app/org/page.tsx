@@ -62,10 +62,10 @@ export default function OrgPage() {
       >
         <div>
           <h1 className="font-semibold text-sm" style={{ color: view === 'agent' ? '#F0F6FF' : '#1d1d1f' }}>
-            {companyName || 'Organigrama'}
+            {companyName || 'Org Chart'}
           </h1>
           <p className="text-xs mt-0.5" style={{ color: view === 'agent' ? 'rgba(240,246,255,0.45)' : '#6e6e73' }}>
-            {agents.length} personas · {trained}/{agents.length} agentes entrenados
+            {agents.length} people · {trained}/{agents.length} agents trained
           </p>
         </div>
 
@@ -91,7 +91,7 @@ export default function OrgPage() {
                 }}
               >
                 {v === 'person' ? <Users size={12} /> : <Bot size={12} />}
-                {v === 'person' ? 'Equipo' : 'Agentes'}
+                {v === 'person' ? 'Team' : 'Agents'}
               </button>
             ))}
           </div>
@@ -102,7 +102,7 @@ export default function OrgPage() {
             style={{ background: '#0071E3' }}
           >
             <Plus size={14} />
-            Agregar
+            Add
           </button>
         </div>
       </header>
@@ -129,9 +129,9 @@ export default function OrgPage() {
             ) : (
               <div className="flex flex-col items-center justify-center h-full gap-2">
                 <p className="text-sm" style={{ color: view === 'agent' ? 'rgba(240,246,255,0.4)' : '#6e6e73' }}>
-                  No hay agentes.{' '}
+                  No agents yet.{' '}
                   <button onClick={openNew} style={{ color: '#0071E3' }} className="hover:underline">
-                    Crear el primero
+                    Create the first one
                   </button>
                 </p>
               </div>
@@ -150,7 +150,7 @@ export default function OrgPage() {
                 backdropFilter: 'blur(8px)',
               }}
             >
-              Hacé clic en una persona para editarla
+              Click a person to edit them
             </span>
           </div>
         )}
