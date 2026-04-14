@@ -59,7 +59,7 @@ export default function ControlRoom() {
       </div>
 
       {/* Graph + recent messages row */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 380px)', gap: 16, flexWrap: 'wrap' }}>
         {/* CommGraph */}
         <div
           style={{
@@ -77,7 +77,7 @@ export default function ControlRoom() {
               Node size = message volume · Edge thickness = channel weight · Color = score level
             </p>
           </div>
-          <div style={{ height: 360 }}>
+          <div style={{ height: 420, minHeight: 420 }}>
             <CommGraph links={COMM_LINKS} />
           </div>
         </div>
@@ -91,14 +91,15 @@ export default function ControlRoom() {
             overflow:     'hidden',
             display:      'flex',
             flexDirection:'column',
+            maxHeight:    460,
           }}
         >
-          <div style={{ padding: '12px 16px', borderBottom: '1px solid #E2E8F0' }}>
+          <div style={{ padding: '12px 16px', borderBottom: '1px solid #E2E8F0', flexShrink: 0 }}>
             <p style={{ color: '#1E293B', fontSize: 13, fontWeight: 600, margin: 0 }}>
               Recent Messages
             </p>
           </div>
-          <div style={{ flex: 1, overflowY: 'auto', padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <div style={{ overflowY: 'auto', padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 6 }}>
             {recentMessages.map(msg => (
               <div
                 key={msg.id}

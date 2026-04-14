@@ -194,8 +194,14 @@ export default function CommGraph({ links }: Props) {
         linkEls.attr('stroke', '#CBD5E1').attr('stroke-opacity', 0.8)
       })
 
-    // Tick
+    // Tick — clamp node positions to stay 50px inside edges
+    const PAD = 50
     simulation.on('tick', () => {
+      simNodes.forEach(n => {
+        const r = nodeRadius(n)
+        n.x = Math.max(PAD + r, Math.min(W - PAD - r, n.x ?? W / 2))
+        n.y = Math.max(PAD + r, Math.min(H - PAD - r, n.y ?? H / 2))
+      })
       linkEls
         .attr('x1', d => (d.source as SimNode).x ?? 0)
         .attr('y1', d => (d.source as SimNode).y ?? 0)
@@ -212,7 +218,7 @@ export default function CommGraph({ links }: Props) {
   }, [links])
 
   return (
-    <div ref={containerRef} className="w-full h-full">
+    <div ref={containerRef} style={{ width: '100%', height: '100%', minHeight: 420 }}>
       <svg ref={svgRef} style={{ display: 'block', width: '100%', height: '100%' }} />
     </div>
   )

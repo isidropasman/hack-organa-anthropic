@@ -7,15 +7,13 @@ export default function CivilizationPage() {
   return (
     <div
       style={{
-        background:  '#F8FAFC',
-        minHeight:   '100vh',
-        padding:     '28px 32px',
-        display:     'flex',
-        flexDirection: 'column',
+        background: '#F8FAFC',
+        minHeight:  '100vh',
+        padding:    '28px 32px',
       }}
     >
       {/* Page header */}
-      <div style={{ marginBottom: 24, flexShrink: 0 }}>
+      <div style={{ marginBottom: 24 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
           <span
             style={{
@@ -56,12 +54,10 @@ export default function CivilizationPage() {
         </p>
       </div>
 
-      {/* Main layout (takes remaining height) */}
-      <div style={{ flex: 1, minHeight: 0 }}>
-        <Suspense fallback={<p style={{ color: '#64748B' }}>Loading…</p>}>
-          <CivilizationLayout />
-        </Suspense>
-      </div>
+      {/* Main layout */}
+      <Suspense fallback={<p style={{ color: '#64748B' }}>Loading…</p>}>
+        <CivilizationLayout />
+      </Suspense>
     </div>
   )
 }

@@ -41,17 +41,15 @@ export default function CivilizationLayout() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <div>
       {/* Tab bar */}
       <div
         style={{
           display:       'flex',
           gap:           4,
-          padding:       '0 0 0 0',
           marginBottom:  24,
           borderBottom:  '1px solid #E2E8F0',
           overflowX:     'auto',
-          flexShrink:    0,
         }}
       >
         {TABS.map(tab => {
@@ -85,7 +83,7 @@ export default function CivilizationLayout() {
       </div>
 
       {/* Panel */}
-      <div style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
+      <div style={{ paddingBottom: 40 }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
