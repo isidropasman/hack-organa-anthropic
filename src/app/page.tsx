@@ -15,33 +15,38 @@ export default function HomePage() {
   const router = useRouter()
   const [agents, setAgents] = useState<Agent[]>([])
   const [companyName, setCompanyName] = useState('Nova Agency')
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading] = useState(false)
 
-  // TODO: Implement hydration from localStorage
-  // useEffect(() => {
-  //   setAgents(agentStore.getAllAgents())
-  //   setCompanyName(agentStore.getCompanyName())
-  // }, [])
+  useEffect(() => {
+    setAgents(agentStore.getAllAgents())
+    setCompanyName(agentStore.getCompanyName())
+  }, [])
 
-  function handleAgentsGenerated(newAgents: Agent[]) {
-    // TODO: Implement
-    // 1. agentStore.setAgents(newAgents)
-    // 2. setAgents(newAgents)
-    // 3. If newAgents[0] exists and has a name, try to infer company name or use default
+  function handleAgentsGenerated(newAgents: Agent[], name?: string) {
+    agentStore.setAgents(newAgents)
+    setAgents(newAgents)
+    if (name) {
+      agentStore.setCompanyName(name)
+      setCompanyName(name)
+    }
   }
 
   function handleAgentClick(agent: Agent) {
-    // TODO: Implement
-    // if (agent.onboardingComplete) {
-    //   router.push(`/agent/${agent.id}`)
-    // } else {
-    //   router.push(`/onboard/${agent.id}`)
-    // }
+    if (agent.onboardingComplete) {
+      router.push(`/agent/${agent.id}`)
+    } else {
+      router.push(`/onboard/${agent.id}`)
+    }
+  }
+
+  function handleReset() {
+    agentStore.clearAll()
+    setAgents([])
+    setCompanyName('Nova Agency')
   }
 
   return (
     <main className="min-h-screen p-8">
-      {/* TODO: Implement full UI */}
       {/* Header */}
       <header className="mb-12">
         <h1 className="text-4xl font-bold text-organa-text">ORGANA</h1>
@@ -50,7 +55,6 @@ export default function HomePage() {
         </p>
       </header>
 
-      {/* Upload zone — always visible if no agents, or as secondary action */}
       {agents.length === 0 ? (
         <div className="max-w-2xl mx-auto">
           <OrgUpload onAgentsGenerated={handleAgentsGenerated} isLoading={isLoading} />
@@ -60,16 +64,20 @@ export default function HomePage() {
           {/* Company header */}
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-semibold">{companyName}</h2>
+              <h2 className="text-2xl font-semibold text-organa-text">{companyName}</h2>
               <p className="text-organa-text-muted">
                 {agents.filter(a => a.onboardingComplete).length} / {agents.length} agents trained
               </p>
             </div>
-            {/* TODO: Add "Upload new chart" button that calls agentStore.clearAll() then resets state */}
+            <button
+              onClick={handleReset}
+              className="px-4 py-2 text-sm text-organa-text-muted hover:text-organa-text border border-organa-border hover:border-organa-muted rounded-lg transition-all"
+            >
+              Upload new chart
+            </button>
           </div>
 
           {/* Agent grid */}
-          {/* TODO: Implement grid layout with AgentCard for each agent */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {agents.map(agent => (
               <AgentCard
