@@ -7,20 +7,53 @@ import { agentChat } from '@/lib/claude'
 import type { AgentChatRequest, AgentChatResponse, Message } from '@/lib/types'
 
 export async function POST(request: NextRequest): Promise<NextResponse<AgentChatResponse>> {
-  // TODO: Implement
-  // 1. Parse body: const { agentId, agentName, agentRole, companyName, knowledgeBase, messages } = await request.json()
-  // 2. Validate all required fields — especially knowledgeBase must not be null
-  //    Return 400 with error: 'Agent has not completed onboarding' if knowledgeBase is missing
-  // 3. Call: const reply = await agentChat(agentName, agentRole, companyName, knowledgeBase, messages)
-  // 4. Build response message:
-  //    const message: Message = { role: 'assistant', content: reply, timestamp: new Date().toISOString() }
-  // 5. Return: NextResponse.json({ message })
-  // 6. Catch errors: return NextResponse.json({ message: {...}, error: err.message }, { status: 500 })
+  try {
+    const body = await request.json() as Partial<AgentChatRequest>
+    const { agentId, agentName, agentRole, companyName, knowledgeBase, messages } = body
 
-  const errorMessage: Message = {
-    role: 'assistant',
-    content: 'Not implemented',
-    timestamp: new Date().toISOString(),
+    if (!agentId || !agentName || !agentRole || !companyName || !messages) {
+      const errorMessage: Message = {
+        role: 'assistant',
+        content: 'Missing required fields',
+        timestamp: new Date().toISOString(),
+      }
+      return NextResponse.json(
+        { message: errorMessage, error: 'Missing required fields' },
+        { status: 400 }
+      )
+    }
+
+    if (!knowledgeBase) {
+      const errorMessage: Message = {
+        role: 'assistant',
+        content: 'This agent has not completed onboarding yet.',
+        timestamp: new Date().toISOString(),
+      }
+      return NextResponse.json(
+        { message: errorMessage, error: 'Agent has not completed onboarding' },
+        { status: 400 }
+      )
+    }
+
+    const reply = await agentChat(agentName, agentRole, companyName, knowledgeBase, messages)
+
+    const message: Message = {
+      role: 'assistant',
+      content: reply,
+      timestamp: new Date().toISOString(),
+    }
+
+    return NextResponse.json({ message })
+  } catch (err) {
+    const errorMsg = err instanceof Error ? err.message : 'Unknown error'
+    const errorMessage: Message = {
+      role: 'assistant',
+      content: 'Sorry, something went wrong. Please try again.',
+      timestamp: new Date().toISOString(),
+    }
+    return NextResponse.json(
+      { message: errorMessage, error: errorMsg },
+      { status: 500 }
+    )
   }
-  return NextResponse.json({ message: errorMessage, error: 'Not implemented' }, { status: 501 })
 }

@@ -7,21 +7,41 @@ import { onboardingTurn } from '@/lib/claude'
 import type { OnboardingTurnRequest, OnboardingTurnResponse, Message } from '@/lib/types'
 
 export async function POST(request: NextRequest): Promise<NextResponse<OnboardingTurnResponse>> {
-  // TODO: Implement
-  // 1. Parse body: const { agentId, agentName, agentRole, companyName, messages } = await request.json()
-  // 2. Validate all required fields are present — return 400 if any are missing
-  // 3. Call: const { reply, isComplete } = await onboardingTurn(agentName, agentRole, companyName, messages)
-  // 4. Build response message:
-  //    const message: Message = { role: 'assistant', content: reply, timestamp: new Date().toISOString() }
-  // 5. Return: NextResponse.json({ message, isComplete })
-  //    Note: when isComplete is true, the client is responsible for calling agentStore.completeOnboarding()
-  //    and building the KnowledgeBase from the full onboardingMessages array
-  // 6. Catch errors: return NextResponse.json({ message: {...}, isComplete: false, error: err.message }, { status: 500 })
+  try {
+    const body = await request.json() as Partial<OnboardingTurnRequest>
+    const { agentId, agentName, agentRole, companyName, messages } = body
 
-  const errorMessage: Message = {
-    role: 'assistant',
-    content: 'Not implemented',
-    timestamp: new Date().toISOString(),
+    if (!agentId || !agentName || !agentRole || !companyName || !messages) {
+      const errorMessage: Message = {
+        role: 'assistant',
+        content: 'Missing required fields',
+        timestamp: new Date().toISOString(),
+      }
+      return NextResponse.json(
+        { message: errorMessage, isComplete: false, error: 'Missing required fields' },
+        { status: 400 }
+      )
+    }
+
+    const { reply, isComplete } = await onboardingTurn(agentName, agentRole, companyName, messages)
+
+    const message: Message = {
+      role: 'assistant',
+      content: reply,
+      timestamp: new Date().toISOString(),
+    }
+
+    return NextResponse.json({ message, isComplete })
+  } catch (err) {
+    const errorMsg = err instanceof Error ? err.message : 'Unknown error'
+    const errorMessage: Message = {
+      role: 'assistant',
+      content: 'Sorry, something went wrong. Please try again.',
+      timestamp: new Date().toISOString(),
+    }
+    return NextResponse.json(
+      { message: errorMessage, isComplete: false, error: errorMsg },
+      { status: 500 }
+    )
   }
-  return NextResponse.json({ message: errorMessage, isComplete: false, error: 'Not implemented' }, { status: 501 })
 }
